@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './gala/home/home.component';
 import { FooterComponent } from './gala/components/footer/footer.component';
 import { SidebarComponent } from './gala/components/sidebar/sidebar.component';
 import { NavbarComponent } from './gala/components/navbar/navbar.component';
-import { GalaComponent } from './gala/gala.component';
-
+import { RouterModule } from '@angular/router';
+import { AppRoutes } from './app.routing';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,14 +16,16 @@ import { GalaComponent } from './gala/gala.component';
     HomeComponent,
     FooterComponent,
     SidebarComponent,
-    NavbarComponent,
-    GalaComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    RouterModule.forRoot(AppRoutes)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    RouterModule
+  ]
 })
 export class AppModule { }
