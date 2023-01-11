@@ -8,6 +8,7 @@ import { HomeComponent } from './gala/home/home.component';
 import { FooterComponent } from './gala/components/footer/footer.component';
 import { SidebarComponent } from './gala/components/sidebar/sidebar.component';
 import { NavbarComponent } from './gala/components/navbar/navbar.component';
+import { GalaComponent } from './gala/gala.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NavbarComponent } from './gala/components/navbar/navbar.component';
     HomeComponent,
     FooterComponent,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    GalaComponent
   ],
   imports: [
     BrowserModule,
