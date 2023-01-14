@@ -9,6 +9,7 @@ import { SidebarComponent } from './gala/components/sidebar/sidebar.component';
 import { NavbarComponent } from './gala/components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutes } from './app.routing';
+import { HomeModule } from './gala/home/home.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { AppRoutes } from './app.routing';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(AppRoutes)
+    RouterModule.forRoot(AppRoutes),
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent],
