@@ -21,9 +21,15 @@ export class LoginComponent implements OnInit {
 
   login() : any {
     const data = {
+<<<<<<< Updated upstream
       correo : 'fabi@gmail.com',
       contrasena : '123456'
     }  
+=======
+      correo : 'faabi@gmail.com',
+      password : '123456'
+    }
+>>>>>>> Stashed changes
     
     this.loginService.login(data).subscribe(
       respuesta => {

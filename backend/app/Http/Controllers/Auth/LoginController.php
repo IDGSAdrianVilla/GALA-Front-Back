@@ -17,11 +17,11 @@ class LoginController extends Controller
     {
         $this->loginService = $loginService;
     }
-    public function login (){
-       
+    public function login ( Request $request ){
+        Log::alert("asdasds");
+        Log::alert("request", (array) $request->all());
         try{
-            return $this->loginService->login();
-
+            return $this->loginService->login( $request->all());
         } catch ( \Exception $error ) {
             return response()->json(
                 [
