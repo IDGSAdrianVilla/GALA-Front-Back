@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,26 +11,42 @@ import { LoginService } from '../services/login.service';
 
 export class LoginComponent implements OnInit {
   
+  public formLogin! : FormGroup;
+
   constructor (
-    private loginService : LoginService 
+    private loginService : LoginService,
+    private fb : FormBuilder,
+    private router : Router
   ){
 
   }
 
   ngOnInit(): void {
-    this.login();
+    this.formLogin = this.fb.group({
+      correo : ['',[Validators.required]],
+      password : ['',[Validators.required]]
+    });
   }
 
   login() : any {
-    const data = {
-      correo : 'faabi@gmail.com',
-      password : '123456'
+    console.log(this.formLogin.value);
+
+    if(this.formLogin.invalid){
+      
+      return ;
     }
+
+    const data = this.formLogin.value 
+    
     
     this.loginService.login(data).subscribe(
+
       respuesta => {
-        console.log('respuesta');
-        console.log(respuesta);
+
+        const status = respuesta.status
+        if(status == 200){
+          this.router.navigate(['/gala/inicio']);
+        }        
       },
       error => {
         console.log('error');

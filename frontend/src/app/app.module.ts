@@ -11,6 +11,7 @@ import { NavbarComponent } from './gala/components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutes } from './app.routing';
 import { HomeModule } from './gala/home/home.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,9 @@ import { HomeModule } from './gala/home/home.module';
     BrowserModule,
     RouterModule.forRoot(AppRoutes),
     HomeModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
