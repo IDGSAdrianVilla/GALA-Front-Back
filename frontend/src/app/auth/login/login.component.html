@@ -22,21 +22,21 @@
                   <p class="text-center small">Ingrese su nombre de usuario y contraseña para iniciar sesión</p>
                 </div>
 
-                <form class="row g-3 needs-validation">
+                <form class="row g-3 needs-validation" [formGroup]="formLogin" (ngSubmit)="login()">
 
                   <div class="col-12">
-                    <label for="yourUsername" class="form-label">Nombre de usuario</label>
+                    <label for="correo" class="form-label">Correo</label>
                     <div class="input-group has-validation">
                       <span class="input-group-text" id="inputGroupPrepend">@</span>
-                      <input type="text" name="username" class="form-control" id="yourUsername" required>
-                      <div class="invalid-feedback">Please enter your username.</div>
+                      <input type="text" formControlName="correo" class="form-control" id="correo" placeholder="ejemplo@gmail.com" required>
+                      <div class="invalid-feedback">Por favor introduce un correo válido</div>
                     </div>
                   </div>
 
                   <div class="col-12">
-                    <label for="yourPassword" class="form-label">Contraseña</label>
-                    <input type="password" name="password" class="form-control" id="yourPassword" required>
-                    <div class="invalid-feedback">Please enter your password!</div>
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" formControlName="password" class="form-control" id="password" placeholder="Contraseña" required>
+                    <div class="invalid-feedback">Por favor intrude una contraseña válida!</div>
                   </div>
 
                   <div class="col-12">
@@ -46,7 +46,7 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <button class="btn btn-primary w-100" type="button">Entrar</button>
+                    <button class="btn btn-primary w-100" type="submit">Entrar</button>
                   </div>
                   <!--div class="col-12">
                     <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>

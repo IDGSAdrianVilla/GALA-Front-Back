@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MensajesService } from '../../services/mensajesServices/mensajes.service';
 
 @Component({
   selector: 'app-login',
@@ -9,30 +12,43 @@ import { LoginService } from '../services/login.service';
 
 export class LoginComponent implements OnInit {
   
+  public formLogin! : FormGroup;
+
   constructor (
-    private loginService : LoginService 
+    private loginService : LoginService,
+    private fb : FormBuilder,
+    private router : Router,
+    private mensajes : MensajesService
   ){
 
   }
 
   ngOnInit(): void {
-    this.login();
+    this.formLogin = this.fb.group({
+      correo : ['',[Validators.required]],
+      password : ['',[Validators.required]]
+    });
   }
 
   login() : any {
-    const data = {
-      correo : 'fabi@gmail.com',
-      contrasena : '123456'
-    }  
+    this.mensajes.mensajeEsperar();
+
+    if(this.formLogin.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta', 'info');
+      return ;
+    }    
     
-    this.loginService.login(data).subscribe(
+    this.loginService.login(this.formLogin.value).subscribe(
       respuesta => {
-        console.log('respuesta');
-        console.log(respuesta);
+        if(respuesta.status == 200){
+          this.mensajes.mensajeGenericoToast('Bienvenido', 'success');
+          this.router.navigate(['/gala/inicio']);
+        } else {
+          this.mensajes.mensajeGenerico('Upss! Al parecer las credenciales no son correctas para poder ingresar', 'info');
+        }       
       },
       error => {
-        console.log('error');
-        console.log(error);
+        this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error')
       }
     )
   }

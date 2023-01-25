@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\LoginRepository;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class LoginService
@@ -19,7 +20,18 @@ class LoginService
         $this->loginRepository = $loginRepository;
     }
 
-    public function login(){
-        return $this->loginRepository->login();
+    public function login( $credenciales ){
+        $datos = (array) $this->loginRepository->login( $credenciales['correo'], $credenciales['password'] );
+
+        Log::alert($datos);
+
+        return response()->json(
+            [
+                'error' => false,
+                'data' => $datos,
+                'status' => count($datos) == 0 ? 204 : 200
+            ],
+            200
+        );
     }
 }
