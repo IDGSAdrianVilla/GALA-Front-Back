@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MensajesService } from '../../services/mensajesServices/mensajes.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor (
     private loginService : LoginService,
     private fb : FormBuilder,
-    private router : Router
+    private router : Router,
+    private mensajes : MensajesService
   ){
 
   }
@@ -29,28 +31,24 @@ export class LoginComponent implements OnInit {
   }
 
   login() : any {
-    console.log(this.formLogin.value);
+    this.mensajes.mensajeEsperar();
 
     if(this.formLogin.invalid){
-      
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta', 'info');
       return ;
-    }
-
-    const data = this.formLogin.value 
+    }    
     
-    
-    this.loginService.login(data).subscribe(
-
+    this.loginService.login(this.formLogin.value).subscribe(
       respuesta => {
-
-        const status = respuesta.status
-        if(status == 200){
+        if(respuesta.status == 200){
+          this.mensajes.mensajeGenericoToast('Bienvenido', 'success');
           this.router.navigate(['/gala/inicio']);
-        }        
+        } else {
+          this.mensajes.mensajeGenerico('Upss! Al parecer las credenciales no son correctas para poder ingresar', 'info');
+        }       
       },
       error => {
-        console.log('error');
-        console.log(error);
+        this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error')
       }
     )
   }
