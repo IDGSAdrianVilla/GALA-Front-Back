@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MensajesService } from '../../services/mensajesServices/mensajes.service';
+import { MensajesService } from '../../services/mensajes/mensajes.service';
 
 @Component({
   selector: 'app-login',
