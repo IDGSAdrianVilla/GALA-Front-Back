@@ -23,8 +23,6 @@ class LoginService
     public function login( $credenciales ){
         $datos = (array) $this->loginRepository->login( $credenciales['correo'], $credenciales['password'] );
 
-        Log::alert($datos);
-
         return response()->json(
             [
                 'error' => false,
