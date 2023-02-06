@@ -41,6 +41,8 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.formLogin.value).subscribe(
       respuesta => {
         if(respuesta.status == 200){
+          console.log(respuesta.data);
+          localStorage.setItem('token', respuesta.data);
           this.mensajes.mensajeGenericoToast('Bienvenido', 'success');
           this.router.navigate(['/gala/inicio']);
         } else {

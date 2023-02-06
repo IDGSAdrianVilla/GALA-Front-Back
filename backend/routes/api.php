@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', 'App\Http\Controllers\Auth\LoginController@login');
+Route::post('auth', 'App\Http\Controllers\Auth\LoginController@auth');

@@ -18,4 +18,8 @@ export class LoginService {
   public login(data : any) : Observable<any> {
     return this.http.post<any>(this.urlHost+'/login', data); 
   }
+
+  public auth(token : any) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/auth', {token});
+  }
 }
