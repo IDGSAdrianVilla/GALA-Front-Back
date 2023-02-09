@@ -11,27 +11,34 @@ export class InicioComponent implements OnInit {
 
   constructor(
     private mensajes : MensajesService,
-    private inicioService : LoginService,
+    private loginService : LoginService,
     private router : Router
   ){
 
   }
 
   ngOnInit(): void {
+    this.mensajes.mensajeEsperar();
     let token = localStorage.getItem('token');
     if(token != undefined){
-      this.inicioService.auth(token).subscribe(
-        respuesta => {
-    
+      this.mensajes.mensajeEsperar();
+      this.loginService.auth(token).subscribe(
+        status => {
+          if(status){
+            this.mensajes.cerrarMensajes();            
+          } else {
+            this.router.navigate(['/']);
+            this.mensajes.mensajeGenerico('Para navegar dentro de GALA se necesita inicar sesión antes', 'info');
+          }
         },
-    
+  
         error => {
-    
+          this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error');
         }
       )
     } else {
       this.router.navigate(['/']);
-      this.mensajes.mensajeGenerico('No deberías intentar esto', 'error');
+      this.mensajes.mensajeGenerico('Para navegar dentro de GALA se necesita inicar sesión antes', 'info');
     }
   }
 

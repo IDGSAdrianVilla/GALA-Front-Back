@@ -32,6 +32,10 @@ class LoginService
     }
 
     public function auth( $token ){
-        Log::alert($token);
+        return $this->loginRepository->auth($token['token']);
+    }
+
+    public function logout( $token ){
+        return $this->loginRepository->logout($token['token']);
     }
 }

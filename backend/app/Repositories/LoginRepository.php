@@ -38,4 +38,13 @@ class LoginRepository
 
         return null;
     }
+
+    public function auth( $token ){
+        $sesiones = TblSesiones::where('Token', '=', $token)->count();
+        return $sesiones > 0 ? 'true' : 'false';
+    }
+    
+    public function logout( $token ){
+        return TblSesiones::where('Token', '=', $token)->delete();
+    }
 }
