@@ -27,6 +27,8 @@ export class ValidarAuthComponent implements OnInit{
             this.router.navigate(['/gala/inicio']);
             this.mensajes.mensajeGenerico('No deberías intentar esto', 'error');
           } else {
+            localStorage.removeItem('token');
+            localStorage.clear();
             this.router.navigate(['/']);
             this.mensajes.mensajeGenerico('No deberías intentar esto', 'error');
           }

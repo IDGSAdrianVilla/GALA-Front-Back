@@ -18,7 +18,6 @@ export class InicioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mensajes.mensajeEsperar();
     let token = localStorage.getItem('token');
     if(token != undefined){
       this.mensajes.mensajeEsperar();
@@ -27,6 +26,8 @@ export class InicioComponent implements OnInit {
           if(status){
             this.mensajes.cerrarMensajes();            
           } else {
+            localStorage.removeItem('token');
+            localStorage.clear();
             this.router.navigate(['/']);
             this.mensajes.mensajeGenerico('Para navegar dentro de GALA se necesita inicar sesión antes', 'info');
           }
