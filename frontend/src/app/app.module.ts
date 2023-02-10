@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutes } from './app.routing';
 import { HomeModule } from './gala/home/home.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ValidarAuthComponent } from './validar-auth/validar-auth.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     FooterComponent,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    ValidarAuthComponent
   ],
   imports: [
     BrowserModule,

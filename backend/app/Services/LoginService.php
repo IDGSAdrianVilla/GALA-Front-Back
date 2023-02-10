@@ -21,15 +21,21 @@ class LoginService
     }
 
     public function login( $credenciales ){
-        $datos = (array) $this->loginRepository->login( $credenciales['correo'], $credenciales['password'] );
-
+        $token = $this->loginRepository->login( $credenciales['correo'], $credenciales['password'] );
         return response()->json(
             [
-                'error' => false,
-                'data' => $datos,
-                'status' => count($datos) == 0 ? 204 : 200
+                'data' => $token,
+                'status' => $token == null ? 204 : 200
             ],
             200
         );
+    }
+
+    public function auth( $token ){
+        return $this->loginRepository->auth($token['token']);
+    }
+
+    public function logout( $token ){
+        return $this->loginRepository->logout($token['token']);
     }
 }
