@@ -32,19 +32,17 @@ export class NavbarComponent implements OnInit {
     if(token != undefined){
       this.usuariosService.obtenerInformacion(token).subscribe(
         datosUsuario =>{
-          console.log(datosUsuario);
-          console.log(datosUsuario[0].NombreEmpleado);
           this.informacionUsuario = datosUsuario;
-          console.log(this.informacionUsuario[0].NombreEmpleado);
         },
 
         error =>{
           localStorage.removeItem('token');
           localStorage.clear();
           this.router.navigate(['/']);
-          this.mensajes.mensajeGenerico('Al parecer sus sesión expiró, necesita volver a iniciar sesión', 'error');
+          this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
         }
       )
+      console.log(this.informacionUsuario[0].NombreEmpleado);
     }
   }
 
