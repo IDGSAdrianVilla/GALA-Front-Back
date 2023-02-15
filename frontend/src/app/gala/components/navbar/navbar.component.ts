@@ -42,7 +42,6 @@ export class NavbarComponent implements OnInit {
           this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
         }
       )
-      console.log(this.informacionUsuario[0].NombreEmpleado);
     }
   }
 
