@@ -3,6 +3,7 @@ import { DataService } from '../../services/data.service';
 import { MensajesService } from '../../../services/mensajes/mensajes.service';
 import { LoginService } from '../../../auth/services/login.service';
 import { Router } from '@angular/router';
+import { UsuariosService } from '../../services/usuarios/usuarios.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -10,25 +11,41 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
+  informacionUsuario : any = [];
+
   constructor (
     public dataService : DataService,
     private mensajes : MensajesService,
     private loginService : LoginService,
-    private router : Router
+    private router : Router,
+    private usuariosService : UsuariosService
   ){
 
   }
 
   ngOnInit(): void {  
-
+    this.obtenerDatosUsuarios();
   }
 
   obtenerDatosUsuarios() : void {
     let token = localStorage.getItem('token');
+    if(token != undefined){
+      this.usuariosService.obtenerInformacion(token).subscribe(
+        datosUsuario =>{
+          this.informacionUsuario = datosUsuario;
+        },
 
+        error =>{
+          localStorage.removeItem('token');
+          localStorage.clear();
+          this.router.navigate(['/']);
+          this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
+        }
+      )
+    }
   }
 
-  logout(){
+  logout() : void {
     this.mensajes.mensajeEsperar();
     let token = localStorage.getItem('token');
     this.loginService.logoutBack(token).subscribe(
@@ -36,7 +53,7 @@ export class NavbarComponent implements OnInit {
         localStorage.removeItem('token');
         localStorage.clear();
         this.router.navigate(['/']);
-        this.mensajes.mensajeGenerico('Vuelve pronto', 'info');
+        this.mensajes.mensajeGenerico('Vuelva pronto', 'info');
       },
     
       error =>{
@@ -44,7 +61,6 @@ export class NavbarComponent implements OnInit {
       }
     );
   }
-
   
   prueba() : void {
     this.dataService.claseSidebar = this.dataService.claseSidebar == '' ? 'toggle-sidebar' : '';

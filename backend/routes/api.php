@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login');
 Route::post('/auth', 'App\Http\Controllers\Auth\LoginController@auth');
 Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
+
+Route::post('/usuarios/obtenerInformacion', 'App\Http\Controllers\Gala\UsuarioController@obtenerInformacion');
+

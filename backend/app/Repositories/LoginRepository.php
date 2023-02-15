@@ -28,6 +28,7 @@ class LoginRepository
         
         if(!is_null($pk)){
             DB::beginTransaction();
+                TblSesiones::where('FkTblUsuario', '=', $pk)->delete();
                 $registro = new TblSesiones();
                 $registro->FkTblUsuario = $pk;
                 $registro->Token = Str::random(50);
