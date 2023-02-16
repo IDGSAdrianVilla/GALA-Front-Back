@@ -38,62 +38,64 @@
 
               <div class="tab-pane fade show active profile-edit" id="profile-informacion">
 
-                <form class="row g-3" autocomplete="off">
+                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro">
                   <div class="col-md-12">
-                    <label for="nombreEmpleado" class="form-label">Nombre(s):</label>
-                    <input name="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)">
+                    <label for="nombreEmpleado" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
+                    <input formControlName="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)">
                   </div>
 
                   <div class="col-md-6">
-                    <label for="apellidoPaternoEmpleado" class="form-label">Apellido Paterno:</label>
-                    <input name="apellidoPaternoEmpleado" type="text" class="form-control" id="apellidoPaternoEmpleado" placeholder="Apellido Paterno">
+                    <label for="apellidoPaternoEmpleado" class="form-label">Apellido Paterno <b style="color: brown;">*</b>:</label>
+                    <input formControlName="apellidoPaternoEmpleado" type="text" class="form-control" id="apellidoPaternoEmpleado" placeholder="Apellido Paterno">
                   </div>
 
                   <div class="col-md-6">
                     <label for="apellidoMaterno" class="form-label">Apellido Materno:</label>
-                    <input name="apellidoMaterno" type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno">
+                    <input formControlName="apellidoMaterno" type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno">
                   </div>
 
                   <div class="col-md-5">
-                    <label for="sexoEmpleado" class="form-label">Sexo:</label>
+                    <label for="sexoEmpleado" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
                     <section style="text-align: center;">
-                      <input class="form-check-input" type="radio" name="sexoEmpleado" id="sexoEmpleadoM" value="M" checked>
+                      <input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoM" value="M" checked>
                       <label class="form-check-label" for="sexoEmpleadoM">&nbsp;Masculino</label>
-                      &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" name="sexoEmpleado" id="sexoEmpleadoF" value="F">
+                      &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoF" value="F">
                       <label class="form-check-label" for="sexoEmpleadoF">&nbsp;Femenino</label>
                     </section>
                   </div>
 
                   <div class="col-md-7">
-                    <label for="fechaNacimientoEmpleado" class="form-label">Fecha de Nacimiento:</label>
-                    <input name="fechaNacimientoEmpleado" type="date" class="form-control" id="fechaNacimientoEmpleado">
+                    <label for="fechaNacimientoEmpleado" class="form-label">Fecha de Nacimiento <b style="color: brown;">*</b>:</label>
+                    <input formControlName="fechaNacimientoEmpleado" type="date" class="form-control" id="fechaNacimientoEmpleado">
                   </div>
 
                   <div class="col-12">
                     <label for="observaciones" class="form-label">Observaciones:</label>
-                    <textarea name="observaciones" class="form-control" id="observaciones" style="height: 100px" placeholder="Observaciones"></textarea>
+                    <textarea formControlName="observaciones" class="form-control" id="observaciones" style="height: 100px" placeholder="Observaciones"></textarea>
                   </div>
+                  <input type="submit" class="btn btn-primary" (click)="funcionPrueba()">
                 </form>
 
               </div>
 
               <div class="tab-pane fade pt-3 profile-edit" id="profile-direccion">
 
-                <form class="row g-3" autocomplete="off">
+                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro">
                   <div class="col-md-6">
-                    <label for="poblacionEmpleado" class="form-label">Población:</label>
+                    <label for="poblacionEmpleado" class="form-label">Población <b style="color: brown;">*</b>:</label>
                     <select name="poblacionEmpleado" id="poblacionEmpleado" class="form-control">
                       <option style="display: none; visibility: hidden;">Seleccione una poblacion</option>
+                      <option *ngFor="let opcionPoblacion of this.poblaciones"></option>
                     </select>
                   </div>
 
                   <div class="col-md-6">
-                    <label for="coordenadasEmpleado" class="form-label">Coordenadas:</label>
+                    <label for="coordenadasEmpleado" class="form-label">Coordenadas <b style="color: brown;">*</b>:</label>
                     <input name="coordenadasEmpleado" type="text" class="form-control" id="coordenadasEmpleado" placeholder="Coordenadas">
                   </div>
 
                   <div class="col-md-12">
-                    <label for="calleEmpleado" class="form-label">Calle:</label>
+                    <label for="calleEmpleado" class="form-label">Calle <b style="color: brown;">*</b>:</label>
                     <input name="calleEmpleado" type="text" class="form-control" id="calleEmpleado" placeholder="Calle">
                   </div>
 
@@ -106,31 +108,12 @@
                     <label for="caracteristicasDomicilioEmpleado" class="form-label">Características:</label>
                     <textarea name="caracteristicasDomicilioEmpleado" class="form-control" id="caracteristicasDomicilioEmpleado" style="height: 65px" placeholder="Características del Domicilio"></textarea>
                   </div>
+                  <input type="submit" class="btn btn-primary" (click)="funcionPrueba()">
                 </form>
-
               </div>
 
               <div class="tab-pane fade pt-3" id="profile-rol-permisos">
 
-                <form autocomplete="off">
-                  <ul>
-                    <ng-container *ngFor="let item of items">
-                      <li>
-                        <input type="checkbox" [checked]="item.checked" (change)="check(item, $event.target.checked)">
-                        {{ item.label }}
-                        <ul *ngIf="item.children?.length">
-                          <ng-container *ngFor="let child of item.children">
-                            <li>
-                              <input type="checkbox" [checked]="child.checked" (change)="check(child, $event.target.checked)">
-                              {{ child.label }}
-                            </li>
-                          </ng-container>
-                        </ul>
-                      </li>
-                    </ng-container>
-                  </ul>
-                  
-                </form>
 
               </div>
 

@@ -1,93 +1,70 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
+import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 
-interface Item {
-  name: string;
-  checked: boolean;
-  children?: Item[];
-}
 @Component({
   selector: 'app-usuarios-registro',
   templateUrl: './usuarios-registro.component.html',
   styleUrls: ['./usuarios-registro.component.css']
 })
-export class UsuariosRegistroComponent {
+export class UsuariosRegistroComponent implements OnInit {
 
-  items: Item[] = [
-    {
-      name: 'Reportes',
-      checked: false,
-      children: [
-        {
-          name: 'Lectura',
-          checked: false
-        },
-        {
-          name: 'Escritura / Modificación',
-          checked: false
-        }
-      ]
-    },
-    {
-      name: 'Usuarios',
-      checked: false,
-      children: [
-        {
-          name: 'Lectura',
-          checked: false
-        },
-        {
-          name: 'Escritura / Modificación',
-          checked: false
-        }
-      ]
-    },
-    {
-      name: 'Cátalogos',
-      checked: false,
-      children: [
-        {
-          name: 'Lectura',
-          checked: false
-        },
-        {
-          name: 'Escritura / Modificación',
-          checked: false
-        }
-      ]
-    }
-  ];
+  public formInformacionRegistro! : FormGroup;
+  public formDireccionRegistro! : FormGroup;
+  public poblaciones : any = [];
 
-  check(item: Item, checked: boolean): void {
-    item.checked = checked;
+  constructor(
+    private fb : FormBuilder,
+    private mensajes : MensajesService,
+    private catalogosService : CatalogosService
+  ){
 
-    if (item.children) {
-      item.children.forEach(child => {
-        child.checked = checked;
-      });
-    }
-
-    if (item.checked) {
-      this.checkParent(item);
-    } else {
-      this.uncheckParent(item);
-    }
   }
 
-  checkParent(item: Item): void {
-    if (item.children) {
-      const parent = item.children[0].checkedElement.parentElement.parentElement.parentElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
-      const allChecked = item.children.every(child => child.checked);
-      parent.checked = allChecked;
-      this.checkParent({ ...item, checkedElement: parent });
-    }
+  ngOnInit(): void {
+    this.mensajes.mensajeEsperar();
+    this.crearFormInformacionRegistro();
+    this.crearFormDireccionRegistro();
+    this.obtenerPoblaciones();
   }
 
-  uncheckParent(item: Item): void {
-    if (item.checkedElement) {
-      const parent = item.checkedElement.parentElement.parentElement.parentElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
-      parent.checked = false;
-      this.uncheckParent({ ...item, checkedElement: parent });
-    }
+  crearFormInformacionRegistro() : void {
+    this.formInformacionRegistro = this.fb.group({
+      nombreEmpleado : ['',[Validators.required]],
+      apellidoPaternoEmpleado : ['',[Validators.required]],
+      apellidoMaterno : ['',[]],
+      sexoEmpleado : ['',[Validators.required]],
+      fechaNacimientoEmpleado : ['',[Validators.required]],
+      observaciones : ['',[]]
+    });
   }
 
+  funcionPrueba() : void {
+    this.mensajes.mensajeEsperar();
+    if(this.formDireccionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta. \n Los campos requeridos están marcados con un *', 'info');
+      return ;
+    }    
+  }
+
+  crearFormDireccionRegistro() : void {
+    this.formDireccionRegistro = this.fb.group({
+      poblacionEmpleado : ['',[Validators.required]],
+      coordenadasEmpleado : ['',[Validators.required]],
+      calleEmpleado : ['',[Validators.required]]
+    })
+  }
+  
+  obtenerPoblaciones() : void {
+    this.catalogosService.obtenerPoblaciones().subscribe(
+      poblaciones => {
+        this.poblaciones = poblaciones.data;
+        this.mensajes.cerrarMensajes();
+      },
+      error => {
+        this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error');
+      }
+    );
+  }
 }
