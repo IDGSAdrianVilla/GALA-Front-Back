@@ -38,7 +38,9 @@
 
               <div class="tab-pane fade show active profile-edit" id="profile-informacion">
 
-                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro">
+                <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
+
+                <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro">
                   <div class="col-md-12">
                     <label for="nombreEmpleado" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
                     <input formControlName="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)">
@@ -73,12 +75,13 @@
                     <label for="observaciones" class="form-label">Observaciones:</label>
                     <textarea formControlName="observaciones" class="form-control" id="observaciones" style="height: 100px" placeholder="Observaciones"></textarea>
                   </div>
-                  <input type="submit" class="btn btn-primary" (click)="funcionPrueba()">
                 </form>
 
               </div>
 
               <div class="tab-pane fade pt-3 profile-edit" id="profile-direccion">
+
+                <h5 class="card-title" align="center">Dirección personal</h5>
 
                 <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro">
                   <div class="col-md-6">
@@ -108,44 +111,80 @@
                     <label for="caracteristicasDomicilioEmpleado" class="form-label">Características:</label>
                     <textarea name="caracteristicasDomicilioEmpleado" class="form-control" id="caracteristicasDomicilioEmpleado" style="height: 65px" placeholder="Características del Domicilio"></textarea>
                   </div>
-                  <input type="submit" class="btn btn-primary" (click)="funcionPrueba()">
                 </form>
               </div>
 
               <div class="tab-pane fade pt-3" id="profile-rol-permisos">
+                <h5 class="card-title" align="center">Rol y permisos dentro del sistema</h5>
 
+                <form class="row g-3" autocomplete="off">
+
+                  <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Aviso importante!</h4>
+                    <ul style="text-align: justify;">
+                      <li>Al seccionar un Rol se habilitaran por defecto los permisos correspondientes recomendados por el sistema.</li>
+                      <li>Para denegar el acceso a un módulo en general, es suficiente con desactivar el switch del nombre del módulo.</li>
+                      <li>Para denegar algún permiso sobre un módulo específico es suficiente con desactivar el switch del permiso que se quiere omitir para el perfil a generar.</li>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
+                  <div class="col-md-12 col-lg-12">
+                    <label for="rolEmpleado" class="form-label">Rol <b style="color: brown;">*</b>:</label>
+                    <select name="rolEmpleado" id="rolEmpleado" class="form-control">
+                      <option style="display: none; visibility: hidden;">Seleccione un rol</option>
+                      <option *ngFor="let opcionPoblacion of this.poblaciones"></option>
+                    </select>
+                  </div>
+
+                  <hr>
+
+                  <section class="row" *ngFor="let permisos of this.objetoPermisos">
+                    <div class="col" *ngFor="let permiso of permisos.permisosRol" style="margin-bottom: 10px;">
+                      <div class="form-check form-switch" style="margin-top: 5px;">
+                        <input class="form-check-input" type="checkbox" id="modulo-{{permiso.modulo}}" [checked]="permiso.status" (change)="actualizoPadre($event)">
+                        <label class="form-check-label" for="modulo-{{permiso.modulo}}"><b>{{permiso.nombreModulo}}</b></label>
+                  
+                        <div class="form-check form-switch" *ngFor="let hijos of permiso.permisosModulo">
+                          <input class="form-check-input permiso-{{permiso.modulo}}" type="checkbox" id="permiso-{{permiso.modulo}}-{{hijos.permiso}}" [checked]="hijos.status" [disabled]="hijos.disabled" (change)="actualizoHijo($event)">
+                          <label class="form-check-label" for="permiso-{{permiso.modulo}}-{{hijos.permiso}}">{{hijos.nombre}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                </form>
 
               </div>
 
               <div class="tab-pane fade pt-3 profile-edit" id="profile-credenciales">
-                <!-- Change Password Form -->
-                <form>
+                
+                <h5 class="card-title" align="center">Credenciales de ingreso</h5>
+                
+                <form class="row g-3" autocomplete="off">
 
-                  <div class="row mb-3">
-                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control" id="currentPassword">
-                    </div>
+                  <div class="col-md-12">
+                    <label for="correoEmpleado" class="form-label">Correo <b style="color: brown;">*</b>:</label>
+                    <input formControlName="correoEmpleado" type="email" class="form-control" id="correoEmpleado" placeholder="Correo electrónico">
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="newpassword" type="password" class="form-control" id="newPassword">
-                    </div>
+                  <div class="col-md-6">
+                    <label for="passwordEmpleado" class="form-label">Contraseña <b style="color: brown;">*</b>:</label>
+                    <input formControlName="passwordEmpleado" type="password" class="form-control" id="passwordEmpleado" placeholder="Contraseña" value="emenetSistemas2021">
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                    </div>
+                  <div class="col-md-6">
+                    <label for="valPasswordMaterno" class="form-label">Confirmar contraseña <b style="color: brown;">*</b>:</label>
+                    <input formControlName="valPasswordMaterno" type="password" class="form-control" id="valPasswordMaterno" placeholder="Confirmar contraseña" value="emenetSistemas2021">
                   </div>
 
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Change Password</button>
+                  <div class="col-md-12 alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 30px;">
+                    <i class="bi bi-warning-circle me-1"></i>Por defecto al crear un usuario nuevo esta precargada la contraseña <b>"emenetSistemas2021"</b>, la cual se recomienda cambiar por el usuario para evitar vulnerabilidades en GALA.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                </form><!-- End Change Password Form -->
+
+                  <input type="button" class="btn btn-primary" (click)="funcionPrueba()" value="Crear nuevo usuario">
+                </form>
 
               </div>
 
