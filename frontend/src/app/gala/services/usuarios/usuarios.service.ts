@@ -16,4 +16,8 @@ export class UsuariosService {
   public obtenerInformacion(token : any) : Observable<any> {
     return this.http.post<any>(this.urlHost+'/usuarios/obtenerInformacion',{token});
   }
+
+  public crearNuevoUsuario( datosNuevoUsuario : any) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/crearUsuarioNuevo', datosNuevoUsuario);
+  }
 }

@@ -3,6 +3,8 @@
 namespace App\Services\Gala;
 
 use App\Repositories\Gala\UsuarioRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class UsuarioService
@@ -21,5 +23,18 @@ class UsuarioService
 
     public function obtenerInformacion( $token ){
         return $this->usuarioRepository->obtenerInformacionPorToken( $token['token'] );
+    }
+
+    public function crearUsuarioNuevo( $datosUsuario ){
+        $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosUsuario['token'] );
+        Log::alert($sesion[0]->PkTblUsuario);
+        DB::beginTransaction();
+            $pkEmpleado = $this->usuarioRepository->crearEmpleadoNuevo( $datosUsuario['informacionPersonal'], $sesion[0]->PkTblUsuario );
+            $this->usuarioRepository->crearUsuarioNuevo( $datosUsuario['credenciales'], $pkEmpleado );
+            $this->usuarioRepository->crearDireccionEmpleado( $datosUsuario['direccion'], $pkEmpleado );
+        DB::commit();
+        return [];
+
+        //return $this->usuarioRepository->crearUsuarioNuevo( $datosUsuario );
     }
 }

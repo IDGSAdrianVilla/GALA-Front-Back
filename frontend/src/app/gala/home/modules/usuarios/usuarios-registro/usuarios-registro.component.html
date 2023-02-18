@@ -41,7 +41,7 @@
                 <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
 
                 <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro">
-                  <div class="col-md-12">
+                  <div class="col-md-6">
                     <label for="nombreEmpleado" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
                     <input formControlName="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)">
                   </div>
@@ -52,11 +52,16 @@
                   </div>
 
                   <div class="col-md-6">
-                    <label for="apellidoMaterno" class="form-label">Apellido Materno:</label>
-                    <input formControlName="apellidoMaterno" type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno">
+                    <label for="apellidoMaternoEmpleado" class="form-label">Apellido Materno:</label>
+                    <input formControlName="apellidoMaternoEmpleado" type="text" class="form-control" id="apellidoMaternoEmpleado" placeholder="Apellido Materno">
                   </div>
 
-                  <div class="col-md-5">
+                  <div class="col-md-6">
+                    <label for="telefonoEmpleado" class="form-label">Teléfono <b style="color: brown;">*</b>":</label>
+                    <input formControlName="telefonoEmpleado" type="text" class="form-control" id="telefonoEmpleado" placeholder="Teléfono">
+                  </div>
+
+                  <div class="col-md-6">
                     <label for="sexoEmpleado" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
                     <section style="text-align: center;">
                       <input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoM" value="M" checked>
@@ -66,14 +71,14 @@
                     </section>
                   </div>
 
-                  <div class="col-md-7">
+                  <div class="col-md-6">
                     <label for="fechaNacimientoEmpleado" class="form-label">Fecha de Nacimiento <b style="color: brown;">*</b>:</label>
                     <input formControlName="fechaNacimientoEmpleado" type="date" class="form-control" id="fechaNacimientoEmpleado">
                   </div>
 
                   <div class="col-12">
-                    <label for="observaciones" class="form-label">Observaciones:</label>
-                    <textarea formControlName="observaciones" class="form-control" id="observaciones" style="height: 100px" placeholder="Observaciones"></textarea>
+                    <label for="observacionesEmpleado" class="form-label">Observaciones:</label>
+                    <textarea formControlName="observacionesEmpleado" class="form-control" id="observacionesEmpleado" style="height: 100px" placeholder="Observaciones"></textarea>
                   </div>
                 </form>
 
@@ -161,7 +166,7 @@
                 
                 <h5 class="card-title" align="center">Credenciales de ingreso</h5>
                 
-                <form class="row g-3" autocomplete="off">
+                <form class="row g-3" autocomplete="off" [formGroup]="formCredencialesRegistro">
 
                   <div class="col-md-12">
                     <label for="correoEmpleado" class="form-label">Correo <b style="color: brown;">*</b>:</label>
@@ -170,20 +175,19 @@
 
                   <div class="col-md-6">
                     <label for="passwordEmpleado" class="form-label">Contraseña <b style="color: brown;">*</b>:</label>
-                    <input formControlName="passwordEmpleado" type="password" class="form-control" id="passwordEmpleado" placeholder="Contraseña" value="emenetSistemas2021">
+                    <input formControlName="passwordEmpleado" type="password" class="form-control" id="passwordEmpleado" placeholder="Contraseña">
                   </div>
 
                   <div class="col-md-6">
                     <label for="valPasswordMaterno" class="form-label">Confirmar contraseña <b style="color: brown;">*</b>:</label>
-                    <input formControlName="valPasswordMaterno" type="password" class="form-control" id="valPasswordMaterno" placeholder="Confirmar contraseña" value="emenetSistemas2021">
+                    <input formControlName="valPasswordMaterno" type="password" class="form-control" id="valPasswordMaterno" placeholder="Confirmar contraseña">
                   </div>
 
                   <div class="col-md-12 alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 30px;">
                     <i class="bi bi-warning-circle me-1"></i>Por defecto al crear un usuario nuevo esta precargada la contraseña <b>"emenetSistemas2021"</b>, la cual se recomienda cambiar por el usuario para evitar vulnerabilidades en GALA.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-
-                  <input type="button" class="btn btn-primary" (click)="funcionPrueba()" value="Crear nuevo usuario">
+                  <input type="button" class="btn btn-primary" (click)="crearNuevoUusario()" value="Crear nuevo usuario">
                 </form>
 
               </div>

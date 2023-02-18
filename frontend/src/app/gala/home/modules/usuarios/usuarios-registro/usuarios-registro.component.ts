@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuariosService } from 'src/app/gala/services/usuarios/usuarios.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 
@@ -12,6 +13,7 @@ export class UsuariosRegistroComponent implements OnInit {
 
   public formInformacionRegistro! : FormGroup;
   public formDireccionRegistro! : FormGroup;
+  public formCredencialesRegistro! : FormGroup;
   public poblaciones : any = [];
   public objetoPermisos : any = [
     {
@@ -191,7 +193,8 @@ export class UsuariosRegistroComponent implements OnInit {
   constructor(
     private fb : FormBuilder,
     private mensajes : MensajesService,
-    private catalogosService : CatalogosService
+    private catalogosService : CatalogosService,
+    private usuariosService : UsuariosService
   ){
 
   }
@@ -200,6 +203,7 @@ export class UsuariosRegistroComponent implements OnInit {
     this.mensajes.mensajeEsperar();
     this.crearFormInformacionRegistro();
     this.crearFormDireccionRegistro();
+    this.crearFormCredenciales();
     this.obtenerPoblaciones();
   }
 
@@ -207,20 +211,30 @@ export class UsuariosRegistroComponent implements OnInit {
     this.formInformacionRegistro = this.fb.group({
       nombreEmpleado : ['',[Validators.required]],
       apellidoPaternoEmpleado : ['',[Validators.required]],
-      apellidoMaterno : ['',[]],
+      apellidoMaternoEmpleado : ['',[]],
       sexoEmpleado : ['',[Validators.required]],
+      telefonoEmpleado : ['',[Validators.required]],
       fechaNacimientoEmpleado : ['',[Validators.required]],
-      observaciones : ['',[]]
+      observacionesEmpleado : ['',[]]
     });
   }
-
   
   crearFormDireccionRegistro() : void {
     this.formDireccionRegistro = this.fb.group({
       poblacionEmpleado : ['',[Validators.required]],
       coordenadasEmpleado : ['',[Validators.required]],
-      calleEmpleado : ['',[Validators.required]]
+      calleEmpleado : ['',[Validators.required]],
+      referenciasDomicilioEmpleado : ['',[Validators.required]],
+      caracteristicasDomicilioEmpleado : ['',[Validators.required]]
     })
+  }
+
+  crearFormCredenciales() : void {
+    this.formCredencialesRegistro = this.fb.group({
+      correoEmpleado : ['',[Validators.required]],
+      passwordEmpleado : ['emenetSistemas2021',[Validators.required]],
+      valPasswordMaterno : ['emenetSistemas2021',[Validators.required]]
+    });
   }
   
   obtenerPoblaciones() : void {
@@ -230,7 +244,7 @@ export class UsuariosRegistroComponent implements OnInit {
         this.mensajes.cerrarMensajes();
       },
       error => {
-        this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error');
+        this.mensajes.mensajeGenerico('error', 'error');
       }
     );
   }
@@ -280,11 +294,43 @@ export class UsuariosRegistroComponent implements OnInit {
     }
   }
 
-  funcionPrueba() : void {
-    this.mensajes.mensajeEsperar();
-    if(this.formDireccionRegistro.invalid){
-      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta. \n Los campos requeridos están marcados con un *', 'info');
+  crearNuevoUusario() : void {
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos','question','Crear Nuevo Usuario').then(
+      confirm =>{
+        if(confirm.isConfirmed){
+          let datosNuevoUsuario = {
+            'informacionPersonal' : this.formInformacionRegistro.value,
+            'direccion' : this.formDireccionRegistro.value,
+            'credenciales' : this.formCredencialesRegistro.value,
+            'token' : localStorage.getItem('token')
+          };
+
+          this.usuariosService.crearNuevoUsuario(datosNuevoUsuario).subscribe(
+            respuesta =>{
+              this.mensajes.mensajeGenerico('Se guardó con éxito la información','success');
+            },
+
+            error =>{
+              this.mensajes.mensajeGenerico('error','error');
+            }
+          );
+        }
+      }
+    );
+
+    /*if(this.formInformacionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
     }
+
+    if(this.formDireccionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formCredencialesRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de las Credenciales.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }*/
   }
 }

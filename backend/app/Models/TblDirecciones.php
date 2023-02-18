@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TblDirecciones extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkTblDireccion';
     protected $table = 'tbldirecciones';
     protected $fillable = 

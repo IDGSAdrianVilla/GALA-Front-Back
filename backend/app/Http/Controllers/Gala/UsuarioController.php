@@ -32,4 +32,19 @@ class UsuarioController extends Controller
             );
         }
     }
+
+    public function crearUsuarioNuevo( Request $request ){
+        try{
+            return $this->usuarioService->crearUsuarioNuevo($request->all());
+        } catch(\Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }
