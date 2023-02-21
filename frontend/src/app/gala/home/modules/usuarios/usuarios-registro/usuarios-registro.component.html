@@ -22,7 +22,7 @@
               </li>
 
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-direccion">Dirección</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-direccion">Dirección Personal</button>
               </li>
 
               <li class="nav-item">
@@ -40,31 +40,31 @@
 
                 <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
 
-                <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro">
+                <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
                   <div class="col-md-6">
                     <label for="nombreEmpleado" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
-                    <input formControlName="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)">
+                    <input formControlName="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
                     <label for="apellidoPaternoEmpleado" class="form-label">Apellido Paterno <b style="color: brown;">*</b>:</label>
-                    <input formControlName="apellidoPaternoEmpleado" type="text" class="form-control" id="apellidoPaternoEmpleado" placeholder="Apellido Paterno">
+                    <input formControlName="apellidoPaternoEmpleado" type="text" class="form-control" id="apellidoPaternoEmpleado" placeholder="Apellido Paterno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
                     <label for="apellidoMaternoEmpleado" class="form-label">Apellido Materno:</label>
-                    <input formControlName="apellidoMaternoEmpleado" type="text" class="form-control" id="apellidoMaternoEmpleado" placeholder="Apellido Materno">
+                    <input formControlName="apellidoMaternoEmpleado" type="text" class="form-control" id="apellidoMaternoEmpleado" placeholder="Apellido Materno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
                     <label for="telefonoEmpleado" class="form-label">Teléfono <b style="color: brown;">*</b>":</label>
-                    <input formControlName="telefonoEmpleado" type="text" class="form-control" id="telefonoEmpleado" placeholder="Teléfono">
+                    <input formControlName="telefonoEmpleado" type="text" class="form-control" id="telefonoEmpleado" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
                   </div>
 
                   <div class="col-md-6">
                     <label for="sexoEmpleado" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
                     <section style="text-align: center;">
-                      <input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoM" value="M" checked>
+                      <input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoM" value="M">
                       <label class="form-check-label" for="sexoEmpleadoM">&nbsp;Masculino</label>
                       &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoF" value="F">
                       <label class="form-check-label" for="sexoEmpleadoF">&nbsp;Femenino</label>
@@ -78,7 +78,7 @@
 
                   <div class="col-12">
                     <label for="observacionesEmpleado" class="form-label">Observaciones:</label>
-                    <textarea formControlName="observacionesEmpleado" class="form-control" id="observacionesEmpleado" style="height: 100px" placeholder="Observaciones"></textarea>
+                    <textarea formControlName="observacionesEmpleado" class="form-control" id="observacionesEmpleado" style="height: 100px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
                 </form>
 
@@ -88,33 +88,33 @@
 
                 <h5 class="card-title" align="center">Dirección personal</h5>
 
-                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro">
+                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
                   <div class="col-md-6">
                     <label for="poblacionEmpleado" class="form-label">Población <b style="color: brown;">*</b>:</label>
-                    <select name="poblacionEmpleado" id="poblacionEmpleado" class="form-control">
-                      <option style="display: none; visibility: hidden;">Seleccione una poblacion</option>
-                      <option *ngFor="let opcionPoblacion of this.poblaciones"></option>
+                    <select formControlName="poblacionEmpleado" id="poblacionEmpleado" class="form-control">
+                      <option value="" style="display: none; visibility: hidden;">Seleccione una población</option>
+                      <option *ngFor="let opcionPoblacion of this.poblaciones" value="{{opcionPoblacion.PkCatPoblacion}}">{{opcionPoblacion.NombrePoblacion}}</option>
                     </select>
                   </div>
 
                   <div class="col-md-6">
                     <label for="coordenadasEmpleado" class="form-label">Coordenadas <b style="color: brown;">*</b>:</label>
-                    <input name="coordenadasEmpleado" type="text" class="form-control" id="coordenadasEmpleado" placeholder="Coordenadas">
+                    <input formControlName="coordenadasEmpleado" type="text" class="form-control" id="coordenadasEmpleado" placeholder="Coordenadas" (keypress)="this.funcionGenerica.soloTexto($event)">
                   </div>
 
                   <div class="col-md-12">
                     <label for="calleEmpleado" class="form-label">Calle <b style="color: brown;">*</b>:</label>
-                    <input name="calleEmpleado" type="text" class="form-control" id="calleEmpleado" placeholder="Calle">
+                    <input formControlName="calleEmpleado" type="text" class="form-control" id="calleEmpleado" placeholder="Calle" (keypress)="this.funcionGenerica.soloTexto($event)">
                   </div>
 
                   <div class="col-6">
                     <label for="referenciasDomicilioEmpleado" class="form-label">Referencias:</label>
-                    <textarea name="referenciasDomicilioEmpleado" class="form-control" id="referenciasDomicilioEmpleado" style="height: 65px" placeholder="Referencias del Domicilio"></textarea>
+                    <textarea formControlName="referenciasDomicilioEmpleado" class="form-control" id="referenciasDomicilioEmpleado" style="height: 65px" placeholder="Referencias del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
 
                   <div class="col-6">
                     <label for="caracteristicasDomicilioEmpleado" class="form-label">Características:</label>
-                    <textarea name="caracteristicasDomicilioEmpleado" class="form-control" id="caracteristicasDomicilioEmpleado" style="height: 65px" placeholder="Características del Domicilio"></textarea>
+                    <textarea formControlName="caracteristicasDomicilioEmpleado" class="form-control" id="caracteristicasDomicilioEmpleado" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
                 </form>
               </div>
@@ -138,7 +138,6 @@
                     <label for="rolEmpleado" class="form-label">Rol <b style="color: brown;">*</b>:</label>
                     <select name="rolEmpleado" id="rolEmpleado" class="form-control">
                       <option style="display: none; visibility: hidden;">Seleccione un rol</option>
-                      <option *ngFor="let opcionPoblacion of this.poblaciones"></option>
                     </select>
                   </div>
 
@@ -176,17 +175,17 @@
 
                   <div class="col-md-12">
                     <label for="correoEmpleado" class="form-label">Correo <b style="color: brown;">*</b>:</label>
-                    <input formControlName="correoEmpleado" type="email" class="form-control" id="correoEmpleado" placeholder="ejemplo@gmail.com">
+                    <input formControlName="correoEmpleado" type="email" class="form-control" id="correoEmpleado" placeholder="ejemplo@gmail.com" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
                     <label for="passwordEmpleado" class="form-label">Contraseña <b style="color: brown;">*</b>:</label>
-                    <input formControlName="passwordEmpleado" type="password" class="form-control" id="passwordEmpleado" placeholder="Contraseña">
+                    <input formControlName="passwordEmpleado" type="password" class="form-control" id="passwordEmpleado" placeholder="Contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
                     <label for="valPasswordMaterno" class="form-label">Confirmar contraseña <b style="color: brown;">*</b>:</label>
-                    <input formControlName="valPasswordMaterno" type="password" class="form-control" id="valPasswordMaterno" placeholder="Confirmar contraseña">
+                    <input formControlName="valPasswordMaterno" type="password" class="form-control" id="valPasswordMaterno" placeholder="Confirmar contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
                   <input type="button" class="btn btn-primary" (click)="crearNuevoUusario()" value="Crear nuevo usuario">
@@ -206,9 +205,15 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <h2>Kevin Anderson</h2>
-            <h3>Web Designer</h3>
+            <img src="assets/img/{{this.prevUsuarioNuevo.sexoEmpleado != undefined && this.prevUsuarioNuevo.sexoEmpleado != '' ? this.prevUsuarioNuevo.sexoEmpleado : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+            <hr>
+            <h2 *ngIf="this.prevUsuarioNuevo.nombreEmpleado != undefined || this.prevUsuarioNuevo.apellidoPaternoEmpleado != undefined">
+              {{ this.prevUsuarioNuevo.nombreEmpleado+ ' ' +this.prevUsuarioNuevo.apellidoPaternoEmpleado }}
+            </h2>
+            <h3 *ngIf="this.prevUsuarioNuevo.poblacionEmpleado != ''">{{this.prevUsuarioNuevo.poblacionEmpleado}}</h3>
+            <h3 *ngIf="this.prevUsuarioNuevo.telefonoEmpleado != ''">{{this.prevUsuarioNuevo.telefonoEmpleado}}</h3>
+            <!--h3>Web Designer</!--h3-->
+            <hr>
             <div class="social-links mt-2">
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuariosService } from 'src/app/gala/services/usuarios/usuarios.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
+import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
 
 @Component({
   selector: 'app-usuarios-registro',
@@ -189,12 +190,14 @@ export class UsuariosRegistroComponent implements OnInit {
       ]
     }
   ];
+  public prevUsuarioNuevo : any = {};
 
   constructor(
     private fb : FormBuilder,
     private mensajes : MensajesService,
     private catalogosService : CatalogosService,
-    private usuariosService : UsuariosService
+    private usuariosService : UsuariosService,
+    public funcionGenerica : FuncionesGenericasService
   ){
 
   }
@@ -226,7 +229,7 @@ export class UsuariosRegistroComponent implements OnInit {
       calleEmpleado : ['',[Validators.required]],
       referenciasDomicilioEmpleado : ['',[Validators.required]],
       caracteristicasDomicilioEmpleado : ['',[Validators.required]]
-    })
+    });
   }
 
   crearFormCredenciales() : void {
@@ -294,31 +297,20 @@ export class UsuariosRegistroComponent implements OnInit {
     }
   }
 
+  prevNuevoUsuario () {
+    this.prevUsuarioNuevo.nombreEmpleado          = this.formInformacionRegistro.get('nombreEmpleado')?.value;
+    this.prevUsuarioNuevo.apellidoPaternoEmpleado = this.formInformacionRegistro.get('apellidoPaternoEmpleado')?.value;
+    this.prevUsuarioNuevo.apellidoMaternoEmpleado = this.formInformacionRegistro.get('apellidoMaternoEmpleado')?.value;
+    this.prevUsuarioNuevo.sexoEmpleado            = this.formInformacionRegistro.get('sexoEmpleado')?.value;
+    this.prevUsuarioNuevo.telefonoEmpleado        = this.formInformacionRegistro.get('telefonoEmpleado')?.value;
+    const poblacionSelect                         = document.getElementById('poblacionEmpleado') as HTMLSelectElement;
+    const poblacionSelectedOption                 = poblacionSelect.selectedOptions[0];
+    const poblacionSelectedText                   = poblacionSelectedOption.text;
+    this.prevUsuarioNuevo.poblacionEmpleado       = poblacionSelectedText != 'Seleccione una población' ? poblacionSelectedText : '';
+  }
+
   crearNuevoUusario() : void {
-    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos','question','Crear Nuevo Usuario').then(
-      confirm =>{
-        if(confirm.isConfirmed){
-          let datosNuevoUsuario = {
-            'informacionPersonal' : this.formInformacionRegistro.value,
-            'direccion' : this.formDireccionRegistro.value,
-            'credenciales' : this.formCredencialesRegistro.value,
-            'token' : localStorage.getItem('token')
-          };
-
-          this.usuariosService.crearNuevoUsuario(datosNuevoUsuario).subscribe(
-            respuesta =>{
-              this.mensajes.mensajeGenerico('Se guardó con éxito la información','success');
-            },
-
-            error =>{
-              this.mensajes.mensajeGenerico('error','error');
-            }
-          );
-        }
-      }
-    );
-
-    /*if(this.formInformacionRegistro.invalid){
+    if(this.formInformacionRegistro.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
     }
@@ -331,6 +323,31 @@ export class UsuariosRegistroComponent implements OnInit {
     if(this.formCredencialesRegistro.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de las Credenciales.', 'info', 'Los campos requeridos están marcados con un *');
       return;
-    }*/
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos','question','Crear Nuevo Usuario').then(
+      confirm =>{
+        if(confirm.isConfirmed){
+          this.mensajes.mensajeEsperar();
+
+          let datosNuevoUsuario = {
+            'informacionPersonal' : this.formInformacionRegistro.value,
+            'direccion' : this.formDireccionRegistro.value,
+            'credenciales' : this.formCredencialesRegistro.value,
+            'token' : localStorage.getItem('token')
+          };
+
+          this.usuariosService.crearNuevoUsuario(datosNuevoUsuario).subscribe(
+            respuesta =>{
+              this.mensajes.mensajeGenerico(respuesta.message, 'success');
+            },
+
+            error =>{
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+        }
+      }
+    );
   }
 }
