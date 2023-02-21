@@ -122,7 +122,7 @@
               <div class="tab-pane fade pt-3" id="profile-rol-permisos">
                 <h5 class="card-title" align="center">Rol y permisos dentro del sistema</h5>
 
-                <form class="row g-3" autocomplete="off">
+                <form class="row g-3" autocomplete="off" [formGroup]="formPermisosRegistro">
 
                   <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 30px;">
                     <h4 class="alert-heading">Aviso importante!</h4>
@@ -136,8 +136,9 @@
 
                   <div class="col-md-12 col-lg-12">
                     <label for="rolEmpleado" class="form-label">Rol <b style="color: brown;">*</b>:</label>
-                    <select name="rolEmpleado" id="rolEmpleado" class="form-control">
-                      <option style="display: none; visibility: hidden;">Seleccione un rol</option>
+                    <select formControlName="rolEmpleado" id="rolEmpleado" class="form-control">
+                      <option style="display: none; visibility: hidden;" value="">Seleccione un Rol</option>
+                      <option *ngFor="let rol of this.roles" value="{{rol.PkCatRol}}">{{rol.NombreRol}}</option>
                     </select>
                   </div>
 

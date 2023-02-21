@@ -16,4 +16,8 @@ export class CatalogosService {
   public obtenerPoblaciones() : Observable<any> {
     return this.http.get<any>(this.urlHost+'/catalogos/obtenerPoblaciones');
   }
+
+  public obtenerRoles() : Observable<any>{
+    return this.http.get<any>(this.urlHost+'/catalogos/obtenerRoles');
+  }
 }

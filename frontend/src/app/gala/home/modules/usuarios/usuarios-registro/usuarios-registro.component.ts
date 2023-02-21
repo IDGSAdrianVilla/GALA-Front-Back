@@ -15,7 +15,9 @@ export class UsuariosRegistroComponent implements OnInit {
   public formInformacionRegistro! : FormGroup;
   public formDireccionRegistro! : FormGroup;
   public formCredencialesRegistro! : FormGroup;
+  public formPermisosRegistro! : FormGroup;
   public poblaciones : any = [];
+  public roles : any = [];
   public objetoPermisos : any = [
     {
       'tituloRol' : 'Super Administrador',
@@ -204,10 +206,14 @@ export class UsuariosRegistroComponent implements OnInit {
 
   ngOnInit(): void {
     this.mensajes.mensajeEsperar();
+
     this.crearFormInformacionRegistro();
     this.crearFormDireccionRegistro();
-    this.crearFormCredenciales();
+    this.crearFormRolesRegistro();
+    this.crearFormCredencialesRegistro();
+
     this.obtenerPoblaciones();
+    this.obtenerRoles();
   }
 
   crearFormInformacionRegistro() : void {
@@ -232,7 +238,13 @@ export class UsuariosRegistroComponent implements OnInit {
     });
   }
 
-  crearFormCredenciales() : void {
+  crearFormRolesRegistro() : void {
+    this.formPermisosRegistro = this.fb.group({
+      rolEmpleado : ['',[Validators.required]]
+    });
+  }
+
+  crearFormCredencialesRegistro() : void {
     this.formCredencialesRegistro = this.fb.group({
       correoEmpleado : ['',[Validators.required]],
       passwordEmpleado : ['emenetSistemas2021',[Validators.required]],
@@ -252,6 +264,18 @@ export class UsuariosRegistroComponent implements OnInit {
     );
   }
   
+  obtenerRoles() : void {
+    this.catalogosService.obtenerRoles().subscribe(
+      roles => {
+        this.roles = roles.data;
+        this.mensajes.cerrarMensajes();
+      },
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   actualizoPadre (event: Event) {
     const id = (event?.target as HTMLInputElement)?.id;
     const checked = (event?.target as HTMLInputElement)?.checked;
@@ -317,6 +341,11 @@ export class UsuariosRegistroComponent implements OnInit {
 
     if(this.formDireccionRegistro.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formPermisosRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de los Permisos.', 'info', 'Los campos requeridos están marcados con un *');
       return;
     }
 
