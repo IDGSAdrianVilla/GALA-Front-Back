@@ -26,4 +26,14 @@ class CatalogoService
             200
         );
     }
+
+    public function obtenerRoles(){
+        $roles = $this->catalogoRepository->obtenerRoles();
+        return response()->json(
+            [
+                'data' => $roles
+            ],
+            200
+        );
+    }
 }

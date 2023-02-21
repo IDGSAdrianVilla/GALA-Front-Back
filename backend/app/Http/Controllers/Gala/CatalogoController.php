@@ -21,13 +21,28 @@ class CatalogoController extends Controller
     public function obtenerPoblaciones(){
         try{
             return $this->catalogoService->obtenerPoblaciones();
-        } catch( \Exception $error) {
+        } catch( \Exception $error ) {
             Log::alert($error);
             return response()->json(
                 [
                     'error' => $error,
                     'mensaje' => 'Ocurrió un error al consultar'
                 ], 
+                500
+            );
+        }
+    }
+
+    public function obtenerRoles(){
+        try{
+            return $this->catalogoService->obtenerRoles();
+        } catch( \Exception $error ){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
                 500
             );
         }
