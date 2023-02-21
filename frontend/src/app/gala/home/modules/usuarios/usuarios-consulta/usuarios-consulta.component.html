@@ -6,14 +6,15 @@
         </ol>
     </nav>
 </div>
-<section class="section">
+
+<section class="section dashboard">
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Filtros de Consulta</h5>
                     <div class="d-flex align-items-center">
-                        <form autocomplete="off" class="col-xl-12">
+                        <form autocomplete="off" class="col-12">
                             <div class="col-md-4">
                                 <label for="filtroRol" class="form-label">Rol(es):</label>
                                 <select name="filtroRol" id="filtroRol" class="form-control">
@@ -22,17 +23,17 @@
                             </div>
 
                             <section class="row">
-                                <div class="col-md-2">
+                                <div class="col-xl-2 col-md-6">
                                     <label class="form-label">&nbsp;</label>
                                     <button class="btn btn-primary form-control"><b>Consultar</b></button>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-xl-2 col-md-6">
                                     <label class="form-label">&nbsp;</label>
                                     <button class="btn btn-primary form-control" disabled="true"><b>Exportar excel</b></button>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-xl-2 col-md-6">
                                     <label class="form-label">&nbsp;</label>
                                     <button class="btn btn-danger form-control" disabled="true"><b>Limpiar</b></button>
                                 </div>
@@ -42,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card recent-sales overflow-auto">
                 <div class="card-body">
                     <h5 class="card-title">Usuarios</h5>
                     <table class="table table-borderless datatable">
