@@ -15,25 +15,34 @@
                     <h5 class="card-title">Filtros de Consulta</h5>
                     <div class="d-flex align-items-center">
                         <form autocomplete="off" class="col-12">
-                            <div class="col-md-4">
+                            <div class="col-xl-4 col-md-12" *ngIf="opcionesMultiselect.length > 0">
                                 <label for="filtroRol" class="form-label">Rol(es):</label>
-                                <select name="filtroRol" id="filtroRol" class="form-control">
-                                    <option value="all">Todos</option>
-                                </select>
+                                <div class="selectpicker">
+                                    <div class="selectpicker-header" (click)="activaLista()">
+                                        <div>{{opcionesSeleccionadas.length > 0 ? tituloSelect : 'Selecciona una opción'}}</div>
+                                        <div class="selectpicker-caret"></div>
+                                    </div>
+                                    <div class="selectpicker-options" [hidden]="!mostrarOpciones">
+                                        <div class="selectpicker-option" *ngFor="let option of opcionesMultiselect" (click)="seleccionarOpcion(option.pk)">
+                                            <span>{{option.nombrePob}}</span>
+                                            <div class="selectpicker-check" *ngIf="opcionesSeleccionadas.includes(option.pk)">&#10003;</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <section class="row">
-                                <div class="col-xl-2 col-md-6">
+                                <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control"><b>Consultar</b></button>
+                                    <button class="btn btn-primary form-control" (click)="consultarPorRoles()"><b>Consultar</b></button>
                                 </div>
 
-                                <div class="col-xl-2 col-md-6">
+                                <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
                                     <button class="btn btn-primary form-control" disabled="true"><b>Exportar excel</b></button>
                                 </div>
 
-                                <div class="col-xl-2 col-md-6">
+                                <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
                                     <button class="btn btn-danger form-control" disabled="true"><b>Limpiar</b></button>
                                 </div>
