@@ -1,22 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UsuariosService } from 'src/app/gala/services/usuarios/usuarios.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
+import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 
 @Component({
   selector: 'app-usuarios-consulta',
   templateUrl: './usuarios-consulta.component.html',
   styleUrls: ['./usuarios-consulta.component.css']
 })
-export class UsuariosConsultaComponent {
+export class UsuariosConsultaComponent implements OnInit{
   opcionesMultiselect : any = [];
-  
-  opcionesSeleccionadas: string[] = [];
+  usuariosPorRoles : any = [];
+  rolesSeleccionados: string[] = [];
   tituloSelect = '';
   mostrarOpciones = false;
 
   constructor (
-    private mensajes : MensajesService
+    private mensajes : MensajesService,
+    private catalogosService : CatalogosService,
+    private usuariosService : UsuariosService
   ) {
 
+  }
+
+  ngOnInit(): void {
+    this.mensajes.mensajeEsperar();
+    this.obternerRoles();
   }
 
   activaLista() {
@@ -24,21 +33,45 @@ export class UsuariosConsultaComponent {
   }
 
   seleccionarOpcion(option: string) {
-    const index = this.opcionesSeleccionadas.indexOf(option);
+    const index = this.rolesSeleccionados.indexOf(option);
     if (index === -1) {
-      this.opcionesSeleccionadas.push(option);
+      this.rolesSeleccionados.push(option);
     } else {
-      this.opcionesSeleccionadas.splice(index, 1);
+      this.rolesSeleccionados.splice(index, 1);
     }
 
-    this.tituloSelect = this.opcionesMultiselect.filter((opcion : any) => this.opcionesSeleccionadas.includes(opcion.pk)).map((opcion : any) => opcion.nombrePob).join(', ');
+    this.tituloSelect = this.opcionesMultiselect.filter((opcion : any) => this.rolesSeleccionados.includes(opcion.PkCatRol)).map((opcion : any) => opcion.NombreRol).join(', ');
   }
 
-  consultarPorRoles() : void {
-    if ( this.opcionesSeleccionadas.length > 0 ) {
-      // codigo de consulta back-end
-    } else {
+  consultaUsuariosPorRoles() : void {
+    this.mensajes.mensajeEsperar();
+    if(this.rolesSeleccionados.length == 0){
       this.mensajes.mensajeGenerico('Para consultar antes debes seleccionar algún Rol', 'info');
+      return;
     }
+    
+    this.usuariosService.consultaUsuariosPorRoles(this.rolesSeleccionados).subscribe(
+      usuariosPorRoles =>{
+        this.usuariosPorRoles = usuariosPorRoles.data;
+        this.mensajes.mensajeGenerico(usuariosPorRoles.message, usuariosPorRoles.status == 200 ? 'success' : 'info');
+      },
+
+      error =>{
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  obternerRoles() : void {
+    this.catalogosService.obtenerRoles().subscribe(
+      roles =>{
+        this.opcionesMultiselect = roles.data;
+        this.mensajes.cerrarMensajes();
+      },
+
+      error =>{
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
   }
 }

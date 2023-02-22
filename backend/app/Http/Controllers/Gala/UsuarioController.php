@@ -36,7 +36,22 @@ class UsuarioController extends Controller
     public function crearUsuarioNuevo( Request $request ){
         try{
             return $this->usuarioService->crearUsuarioNuevo($request->all());
-        } catch(\Exception $error ) {
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function consultaUsuariosPorRoles( Request $request){
+        try{
+            return $this->usuarioService->consultaUsuariosPorRoles($request->all());
+        } catch( \Exception $error) {
             Log::alert($error);
             return response()->json(
                 [

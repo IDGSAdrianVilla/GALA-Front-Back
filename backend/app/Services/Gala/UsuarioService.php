@@ -29,8 +29,8 @@ class UsuarioService
         $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosUsuario['token'] );
         
         DB::beginTransaction();
-            $pkEmpleado = $this->usuarioRepository->crearEmpleadoNuevo( $datosUsuario['informacionPersonal'], $sesion[0]->PkTblUsuario );
-            $this->usuarioRepository->crearUsuarioNuevo( $datosUsuario['credenciales'], $pkEmpleado );
+            $pkEmpleado = $this->usuarioRepository->crearEmpleadoNuevo( $datosUsuario['informacionPersonal'] );
+            $this->usuarioRepository->crearUsuarioNuevo( $datosUsuario['credenciales'], $pkEmpleado, $sesion[0]->PkTblUsuario );
             $this->usuarioRepository->crearDireccionEmpleado( $datosUsuario['direccion'], $pkEmpleado );
         DB::commit();
 
@@ -38,6 +38,19 @@ class UsuarioService
             [
                 'message' => 'Se creó con éxito el nuevo usuario'
             ],
+            200
+        );
+    }
+
+    public function consultaUsuariosPorRoles( $roles ){
+        $usuariosPorRoles = $this->usuarioRepository->consultaUsuariosPorRoles( $roles );
+
+        return response()->json(
+            [
+                'message' => count($usuariosPorRoles) > 0 ? 'Se consultaron con éxito los datos' : 'No se encontraron Usuarios con los filtros Seleccionados',
+                'data' => $usuariosPorRoles,
+                'status' => count($usuariosPorRoles) > 0 ? 200 : 204
+            ], 
             200
         );
     }

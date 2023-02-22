@@ -13,11 +13,15 @@ export class UsuariosService {
     private http : HttpClient
   ) { }
 
-  public obtenerInformacion(token : any) : Observable<any> {
+  public obtenerInformacion( token : any ) : Observable<any> {
     return this.http.post<any>(this.urlHost+'/usuarios/obtenerInformacion',{token});
   }
 
-  public crearNuevoUsuario( datosNuevoUsuario : any) : Observable<any>{
+  public crearNuevoUsuario( datosNuevoUsuario : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/usuarios/crearUsuarioNuevo', datosNuevoUsuario);
+  }
+
+  public consultaUsuariosPorRoles( roles : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/consultaUsuariosPorRoles', roles);
   }
 }

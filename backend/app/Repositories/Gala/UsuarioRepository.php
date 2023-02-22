@@ -7,6 +7,7 @@ use App\Models\TblEmpleados;
 use App\Models\TblSesiones;
 use App\Models\TblUsuarios;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 //use Your Model
 
@@ -21,42 +22,14 @@ class UsuarioRepository
      */
 
     public function obtenerInformacionPorToken( $token ){
-        $usuario = TblSesiones::select(
-									'tblusuarios.PkTblUsuario',
-									'tblusuarios.Correo',
-									'tblusuarios.Password',
-									'tblusuarios.ObjetoPermisosEspeciales', 
-									'tblempleados.PkTblEmpleado',
-									'tblempleados.NombreEmpleado',
-									'tblempleados.ApellidoPaterno',
-									'tblempleados.ApellidoMaterno',
-									'tblempleados.Sexo',
-									'tblempleados.Telefono',
-									'tbldirecciones.PkTblDireccion',
-									'tbldirecciones.Calle',
-									'tbldirecciones.Coordenadas',
-									'tbldirecciones.ReferenciasDomicilio',
-									'tbldirecciones.CaracteristicasDomicilio',
-									'tbldirecciones.Calle',
-									'catpoblaciones.PkCatPoblacion',
-									'catpoblaciones.NombrePoblacion',
-									'catpoblaciones.CodigoPostal',
-									'catroles.PkCatRol',
-									'catroles.NombreRol',
-									'catroles.DescripcionRol'
-								)
-							  ->join('tblusuarios', 'tblusuarios.PkTblUsuario', '=', 'tblsesiones.FkTblUsuario')
-							  ->join('tblempleados', 'tblempleados.PkTblEmpleado', '=', 'tblusuarios.FkTblEmpleado')
-							  ->leftJoin('tbldirecciones','tbldirecciones.FkTblEmpleado', '=', 'tblempleados.PkTblEmpleado')
-							  ->leftJoin('catpoblaciones', 'catpoblaciones.PkCatPoblacion', '=', 'tbldirecciones.FkCatPoblacion')
-							  ->join('catroles', 'catroles.PkCatRol', '=', 'tblusuarios.FkCatRol')
-							  ->leftJoin('tblpermisos', 'tblpermisos.FkCatRol', '=', 'catroles.PkCatRol')
-							  ->where('tblsesiones.Token', '=', $token);
+        $usuario = TblSesiones::select('vistaGeneralUsuarios.*')
+							  ->join('vistaGeneralUsuarios', 'vistaGeneralUsuarios.PkTblUsuario', '=', 'tblsesiones.FkTblUsuario')
+							  ->where('Token', '=', $token);
 
         return $usuario->get();
     } 
 
-	public function crearEmpleadoNuevo( $informacionUsuario, $pkUsuario ){
+	public function crearEmpleadoNuevo( $informacionUsuario ){
 		$registro = new TblEmpleados();
 		$registro->NombreEmpleado 	= $informacionUsuario['nombreEmpleado'];
 		$registro->ApellidoPaterno 	= $informacionUsuario['apellidoPaternoEmpleado'];
@@ -65,21 +38,21 @@ class UsuarioRepository
 		$registro->Telefono 		= $informacionUsuario['telefonoEmpleado'];
 		$registro->FechaNacimiento 	= $informacionUsuario['fechaNacimientoEmpleado'];
 		$registro->Observaciones 	= $informacionUsuario['observacionesEmpleado'];
-		$registro->FkTblUsuarioAlta = $pkUsuario;
-		$registro->FechaAlta 		= Carbon::now();
 		$registro->Activo 			= 1;
 		$registro->save();
 
 		return $registro->PkTblEmpleado;
 	}
 
-	public function crearUsuarioNuevo( $credenciales, $fkEmpleado /*$fkRol*/ ){ 
+	public function crearUsuarioNuevo( $credenciales, $fkEmpleado, $pkUsuario /*$fkRol*/ ){ 
 		$registro = new TblUsuarios();
 		$registro->FkTblEmpleado 			= $fkEmpleado; 
 		//$registro->FkCatRol 				= $fkRol;
 		$registro->Correo 					= $credenciales['correoEmpleado'];
 		$registro->Password 				= $credenciales['passwordEmpleado'];
 		//$registro->ObjetoPermisosEspeciales = 
+		$registro->FkTblUsuarioAlta 		= $pkUsuario;
+		$registro->FechaAlta 				= Carbon::now();
 		$registro->Activo 					= 1;
 		$registro->save();
 	}
@@ -93,6 +66,13 @@ class UsuarioRepository
 		$registro->CaracteristicasDomicilio = $direccion['caracteristicasDomicilioEmpleado'];
 		$registro->Calle                    = $direccion['calleEmpleado'];
 		$registro->save();
+	}
+
+	public function consultaUsuariosPorRoles( $roles ){
+		$usuariosPorRoles = DB::table('vistaGeneralUsuarios')
+							  ->whereIn('PkCatRol', $roles);
+		
+		return $usuariosPorRoles->get();
 	}
 
 }
