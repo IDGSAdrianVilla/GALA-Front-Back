@@ -24,28 +24,6 @@ export class UsuariosRegistroComponent implements OnInit {
       'rol' : 'superAdministrador',
       'permisosRol' : [
         {
-          'nombreModulo' : 'Empleados',
-          'modulo' : 'empleados',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
           'nombreModulo' : 'Usuarios',
           'modulo' : 'usuarios',
           'status' : true,

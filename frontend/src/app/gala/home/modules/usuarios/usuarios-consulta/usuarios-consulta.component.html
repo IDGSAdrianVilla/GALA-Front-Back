@@ -44,7 +44,7 @@
 
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-danger form-control" disabled="true"><b>Limpiar</b></button>
+                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()"><b>Limpiar</b></button>
                                 </div>
                             </section>
                         </form>
@@ -54,26 +54,44 @@
 
             <div class="card recent-sales overflow-auto">
                 <div class="card-body">
+                    <div class="col-12">
+                        <br>
+                        <div class="form-floating">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="floatingName"
+                                placeholder="Buscar en empleados"
+                                [(ngModel)]="busqueda"
+                                (input)="filtrarUsuarios()"
+                                [disabled]="activarFiltroBusqueda()"
+                            >
+                            <label for="floatingName">Buscar Usuario</label>
+                        </div>
+                    </div>
                     <h5 class="card-title">Usuarios</h5>
                     <table class="table table-borderless datatable">
                         <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Empleado</th>
-                            <th scope="col">Teléfono</th>
-                            <th scope="col">Domicilio</th>
-                            <th scope="col">Status</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Empleado</th>
+                                <th scope="col">Sexo</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Domicilio</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Status</th>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let usuario of this.usuariosPorRoles">
-                            <th scope="row"><a href="#">#{{usuario.PkTblUsuario}}</a></th>
-                            <td>{{usuario.Nombre+' '+usuario.ApellidoPaterno}}</td>
-                            <td>{{usuario.Telefono}}</td>
-                            <td>{{usuario.Calle+', '+usuario.NombrePoblacion}}</td>
-                            <td><span class="badge bg-{{usuario.ActivoUsuario == 1 ? 'success' : 'danger'}}">{{usuario.ActivoUsuario == 1 ? 'Activo' : 'Incativo'}}</span></td>
-                          </tr>
-                          
+                            <tr *ngFor="let usuario of this.usuariosFiltrados">
+                                <th scope="row"><a href="#">#{{usuario.PkTblUsuario}}</a></th>
+                                <td>{{usuario.Nombre+' '+usuario.ApellidoPaterno}}</td>
+                                <td>{{usuario.Sexo}}</td>
+                                <td>{{usuario.Telefono}}</td>
+                                <td>{{usuario.Calle+', '+usuario.NombrePoblacion}}</td>
+                                <td>{{usuario.Correo}}</td>
+                                <td><span class="badge bg-{{usuario.ActivoUsuario == 1 ? 'success' : 'danger'}}">{{usuario.ActivoUsuario == 1 ? 'Activo' : 'Incativo'}}</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -15,6 +15,9 @@ export class UsuariosConsultaComponent implements OnInit{
   tituloSelect = '';
   mostrarOpciones = false;
 
+  busqueda: string = '';
+  usuariosFiltrados: any[] = [];
+
   constructor (
     private mensajes : MensajesService,
     private catalogosService : CatalogosService,
@@ -26,6 +29,21 @@ export class UsuariosConsultaComponent implements OnInit{
   ngOnInit(): void {
     this.mensajes.mensajeEsperar();
     this.obternerRoles();
+  }
+
+  filtrarUsuarios() {
+    if (!this.busqueda) {
+      this.usuariosFiltrados = this.usuariosPorRoles;
+    } else {
+      const textoBusqueda = this.busqueda.toLowerCase();
+      this.usuariosFiltrados = this.usuariosPorRoles.filter((usuario : any) => {
+        return usuario.Nombre.toLowerCase().includes(textoBusqueda) ||
+               usuario.ApellidoPaterno.toLowerCase().includes(textoBusqueda) ||
+               usuario.Telefono.toLowerCase().includes(textoBusqueda) ||
+               usuario.Calle.toLowerCase().includes(textoBusqueda) ||
+               usuario.NombrePoblacion.toLowerCase().includes(textoBusqueda);
+      });
+    }
   }
 
   activaLista() {
@@ -53,6 +71,7 @@ export class UsuariosConsultaComponent implements OnInit{
     this.usuariosService.consultaUsuariosPorRoles(this.rolesSeleccionados).subscribe(
       usuariosPorRoles =>{
         this.usuariosPorRoles = usuariosPorRoles.data;
+        this.usuariosFiltrados = this.usuariosPorRoles;
         this.mensajes.mensajeGenerico(usuariosPorRoles.message, usuariosPorRoles.status == 200 ? 'success' : 'info');
       },
 
@@ -73,5 +92,21 @@ export class UsuariosConsultaComponent implements OnInit{
         this.mensajes.mensajeGenerico('error', 'error');
       }
     );
+  }
+
+  activarBotonLimpiar () : boolean {
+    return this.usuariosPorRoles.length == 0 && this.rolesSeleccionados.length == 0;
+  }
+
+  activarFiltroBusqueda () : boolean {
+    return this.usuariosPorRoles.length == 0;
+  }
+
+  limpiarTabla() : void {
+    this.busqueda = '';
+    this.rolesSeleccionados = [];
+    this.tituloSelect = '';
+    this.usuariosPorRoles = [];
+    this.usuariosFiltrados = this.usuariosPorRoles;
   }
 }
