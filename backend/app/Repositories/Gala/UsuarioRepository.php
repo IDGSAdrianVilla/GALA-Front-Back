@@ -22,8 +22,8 @@ class UsuarioRepository
      */
 
     public function obtenerInformacionPorToken( $token ){
-        $usuario = TblSesiones::select('vistaGeneralUsuarios.*')
-							  ->join('vistaGeneralUsuarios', 'vistaGeneralUsuarios.PkTblUsuario', '=', 'tblsesiones.FkTblUsuario')
+        $usuario = TblSesiones::select('vistageneralusuarios.*')
+							  ->join('vistageneralusuarios', 'vistageneralusuarios.PkTblUsuario', '=', 'tblsesiones.FkTblUsuario')
 							  ->where('Token', '=', $token);
 
         return $usuario->get();
@@ -69,7 +69,7 @@ class UsuarioRepository
 	}
 
 	public function consultaUsuariosPorRoles( $roles ){
-		$usuariosPorRoles = DB::table('vistaGeneralUsuarios')
+		$usuariosPorRoles = DB::table('vistageneralusuarios')
 							  ->whereIn('PkCatRol', $roles);
 		
 		return $usuariosPorRoles->get();
