@@ -84,7 +84,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let usuario of this.usuariosFiltrados">
-                                <th scope="row"><a href="#">#{{usuario.PkTblUsuario}}</a></th>
+                                <th scope="row"><a [routerLink]="['modificacion',usuario.PkTblUsuario]">#{{usuario.PkTblUsuario}}</a></th>
                                 <td>{{usuario.Nombre+' '+usuario.ApellidoPaterno}}</td>
                                 <td>{{usuario.Sexo}}</td>
                                 <td>{{usuario.Telefono}}</td>

@@ -25,7 +25,7 @@ export const HomeRoutes: Routes = [
         component : UsuariosConsultaComponent
       },
       {
-        path : 'usuarios/modificacion',
+        path : 'usuarios/modificacion/:pkusuario',
         component: UsuariosModificacionComponent
       }
     ]

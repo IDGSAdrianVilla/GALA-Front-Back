@@ -75,4 +75,11 @@ class UsuarioRepository
 		return $usuariosPorRoles->get();
 	}
 
+	public function consultaDatosModificacion( $pkusuario ){
+		$usuarioModificacion = DB::table('vistageneralusuarios')
+								 ->whereIn('PkTblUsuario', $pkusuario);
+								 
+		return $usuarioModificacion->get();
+	}
+
 }

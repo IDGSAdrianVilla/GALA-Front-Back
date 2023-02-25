@@ -54,4 +54,14 @@ class UsuarioService
             200
         );
     }
+
+    public function consultaDatosModificacion( $pkusuario ){
+        $usuarioModificar = $this->usuarioRepository->consultaDatosModificacion( $pkusuario );
+        return response()->json(
+            [
+                'message' => 'Se encontró con éxito la información',
+                'data' => $usuarioModificar
+            ]
+        );
+    }
 }

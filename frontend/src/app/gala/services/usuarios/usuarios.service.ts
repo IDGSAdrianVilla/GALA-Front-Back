@@ -24,4 +24,8 @@ export class UsuariosService {
   public consultaUsuariosPorRoles( roles : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/usuarios/consultaUsuariosPorRoles', roles);
   }
+
+  public consultaDatosModificacion( pkusuario : number) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/consultaDatosModificacion', {pkusuario});
+  }
 }

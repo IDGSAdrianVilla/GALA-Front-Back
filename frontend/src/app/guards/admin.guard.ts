@@ -34,13 +34,11 @@ export class AdminGuard implements CanActivate {
       return true;
     }
 
-    this.mensajes.mensajeEsperar();
     let token = localStorage.getItem('token');
     if (token != undefined) {
       this.loginService.auth(token).subscribe(
         status => {
           if (status) {
-            this.mensajes.cerrarMensajes();
             return true;
           } else {
             localStorage.removeItem('token');

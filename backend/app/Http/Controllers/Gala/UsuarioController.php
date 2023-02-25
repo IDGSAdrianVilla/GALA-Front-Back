@@ -48,9 +48,24 @@ class UsuarioController extends Controller
         }
     }
 
-    public function consultaUsuariosPorRoles( Request $request){
+    public function consultaUsuariosPorRoles( Request $request ){
         try{
             return $this->usuarioService->consultaUsuariosPorRoles($request->all());
+        } catch( \Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function consultaDatosModificacion( Request $request ){
+        try{
+            return $this->usuarioService->consultaDatosModificacion($request->all());
         } catch( \Exception $error) {
             Log::alert($error);
             return response()->json(
