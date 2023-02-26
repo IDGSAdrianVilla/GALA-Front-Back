@@ -80,17 +80,29 @@
                                 <th scope="col">Domicilio</th>
                                 <th scope="col">Correo</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let usuario of this.usuariosFiltrados">
-                                <th scope="row"><a [routerLink]="['modificacion',usuario.PkTblUsuario]">#{{usuario.PkTblUsuario}}</a></th>
+                                <th scope="row"><a>#{{usuario.PkTblUsuario}}</a></th>
                                 <td>{{usuario.Nombre+' '+usuario.ApellidoPaterno}}</td>
                                 <td>{{usuario.Sexo}}</td>
                                 <td>{{usuario.Telefono}}</td>
                                 <td>{{usuario.Calle+', '+usuario.NombrePoblacion}}</td>
                                 <td>{{usuario.Correo}}</td>
                                 <td><span class="badge bg-{{usuario.ActivoUsuario == 1 ? 'success' : 'danger'}}">{{usuario.ActivoUsuario == 1 ? 'Activo' : 'Incativo'}}</span></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                          Opciones
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li><button [routerLink]="['modificacion',usuario.PkTblUsuario]" class="dropdown-item" type="button">Módificar</button></li>
+                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

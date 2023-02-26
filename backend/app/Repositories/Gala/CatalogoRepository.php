@@ -20,7 +20,8 @@ class CatalogoRepository
     }
 
     public function obtenerRoles(){
-        $roles = CatRoles::orderBy('PkCatRol', 'asc');
+        $roles = CatRoles::join('tblpermisos', 'tblpermisos.FkCatRol', 'catroles.PkCatRol')
+                         ->orderBy('catroles.PkCatRol', 'desc');
 
         return $roles->get();
     }

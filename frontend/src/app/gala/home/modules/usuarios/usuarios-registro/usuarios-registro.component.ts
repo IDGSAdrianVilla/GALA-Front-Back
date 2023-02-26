@@ -18,158 +18,7 @@ export class UsuariosRegistroComponent implements OnInit {
   public formPermisosRegistro! : FormGroup;
   public poblaciones : any = [];
   public roles : any = [];
-  public objetoPermisos : any = [
-    {
-      'tituloRol' : 'Super Administrador',
-      'rol' : 'superAdministrador',
-      'permisosRol' : [
-        {
-          'nombreModulo' : 'Usuarios',
-          'modulo' : 'usuarios',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Permisos',
-              'permiso' : 'permisos',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Reportes',
-          'modulo' : 'reportes',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Eliminación',
-              'permiso' : 'eliminacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Instalaciones',
-          'modulo' : 'instalaciones',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Eliminación',
-              'permiso' : 'eliminacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Clientes',
-          'modulo' : 'clientes',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },
-        {
-          'nombreModulo' : 'Sesiones',
-          'modulo' : 'sesiones',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Suspensión',
-              'permiso' : 'suspencion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Catálogos',
-          'modulo' : 'catalogos',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  public objetoPermisos : any = [];
   public prevUsuarioNuevo : any = {};
 
   constructor(
@@ -252,6 +101,11 @@ export class UsuariosRegistroComponent implements OnInit {
         this.mensajes.mensajeGenerico('error', 'error');
       }
     );
+  }
+
+  asignarPermisosPorRol() : void {
+    const rolSeleccionado = this.formPermisosRegistro.get('rolEmpleado')?.value;
+    this.objetoPermisos = JSON.parse( this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos.replace(/'/g, '"') );
   }
 
   actualizoPadre (event: Event) {
