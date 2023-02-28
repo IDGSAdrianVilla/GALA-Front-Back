@@ -75,7 +75,7 @@ export class UsuariosRegistroComponent implements OnInit {
     this.formCredencialesRegistro = this.fb.group({
       correoEmpleado     : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*'), Validators.email]],
       passwordEmpleado   : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-      valPasswordMaterno : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+      valPassword        : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
   
@@ -155,6 +155,13 @@ export class UsuariosRegistroComponent implements OnInit {
       return;
     }
 
+    if (
+      this.formCredencialesRegistro.value.passwordEmpleado != this.formCredencialesRegistro.value.valPassword
+    ) {
+      this.mensajes.mensajeGenerico('Al parecer las contraseñas no coinciden.', 'info', 'Credenciales');
+      return;
+    }
+
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nuevo Usuario').then(
       confirm =>{
         if(confirm.isConfirmed){
@@ -173,6 +180,7 @@ export class UsuariosRegistroComponent implements OnInit {
           this.usuariosService.crearNuevoUsuario(datosNuevoUsuario).subscribe(
             respuesta =>{
               if ( respuesta.status != 409 ) {
+                this.limpiarFormularios();
                 this.mensajes.mensajeGenerico(respuesta.message, 'success');
                 return;
               }
@@ -188,6 +196,17 @@ export class UsuariosRegistroComponent implements OnInit {
         }
       }
     );
+  }
+
+  limpiarFormularios() : void {
+    this.formInformacionRegistro.reset();
+    this.formDireccionRegistro.reset();
+    this.formPermisosRegistro.reset();
+    this.formCredencialesRegistro.reset();
+    this.formCredencialesRegistro.get('passwordEmpleado')?.setValue('emenetSistemas2021');
+    this.formCredencialesRegistro.get('valPassword')?.setValue('emenetSistemas2021');
+    this.formDireccionRegistro.get('poblacionEmpleado')?.setValue('');
+    this.formPermisosRegistro.get('rolEmpleado')?.setValue('');
   }
 
   validarPermisosEspeciales () : any {
