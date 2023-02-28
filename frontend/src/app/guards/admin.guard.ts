@@ -44,7 +44,7 @@ export class AdminGuard implements CanActivate {
             localStorage.removeItem('token');
             localStorage.clear();
             this.router.navigate(['/']);
-            this.mensajes.mensajeGenerico('Para navegar dentro de GALA se necesita inicar sesión antes', 'info');
+            this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
             return false;
           }
         },

@@ -67,8 +67,13 @@ export class UsuariosConsultaComponent implements OnInit{
       this.mensajes.mensajeGenerico('Para consultar antes debes seleccionar algún Rol', 'info');
       return;
     }
+
+    const objetoConsulta = {
+      'roles' : this.rolesSeleccionados,
+      'token' : localStorage.getItem('token')
+    };
     
-    this.usuariosService.consultaUsuariosPorRoles(this.rolesSeleccionados).subscribe(
+    this.usuariosService.consultaUsuariosPorRoles( objetoConsulta ).subscribe(
       usuariosPorRoles =>{
         this.usuariosPorRoles = usuariosPorRoles.data;
         this.usuariosFiltrados = this.usuariosPorRoles;

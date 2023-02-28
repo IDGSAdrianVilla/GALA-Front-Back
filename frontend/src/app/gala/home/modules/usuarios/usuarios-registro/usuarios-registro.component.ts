@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UsuariosService } from 'src/app/gala/services/usuarios/usuarios.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
@@ -45,37 +45,37 @@ export class UsuariosRegistroComponent implements OnInit {
 
   crearFormInformacionRegistro() : void {
     this.formInformacionRegistro = this.fb.group({
-      nombreEmpleado : ['',[Validators.required]],
-      apellidoPaternoEmpleado : ['',[Validators.required]],
-      apellidoMaternoEmpleado : ['',[]],
-      sexoEmpleado : ['',[Validators.required]],
-      telefonoEmpleado : ['',[Validators.required]],
-      fechaNacimientoEmpleado : ['',[Validators.required]],
-      observacionesEmpleado : ['',[]]
+      nombreEmpleado          : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      apellidoPaternoEmpleado : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      apellidoMaternoEmpleado : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      sexoEmpleado            : ['', [Validators.required]],
+      telefonoEmpleado        : ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      fechaNacimientoEmpleado : ['', [Validators.required]],
+      observacionesEmpleado   : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
   
   crearFormDireccionRegistro() : void {
     this.formDireccionRegistro = this.fb.group({
-      poblacionEmpleado : ['',[Validators.required]],
-      coordenadasEmpleado : ['',[Validators.required]],
-      calleEmpleado : ['',[Validators.required]],
-      referenciasDomicilioEmpleado : ['',[Validators.required]],
-      caracteristicasDomicilioEmpleado : ['',[Validators.required]]
+      poblacionEmpleado                : ['', [Validators.required]],
+      coordenadasEmpleado              : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      calleEmpleado                    : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      referenciasDomicilioEmpleado     : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      caracteristicasDomicilioEmpleado : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
 
   crearFormRolesRegistro() : void {
     this.formPermisosRegistro = this.fb.group({
-      rolEmpleado : ['',[Validators.required]]
+      rolEmpleado : ['', [Validators.required]]
     });
   }
 
   crearFormCredencialesRegistro() : void {
     this.formCredencialesRegistro = this.fb.group({
-      correoEmpleado : ['',[Validators.required]],
-      passwordEmpleado : ['emenetSistemas2021',[Validators.required]],
-      valPasswordMaterno : ['emenetSistemas2021',[Validators.required]]
+      correoEmpleado     : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*'), Validators.email]],
+      passwordEmpleado   : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      valPasswordMaterno : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
   
@@ -104,53 +104,22 @@ export class UsuariosRegistroComponent implements OnInit {
   }
 
   asignarPermisosPorRol() : void {
+    this.objetoPermisos = this.obtenerPermisosPorRol();
+  }
+
+  obtenerPermisosPorRol () : any {
     const rolSeleccionado = this.formPermisosRegistro.get('rolEmpleado')?.value;
-    this.objetoPermisos = JSON.parse( this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos.replace(/'/g, '"') );
+    return JSON.parse( this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos.replace(/'/g, '"') );
   }
 
-  actualizoPadre (event: Event) {
-    const id = (event?.target as HTMLInputElement)?.id;
+  actualizarObjetoPermisosPadre( modulo : string, event: Event ) : void {
     const checked = (event?.target as HTMLInputElement)?.checked;
-
-    const modulo = id.split("-")[1];
-
-    if ( checked ) {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].permiso-'+modulo);
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i] as HTMLInputElement;
-        checkbox.checked = true;
-      }
-    } else {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].permiso-'+modulo);
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i] as HTMLInputElement;
-        checkbox.checked = false;
-      }
-    }
+    this.objetoPermisos = this.funcionGenerica.actualizarObjetoPermisosPadre(modulo, checked, this.objetoPermisos);
   }
 
-  actualizoHijo (event: Event) {
-    const clase = (event?.target as HTMLInputElement)?.classList.item(1)?.toString();
+  actualizarObjetoPermisosHijo( modulo : string, permiso : string, event: Event ) : void {
     const checked = (event?.target as HTMLInputElement)?.checked;
-
-    const modulo = clase?.split("-")[1];
-
-    if ( checked ) {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].permiso-'+modulo);
-      let count = 0;
-      
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i] as HTMLInputElement;
-        count = checkbox.checked ? count + 1 : count ;
-      }
-
-      if ( count != 0 ) {
-        const checkbox = document.getElementById('modulo-'+modulo) as HTMLInputElement;
-        checkbox.checked = true;
-        const checkboxHijo = document.getElementById('permiso-'+modulo+'-lectura') as HTMLInputElement;
-        checkboxHijo.checked = true;
-      }
-    }
+    this.objetoPermisos = this.funcionGenerica.actualizarObjetoPermisosHijo(modulo, permiso, checked, this.objetoPermisos);
   }
 
   prevNuevoUsuario () {
@@ -159,13 +128,13 @@ export class UsuariosRegistroComponent implements OnInit {
     this.prevUsuarioNuevo.apellidoMaternoEmpleado = this.formInformacionRegistro.get('apellidoMaternoEmpleado')?.value;
     this.prevUsuarioNuevo.sexoEmpleado            = this.formInformacionRegistro.get('sexoEmpleado')?.value;
     this.prevUsuarioNuevo.telefonoEmpleado        = this.formInformacionRegistro.get('telefonoEmpleado')?.value;
-    const poblacionSelect                         = document.getElementById('poblacionEmpleado') as HTMLSelectElement;
-    const poblacionSelectedOption                 = poblacionSelect.selectedOptions[0];
-    const poblacionSelectedText                   = poblacionSelectedOption.text;
-    this.prevUsuarioNuevo.poblacionEmpleado       = poblacionSelectedText != 'Seleccione una población' ? poblacionSelectedText : '';
+    const poblacionSelect                         = (document.getElementById('poblacionEmpleado') as HTMLSelectElement).selectedOptions[0].text;
+    this.prevUsuarioNuevo.poblacionEmpleado       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
+    const rolSelect                               = (document.getElementById('rolEmpleado') as HTMLSelectElement).selectedOptions[0].text;
+    this.prevUsuarioNuevo.rolEmpleado             = rolSelect != 'Seleccione un Rol' ? rolSelect : '';
   }
 
-  crearNuevoUusario() : void {
+  crearNuevoUsuario() : void {
     if(this.formInformacionRegistro.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
@@ -186,21 +155,30 @@ export class UsuariosRegistroComponent implements OnInit {
       return;
     }
 
-    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos','question','Crear Nuevo Usuario').then(
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nuevo Usuario').then(
       confirm =>{
         if(confirm.isConfirmed){
           this.mensajes.mensajeEsperar();
 
+          this.formPermisosRegistro.value.objetoPermisos = this.validarPermisosEspeciales();
+
           let datosNuevoUsuario = {
             'informacionPersonal' : this.formInformacionRegistro.value,
             'direccion' : this.formDireccionRegistro.value,
+            'rolPermisos' : this.formPermisosRegistro.value,
             'credenciales' : this.formCredencialesRegistro.value,
             'token' : localStorage.getItem('token')
           };
 
           this.usuariosService.crearNuevoUsuario(datosNuevoUsuario).subscribe(
             respuesta =>{
-              this.mensajes.mensajeGenerico(respuesta.message, 'success');
+              if ( respuesta.status != 409 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'success');
+                return;
+              }
+
+              this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+              return;
             },
 
             error =>{
@@ -210,5 +188,10 @@ export class UsuariosRegistroComponent implements OnInit {
         }
       }
     );
+  }
+
+  validarPermisosEspeciales () : any {
+    const permisosDefectoRol = this.obtenerPermisosPorRol();
+    return JSON.stringify(permisosDefectoRol[0]) == JSON.stringify(this.objetoPermisos[0]) ? null : this.objetoPermisos[0];
   }
 }
