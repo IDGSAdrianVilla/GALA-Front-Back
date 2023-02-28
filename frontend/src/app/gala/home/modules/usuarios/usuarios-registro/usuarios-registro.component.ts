@@ -31,17 +31,19 @@ export class UsuariosRegistroComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.mensajes.mensajeEsperar();
-
+  
     this.crearFormInformacionRegistro();
     this.crearFormDireccionRegistro();
     this.crearFormRolesRegistro();
     this.crearFormCredencialesRegistro();
-
-    this.obtenerPoblaciones();
-    this.obtenerRoles();
+  
+    await Promise.all([this.obtenerPoblaciones(), this.obtenerRoles()]);
+  
+    this.mensajes.cerrarMensajes();
   }
+  
 
   crearFormInformacionRegistro() : void {
     this.formInformacionRegistro = this.fb.group({
@@ -79,11 +81,10 @@ export class UsuariosRegistroComponent implements OnInit {
     });
   }
   
-  obtenerPoblaciones() : void {
-    this.catalogosService.obtenerPoblaciones().subscribe(
+  obtenerPoblaciones(): Promise<any> {
+    return this.catalogosService.obtenerPoblaciones().toPromise().then(
       poblaciones => {
         this.poblaciones = poblaciones.data;
-        this.mensajes.cerrarMensajes();
       },
       error => {
         this.mensajes.mensajeGenerico('error', 'error');
@@ -91,11 +92,10 @@ export class UsuariosRegistroComponent implements OnInit {
     );
   }
   
-  obtenerRoles() : void {
-    this.catalogosService.obtenerRoles().subscribe(
+  obtenerRoles(): Promise<any> {
+    return this.catalogosService.obtenerRoles().toPromise().then(
       roles => {
         this.roles = roles.data;
-        this.mensajes.cerrarMensajes();
       },
       error => {
         this.mensajes.mensajeGenerico('error', 'error');
