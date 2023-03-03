@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
+import { CatalogosService } from 'src/app/gala/services/catalogos/catalogos.service';
 
 @Component({
   selector: 'app-usuarios-modificacion',
@@ -11,284 +12,112 @@ import { FuncionesGenericasService } from '../../../../../services/utileria/func
   styleUrls: ['./usuarios-modificacion.component.css']
 })
 export class UsuariosModificacionComponent implements OnInit{
-    
-  private pkusuario : any;
-  private datosUsuarioModificacion : any;
-
   public formInformacionRegistro! : FormGroup;
   public formDireccionRegistro! : FormGroup;
-  public formCredencialesRegistro! : FormGroup;
   public formPermisosRegistro! : FormGroup;
-  public prevUsuarioNuevo : any = {};
+  
   public poblaciones : any = [];
   public roles : any = [];
-  public objetoPermisos : any = [
-    {
-      'tituloRol' : 'Super Administrador',
-      'rol' : 'superAdministrador',
-      'permisosRol' : [
-        {
-          'nombreModulo' : 'Usuarios',
-          'modulo' : 'usuarios',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Permisos',
-              'permiso' : 'permisos',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Reportes',
-          'modulo' : 'reportes',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Eliminación',
-              'permiso' : 'eliminacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Instalaciones',
-          'modulo' : 'instalaciones',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Eliminación',
-              'permiso' : 'eliminacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Clientes',
-          'modulo' : 'clientes',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },
-        {
-          'nombreModulo' : 'Sesiones',
-          'modulo' : 'sesiones',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Suspensión',
-              'permiso' : 'suspencion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        },{
-          'nombreModulo' : 'Catálogos',
-          'modulo' : 'catalogos',
-          'status' : true,
-          'permisosModulo' : [
-            {
-              'nombre' : 'Lectura',
-              'permiso' : 'lectura',
-              'status' : true,
-              'disabled' : true
-            },{
-              'nombre' : 'Escritura',
-              'permiso' : 'escritura',
-              'status' : true,
-              'disabled' : false
-            },{
-              'nombre' : 'Modificación',
-              'permiso' : 'modificacion',
-              'status' : true,
-              'disabled' : false
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  public objetoPermisos : any = [];
+  public prevUsuarioNuevo : any = {};
+  public datosUsuarioModificacion : any = [];
+  public pkusuario : number = 0;
 
   constructor(
-    private mensajes : MensajesService,
-    private rutaActiva : ActivatedRoute,
-    private usuariosService : UsuariosService,
     private fb : FormBuilder,
-    public funcionGenerica : FuncionesGenericasService
+    private mensajes : MensajesService,
+    private catalogosService : CatalogosService,
+    private usuariosService : UsuariosService,
+    public funcionGenerica : FuncionesGenericasService,
+    private rutaActiva : ActivatedRoute,
+    private router : Router
   ){
-    
+
   }
 
-  ngOnInit(): void {
-    this.consultaDatosModificacion();
+  async ngOnInit(): Promise<void> {
+    this.mensajes.mensajeEsperar();
+  
+    this.crearFormInformacionRegistro();
+    this.crearFormDireccionRegistro();
+    this.crearFormRolesRegistro();
+  
+    await Promise.all([this.obtenerPoblaciones(), this.obtenerRoles(), this.consultarDatosUsuarioModificacion()]);
   }
+  
 
   crearFormInformacionRegistro() : void {
     this.formInformacionRegistro = this.fb.group({
-      nombreEmpleado : ['',[Validators.required]],
-      apellidoPaternoEmpleado : ['',[Validators.required]],
-      apellidoMaternoEmpleado : ['',[]],
-      sexoEmpleado : ['',[Validators.required]],
-      telefonoEmpleado : ['',[Validators.required]],
-      fechaNacimientoEmpleado : ['',[Validators.required]],
-      observacionesEmpleado : ['',[]]
+      nombreEmpleado          : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      apellidoPaternoEmpleado : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      apellidoMaternoEmpleado : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      sexoEmpleado            : ['', [Validators.required]],
+      telefonoEmpleado        : ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      fechaNacimientoEmpleado : ['', [Validators.required]],
+      observacionesEmpleado   : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
   
   crearFormDireccionRegistro() : void {
     this.formDireccionRegistro = this.fb.group({
-      poblacionEmpleado : ['',[Validators.required]],
-      coordenadasEmpleado : ['',[Validators.required]],
-      calleEmpleado : ['',[Validators.required]],
-      referenciasDomicilioEmpleado : ['',[Validators.required]],
-      caracteristicasDomicilioEmpleado : ['',[Validators.required]]
+      poblacionEmpleado                : ['', [Validators.required]],
+      coordenadasEmpleado              : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      calleEmpleado                    : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      referenciasDomicilioEmpleado     : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      caracteristicasDomicilioEmpleado : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
 
   crearFormRolesRegistro() : void {
     this.formPermisosRegistro = this.fb.group({
-      rolEmpleado : ['',[Validators.required]]
+      rolEmpleado : ['', [Validators.required]]
     });
   }
-
-  crearFormCredencialesRegistro() : void {
-    this.formCredencialesRegistro = this.fb.group({
-      correoEmpleado : ['',[Validators.required]],
-      passwordEmpleado : ['emenetSistemas2021',[Validators.required]],
-      valPasswordMaterno : ['emenetSistemas2021',[Validators.required]]
-    });
-  }
-
-  actualizoPadre (event: Event) {
-    const id = (event?.target as HTMLInputElement)?.id;
-    const checked = (event?.target as HTMLInputElement)?.checked;
-
-    const modulo = id.split("-")[1];
-
-    if ( checked ) {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].permiso-'+modulo);
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i] as HTMLInputElement;
-        checkbox.checked = true;
+  
+  obtenerPoblaciones(): Promise<any> {
+    return this.catalogosService.obtenerPoblaciones().toPromise().then(
+      poblaciones => {
+        this.poblaciones = poblaciones.data;
+      },
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
       }
-    } else {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].permiso-'+modulo);
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i] as HTMLInputElement;
-        checkbox.checked = false;
-      }
-    }
-  }
-
-  actualizoHijo (event: Event) {
-    const clase = (event?.target as HTMLInputElement)?.classList.item(1)?.toString();
-    const checked = (event?.target as HTMLInputElement)?.checked;
-
-    const modulo = clase?.split("-")[1];
-
-    if ( checked ) {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"].permiso-'+modulo);
-      let count = 0;
-      
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i] as HTMLInputElement;
-        count = checkbox.checked ? count + 1 : count ;
-      }
-
-      if ( count != 0 ) {
-        const checkbox = document.getElementById('modulo-'+modulo) as HTMLInputElement;
-        checkbox.checked = true;
-        const checkboxHijo = document.getElementById('permiso-'+modulo+'-lectura') as HTMLInputElement;
-        checkboxHijo.checked = true;
-      }
-    }
+    );
   }
   
-  prevNuevoUsuario () {
-    this.prevUsuarioNuevo.nombreEmpleado          = this.formInformacionRegistro.get('nombreEmpleado')?.value;
-    this.prevUsuarioNuevo.apellidoPaternoEmpleado = this.formInformacionRegistro.get('apellidoPaternoEmpleado')?.value;
-    this.prevUsuarioNuevo.apellidoMaternoEmpleado = this.formInformacionRegistro.get('apellidoMaternoEmpleado')?.value;
-    this.prevUsuarioNuevo.sexoEmpleado            = this.formInformacionRegistro.get('sexoEmpleado')?.value;
-    this.prevUsuarioNuevo.telefonoEmpleado        = this.formInformacionRegistro.get('telefonoEmpleado')?.value;
-    const poblacionSelect                         = document.getElementById('poblacionEmpleado') as HTMLSelectElement;
-    const poblacionSelectedOption                 = poblacionSelect.selectedOptions[0];
-    const poblacionSelectedText                   = poblacionSelectedOption.text;
-    this.prevUsuarioNuevo.poblacionEmpleado       = poblacionSelectedText != 'Seleccione una población' ? poblacionSelectedText : '';
+  obtenerRoles(): Promise<any> {
+    return this.catalogosService.obtenerRoles().toPromise().then(
+      roles => {
+        this.roles = roles.data;
+      },
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
   }
-  
-  consultaDatosModificacion() : void {
-    this.mensajes.mensajeEsperar();
+
+  asignarPermisosPorRol() : void {
+    this.objetoPermisos = this.obtenerPermisosPorRol();
+  }
+
+  obtenerPermisosPorRol () : any {
+    const rolSeleccionado = this.formPermisosRegistro.get('rolEmpleado')?.value;
+    return JSON.parse( this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos.replace(/'/g, '"') );
+  }
+
+  consultarDatosUsuarioModificacion() : Promise<any> {
     this.pkusuario = this.rutaActiva.snapshot.params['pkusuario'];
-    this.usuariosService.consultaDatosModificacion(this.pkusuario).subscribe(
+    return this.usuariosService.consultarDatosUsuarioModificacion(this.pkusuario).toPromise().then(
       usuarioModificacion =>{
-        this.datosUsuarioModificacion = usuarioModificacion.data[0];
-        this.mensajes.mensajeGenerico('Se consultó con éxito la información','success');
+        if(usuarioModificacion.data[0] != undefined){
+          this.datosUsuarioModificacion = usuarioModificacion.data[0];
+          this.cargarFormulario();
+          this.prevNuevoUsuario();
+          this.cargarObjetoPermisos();
+          this.mensajes.mensajeGenericoToast('Se consultó con éxito la información','success');
+        } else {
+          this.router.navigate(['/gala/usuarios']);
+        }
       },
       
       error =>{
@@ -296,4 +125,106 @@ export class UsuariosModificacionComponent implements OnInit{
       }
     )
   }
+
+  cargarFormulario() : void {
+    this.formInformacionRegistro.get('nombreEmpleado')?.setValue(this.datosUsuarioModificacion.Nombre);
+    this.formInformacionRegistro.get('apellidoPaternoEmpleado')?.setValue(this.datosUsuarioModificacion.ApellidoPaterno);
+    this.formInformacionRegistro.get('apellidoMaternoEmpleado')?.setValue(this.datosUsuarioModificacion.ApellidoMaterno);
+    this.formInformacionRegistro.get('telefonoEmpleado')?.setValue(this.datosUsuarioModificacion.Telefono);
+    this.formInformacionRegistro.get('sexoEmpleado')?.setValue(this.datosUsuarioModificacion.Sexo);
+    this.formInformacionRegistro.get('fechaNacimientoEmpleado')?.setValue(this.datosUsuarioModificacion.FechaNacimiento);
+    this.formInformacionRegistro.get('observacionesEmpleado')?.setValue(this.datosUsuarioModificacion.Observaciones);
+    this.formDireccionRegistro.get('poblacionEmpleado')?.setValue(this.datosUsuarioModificacion.PkCatPoblacion);
+    this.formDireccionRegistro.get('coordenadasEmpleado')?.setValue(this.datosUsuarioModificacion.Coordenadas);
+    this.formDireccionRegistro.get('calleEmpleado')?.setValue(this.datosUsuarioModificacion.Calle);
+    this.formDireccionRegistro.get('referenciasDomicilioEmpleado')?.setValue(this.datosUsuarioModificacion.ReferenciasDomicilio);
+    this.formDireccionRegistro.get('caracteristicasDomicilioEmpleado')?.setValue(this.datosUsuarioModificacion.CaracteristicasDomicilio);
+    this.formPermisosRegistro.get('rolEmpleado')?.setValue(this.datosUsuarioModificacion.PkCatRol);
+  }
+
+  cargarObjetoPermisos() : void {
+    const objetoTemporal = this.datosUsuarioModificacion.ObjetoPermisosEspeciales != null ?
+                           this.datosUsuarioModificacion.ObjetoPermisosEspeciales :
+                           this.datosUsuarioModificacion.ObjetoPermisos;
+
+    this.objetoPermisos = JSON.parse(objetoTemporal.replace(/'/g, '"'));
+  }
+
+  actualizarObjetoPermisosPadre( modulo : string, event: Event ) : void {
+    const checked = (event?.target as HTMLInputElement)?.checked;
+    this.objetoPermisos = this.funcionGenerica.actualizarObjetoPermisosPadre(modulo, checked, this.objetoPermisos);
+  }
+
+  actualizarObjetoPermisosHijo( modulo : string, permiso : string, event: Event ) : void {
+    const checked = (event?.target as HTMLInputElement)?.checked;
+    this.objetoPermisos = this.funcionGenerica.actualizarObjetoPermisosHijo(modulo, permiso, checked, this.objetoPermisos);
+  }
+
+  prevNuevoUsuario () {
+    this.prevUsuarioNuevo.nombreEmpleado          = this.formInformacionRegistro.get('nombreEmpleado')?.value;
+    this.prevUsuarioNuevo.apellidoPaternoEmpleado = this.formInformacionRegistro.get('apellidoPaternoEmpleado')?.value;
+    this.prevUsuarioNuevo.apellidoMaternoEmpleado = this.formInformacionRegistro.get('apellidoMaternoEmpleado')?.value;
+    this.prevUsuarioNuevo.sexoEmpleado            = this.formInformacionRegistro.get('sexoEmpleado')?.value;
+    this.prevUsuarioNuevo.telefonoEmpleado        = this.formInformacionRegistro.get('telefonoEmpleado')?.value;
+    const poblacionSelect                         = (document.getElementById('poblacionEmpleado') as HTMLSelectElement).selectedOptions[0].text;
+    this.prevUsuarioNuevo.poblacionEmpleado       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
+    const rolSelect                               = (document.getElementById('rolEmpleado') as HTMLSelectElement).selectedOptions[0].text;
+    this.prevUsuarioNuevo.rolEmpleado             = rolSelect != 'Seleccione un Rol' ? rolSelect : '';
+  }
+
+  actualizarUsuario() : void {
+    if(this.formInformacionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formDireccionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formPermisosRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de los Permisos.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Modificar Usuario').then(
+      confirm =>{
+        if(confirm.isConfirmed){
+          this.mensajes.mensajeEsperar();
+
+          this.formPermisosRegistro.value.objetoPermisos = this.validarPermisosEspeciales();
+
+          let datosModificacionUsuario = {
+            'informacionPersonal' : this.formInformacionRegistro.value,
+            'direccion' : this.formDireccionRegistro.value,
+            'rolPermisos' : this.formPermisosRegistro.value,
+            'pkUsuarioModificacion' : this.pkusuario,
+            'token' : localStorage.getItem('token')
+          };
+
+          this.usuariosService.modificarDatosUsuario(datosModificacionUsuario).subscribe(
+            respuesta =>{
+              if ( respuesta.status == 409 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.mensajes.mensajeGenerico(respuesta.message, 'success');
+              return;
+            },
+
+            error =>{
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+        }
+      }
+    );
+  }
+
+  validarPermisosEspeciales () : any {
+    const permisosDefectoRol = this.obtenerPermisosPorRol();
+    return JSON.stringify(permisosDefectoRol[0]) == JSON.stringify(this.objetoPermisos[0]) ? null : this.objetoPermisos[0];
+  }  
 }

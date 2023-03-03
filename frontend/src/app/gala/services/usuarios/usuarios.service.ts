@@ -25,7 +25,11 @@ export class UsuariosService {
     return this.http.post<any>(this.urlHost+'/usuarios/consultaUsuariosPorRoles', roles);
   }
 
-  public consultaDatosModificacion( pkusuario : number) : Observable<any>{
-    return this.http.post<any>(this.urlHost+'/usuarios/consultaDatosModificacion', {pkusuario});
+  public consultarDatosUsuarioModificacion( pkusuario : number) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/consultarDatosUsuarioModificacion', {pkusuario});
+  }
+
+  public modificarDatosUsuario(datosModificacion : any) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/modificarDatosUsuario', datosModificacion);
   }
 }

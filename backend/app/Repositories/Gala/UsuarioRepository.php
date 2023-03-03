@@ -98,11 +98,71 @@ class UsuarioRepository
 		return $usuariosPorRoles->get();
 	}
 
-	public function consultaDatosModificacion( $pkusuario ){
+	public function consultarDatosUsuarioModificacion( $pkusuario ){
 		$usuarioModificacion = DB::table('vistageneralusuarios')
-								 ->whereIn('PkTblUsuario', $pkusuario);
+								 ->where('PkTblUsuario', $pkusuario);
 								 
 		return $usuarioModificacion->get();
 	}
 
+	public function validarUsuarioPorTelefono( $telefono, $pk ){
+		$usuariosEncontrados = DB::table('vistageneralusuarios')
+								 ->where('Telefono', '=', $telefono)
+								 ->where('PkTblUsuario','!=', $pk);
+
+		return $usuariosEncontrados->count();
+	}
+
+	public function obtenerPkEmpleado( $pkUsuario ){
+		$obtenerPk = DB::table('vistageneralusuarios')
+					   ->select('PkTblEmpleado')
+					   ->where('PkTblUsuario','=', $pkUsuario);
+		
+		return $obtenerPk->get()[0]->PkTblEmpleado;			   
+	}
+
+	public function modificarDatosEmpleado( $pkEmpleado, $datosEmpleados ){
+		TblEmpleados::where('PkTblEmpleado', '=', $pkEmpleado)
+					->update([
+						'Nombre' => $datosEmpleados['nombreEmpleado'],
+						'ApellidoPaterno' => $datosEmpleados['apellidoPaternoEmpleado'],
+						'ApellidoMaterno' => $datosEmpleados['apellidoMaternoEmpleado'],
+						'Sexo' => $datosEmpleados['sexoEmpleado'],
+						'Telefono' => $datosEmpleados['telefonoEmpleado'],
+						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'],
+						'Observaciones' => $datosEmpleados['observacionesEmpleado']
+					]);
+	} 
+
+	public function modificarDatosUsuario( $pkUsuario, $datosUsuario ){
+		if ( !is_null($datosUsuario['objetoPermisos']) ) {
+			$reemplazos = array(
+				'\u00e1' => 'á',
+				'\u00e9' => 'é',
+				'\u00f3' => 'ó',
+				'\u00fa' => 'ú'
+			);
+			
+			$nuevaCadenaPermisos = json_encode($datosUsuario['objetoPermisos']);
+			$nuevaCadenaPermisos = str_replace(array_keys($reemplazos), array_values($reemplazos), $nuevaCadenaPermisos);
+			$datosUsuario['objetoPermisos'] = '['.$nuevaCadenaPermisos.']';
+		}
+
+		TblUsuarios::where('PkTblUsuario','=', $pkUsuario)
+				   ->update([
+						'FkCatRol' => $datosUsuario['rolEmpleado'],
+						'ObjetoPermisosEspeciales' => $datosUsuario['objetoPermisos']
+				   ]);
+	}
+
+	public function modificarDatosDireccion( $datosDireccion, $pkEmpleado){
+		TblDirecciones::where('FkTblEmpleado', '=', $pkEmpleado)
+					  ->update([
+						'FkCatPoblacion' => $datosDireccion['poblacionEmpleado'],
+						'Coordenadas' => $datosDireccion['coordenadasEmpleado'],
+						'ReferenciasDomicilio' => $datosDireccion['referenciasDomicilioEmpleado'],
+						'CaracteristicasDomicilio' => $datosDireccion['caracteristicasDomicilioEmpleado'],
+						'Calle' => $datosDireccion['calleEmpleado']
+					  ]);
+	}
 }

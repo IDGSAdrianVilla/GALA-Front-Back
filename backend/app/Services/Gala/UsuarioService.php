@@ -72,12 +72,44 @@ class UsuarioService
         );
     }
 
-    public function consultaDatosModificacion( $pkusuario ){
-        $usuarioModificar = $this->usuarioRepository->consultaDatosModificacion( $pkusuario );
+    public function consultarDatosUsuarioModificacion( $pkusuario ){
+        $usuarioModificar = $this->usuarioRepository->consultarDatosUsuarioModificacion( $pkusuario );
         return response()->json(
             [
                 'message' => 'Se encontró con éxito la información',
                 'data' => $usuarioModificar
+            ]
+        );
+    }
+
+    public function modificarDatosUsuario( $datosModificacion ){
+        $validarUsuario = $this->usuarioRepository->validarUsuarioPorTelefono(
+            $datosModificacion['informacionPersonal']['telefonoEmpleado'],
+            $datosModificacion['pkUsuarioModificacion']
+        );
+        
+        if ( $validarUsuario > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un registro con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+        //crearEmpleadoNuevo
+        //crearUsuarioNuevo
+        //crearDireccionEmpleado
+        DB::beginTransaction();
+            $pkEmpleado = $this->usuarioRepository->obtenerPkEmpleado( $datosModificacion['pkUsuarioModificacion'] );
+            $this->usuarioRepository->modificarDatosEmpleado( $pkEmpleado, $datosModificacion['informacionPersonal'] );
+            $this->usuarioRepository->modificarDatosUsuario( $datosModificacion['pkUsuarioModificacion'], $datosModificacion['rolPermisos'] );
+            $this->usuarioRepository->modificarDatosDireccion( $datosModificacion['direccion'], $pkEmpleado);
+        DB::commit();
+        
+        return response()->json(
+            [
+                'message' => 'Se modificó con éxito el usuario'
             ]
         );
     }
