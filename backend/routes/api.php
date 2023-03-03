@@ -19,4 +19,10 @@ Route::post('/auth', 'App\Http\Controllers\Auth\LoginController@auth');
 Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
 
 Route::post('/usuarios/obtenerInformacion', 'App\Http\Controllers\Gala\UsuarioController@obtenerInformacion');
+Route::post('/usuarios/crearUsuarioNuevo', 'App\Http\Controllers\Gala\UsuarioController@crearUsuarioNuevo');
+Route::post('/usuarios/consultaUsuariosPorRoles', 'App\Http\Controllers\Gala\UsuarioController@consultaUsuariosPorRoles');
+Route::post('/usuarios/consultarDatosUsuarioModificacion', 'App\Http\Controllers\Gala\UsuarioController@consultarDatosUsuarioModificacion');
+Route::post('/usuarios/modificarDatosUsuario', 'App\Http\Controllers\Gala\UsuarioController@modificarDatosUsuario');
 
+Route::get('/catalogos/obtenerPoblaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerPoblaciones');
+Route::get('/catalogos/obtenerRoles', 'App\Http\Controllers\Gala\CatalogoController@obtenerRoles');

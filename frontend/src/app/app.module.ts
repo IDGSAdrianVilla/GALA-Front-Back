@@ -13,6 +13,7 @@ import { AppRoutes } from './app.routing';
 import { HomeModule } from './gala/home/home.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidarAuthComponent } from './validar-auth/validar-auth.component';
+
 @NgModule({
   declarations: [
     AppComponent,

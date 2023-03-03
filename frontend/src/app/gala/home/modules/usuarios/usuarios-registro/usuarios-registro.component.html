@@ -22,7 +22,7 @@
               </li>
 
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-direccion">Dirección</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-direccion">Dirección Personal</button>
               </li>
 
               <li class="nav-item">
@@ -38,40 +38,47 @@
 
               <div class="tab-pane fade show active profile-edit" id="profile-informacion">
 
-                <form class="row g-3" autocomplete="off">
-                  <div class="col-md-12">
-                    <label for="nombreEmpleado" class="form-label">Nombre(s):</label>
-                    <input name="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)">
+                <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
+
+                <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
+                  <div class="col-md-6">
+                    <label for="nombreEmpleado" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
+                    <input formControlName="nombreEmpleado" type="text" class="form-control" id="nombreEmpleado" placeholder="Nombre(s)" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
-                    <label for="apellidoPaternoEmpleado" class="form-label">Apellido Paterno:</label>
-                    <input name="apellidoPaternoEmpleado" type="text" class="form-control" id="apellidoPaternoEmpleado" placeholder="Apellido Paterno">
+                    <label for="apellidoPaternoEmpleado" class="form-label">Apellido Paterno <b style="color: brown;">*</b>:</label>
+                    <input formControlName="apellidoPaternoEmpleado" type="text" class="form-control" id="apellidoPaternoEmpleado" placeholder="Apellido Paterno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                   </div>
 
                   <div class="col-md-6">
-                    <label for="apellidoMaterno" class="form-label">Apellido Materno:</label>
-                    <input name="apellidoMaterno" type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno">
+                    <label for="apellidoMaternoEmpleado" class="form-label">Apellido Materno:</label>
+                    <input formControlName="apellidoMaternoEmpleado" type="text" class="form-control" id="apellidoMaternoEmpleado" placeholder="Apellido Materno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                   </div>
 
-                  <div class="col-md-5">
-                    <label for="sexoEmpleado" class="form-label">Sexo:</label>
+                  <div class="col-md-6">
+                    <label for="telefonoEmpleado" class="form-label">Teléfono <b style="color: brown;">*</b>":</label>
+                    <input formControlName="telefonoEmpleado" type="text" class="form-control" id="telefonoEmpleado" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="sexoEmpleado" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
                     <section style="text-align: center;">
-                      <input class="form-check-input" type="radio" name="sexoEmpleado" id="sexoEmpleadoM" value="M" checked>
+                      <input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoM" value="M">
                       <label class="form-check-label" for="sexoEmpleadoM">&nbsp;Masculino</label>
-                      &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" name="sexoEmpleado" id="sexoEmpleadoF" value="F">
+                      &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoEmpleado" id="sexoEmpleadoF" value="F">
                       <label class="form-check-label" for="sexoEmpleadoF">&nbsp;Femenino</label>
                     </section>
                   </div>
 
-                  <div class="col-md-7">
-                    <label for="fechaNacimientoEmpleado" class="form-label">Fecha de Nacimiento:</label>
-                    <input name="fechaNacimientoEmpleado" type="date" class="form-control" id="fechaNacimientoEmpleado">
+                  <div class="col-md-6">
+                    <label for="fechaNacimientoEmpleado" class="form-label">Fecha de Nacimiento <b style="color: brown;">*</b>:</label>
+                    <input formControlName="fechaNacimientoEmpleado" type="date" class="form-control" id="fechaNacimientoEmpleado">
                   </div>
 
                   <div class="col-12">
-                    <label for="observaciones" class="form-label">Observaciones:</label>
-                    <textarea name="observaciones" class="form-control" id="observaciones" style="height: 100px" placeholder="Observaciones"></textarea>
+                    <label for="observacionesEmpleado" class="form-label">Observaciones:</label>
+                    <textarea formControlName="observacionesEmpleado" class="form-control" id="observacionesEmpleado" style="height: 100px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
                 </form>
 
@@ -79,90 +86,126 @@
 
               <div class="tab-pane fade pt-3 profile-edit" id="profile-direccion">
 
-                <form class="row g-3" autocomplete="off">
+                <h5 class="card-title" align="center">Dirección personal</h5>
+
+                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
                   <div class="col-md-6">
-                    <label for="poblacionEmpleado" class="form-label">Población:</label>
-                    <select name="poblacionEmpleado" id="poblacionEmpleado" class="form-control">
-                      <option style="display: none; visibility: hidden;">Seleccione una poblacion</option>
+                    <label for="poblacionEmpleado" class="form-label">Población <b style="color: brown;">*</b>:</label>
+                    <select formControlName="poblacionEmpleado" id="poblacionEmpleado" class="form-control">
+                      <option value="" style="display: none; visibility: hidden;">Seleccione una Población</option>
+                      <option *ngFor="let opcionPoblacion of this.poblaciones" value="{{opcionPoblacion.PkCatPoblacion}}">{{opcionPoblacion.NombrePoblacion}}</option>
                     </select>
                   </div>
 
                   <div class="col-md-6">
                     <label for="coordenadasEmpleado" class="form-label">Coordenadas:</label>
-                    <input name="coordenadasEmpleado" type="text" class="form-control" id="coordenadasEmpleado" placeholder="Coordenadas">
+                    <input formControlName="coordenadasEmpleado" type="text" class="form-control" id="coordenadasEmpleado" placeholder="Coordenadas" (keypress)="this.funcionGenerica.soloTexto($event)">
                   </div>
 
                   <div class="col-md-12">
-                    <label for="calleEmpleado" class="form-label">Calle:</label>
-                    <input name="calleEmpleado" type="text" class="form-control" id="calleEmpleado" placeholder="Calle">
+                    <label for="calleEmpleado" class="form-label">Calle <b style="color: brown;">*</b>:</label>
+                    <input formControlName="calleEmpleado" type="text" class="form-control" id="calleEmpleado" placeholder="Calle" (keypress)="this.funcionGenerica.soloTexto($event)">
                   </div>
 
                   <div class="col-6">
-                    <label for="referenciasDomicilioEmpleado" class="form-label">Referencias:</label>
-                    <textarea name="referenciasDomicilioEmpleado" class="form-control" id="referenciasDomicilioEmpleado" style="height: 65px" placeholder="Referencias del Domicilio"></textarea>
+                    <label for="referenciasDomicilioEmpleado" class="form-label">Referencias <b style="color: brown;">*</b>:</label>
+                    <textarea formControlName="referenciasDomicilioEmpleado" class="form-control" id="referenciasDomicilioEmpleado" style="height: 65px" placeholder="Referencias del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
 
                   <div class="col-6">
                     <label for="caracteristicasDomicilioEmpleado" class="form-label">Características:</label>
-                    <textarea name="caracteristicasDomicilioEmpleado" class="form-control" id="caracteristicasDomicilioEmpleado" style="height: 65px" placeholder="Características del Domicilio"></textarea>
+                    <textarea formControlName="caracteristicasDomicilioEmpleado" class="form-control" id="caracteristicasDomicilioEmpleado" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
                 </form>
-
               </div>
 
               <div class="tab-pane fade pt-3" id="profile-rol-permisos">
+                <h5 class="card-title" align="center">Rol y permisos dentro del sistema</h5>
 
-                <form autocomplete="off">
-                  <ul>
-                    <ng-container *ngFor="let item of items">
-                      <li>
-                        <input type="checkbox" [checked]="item.checked" (change)="check(item, $event.target.checked)">
-                        {{ item.label }}
-                        <ul *ngIf="item.children?.length">
-                          <ng-container *ngFor="let child of item.children">
-                            <li>
-                              <input type="checkbox" [checked]="child.checked" (change)="check(child, $event.target.checked)">
-                              {{ child.label }}
-                            </li>
-                          </ng-container>
-                        </ul>
-                      </li>
-                    </ng-container>
-                  </ul>
-                  
+                <form class="row g-3" autocomplete="off" [formGroup]="formPermisosRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
+
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 30px;">
+                    <h4 class="alert-heading">Aviso importante!</h4>
+                    <ul style="text-align: justify;">
+                      <li>Al seccionar un Rol se habilitaran por defecto los permisos correspondientes recomendados por el sistema.</li>
+                      <li>Para denegar el acceso a un módulo en general, es suficiente con desactivar el switch del nombre del módulo.</li>
+                      <li>Para denegar algún permiso sobre un módulo específico es suficiente con desactivar el switch del permiso que se quiere omitir para el perfil a generar.</li>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
+                  <div class="col-md-12 col-lg-12">
+                    <label for="rolEmpleado" class="form-label">Rol <b style="color: brown;">*</b>:</label>
+                    <select formControlName="rolEmpleado" id="rolEmpleado" class="form-control" (change)="asignarPermisosPorRol()">
+                      <option style="display: none; visibility: hidden;" value="">Seleccione un Rol</option>
+                      <option *ngFor="let rol of this.roles" value="{{rol.PkCatRol}}">{{rol.NombreRol}}</option>
+                    </select>
+                  </div>
+
+                  <hr>
+
+                  <div *ngIf="this.objetoPermisos.length > 0">
+                    <section class="row" *ngFor="let permisos of this.objetoPermisos">
+                      <div class="col" *ngFor="let permiso of permisos.permisosRol" style="margin-bottom: 10px;">
+                        <div class="form-check form-switch" style="margin-top: 5px;">
+                          <input class="form-check-input"
+                                 type="checkbox"
+                                 id="modulo-{{permiso.modulo}}"
+                                 [checked]="permiso.status"
+                                 (change)="this.funcionGenerica.actualizoPadre($event)"
+                                 (change)="actualizarObjetoPermisosPadre(permiso.modulo, $event)"
+                          >
+                          <label class="form-check-label" for="modulo-{{permiso.modulo}}"><b>{{permiso.nombreModulo}}</b></label>
+                    
+                          <div class="form-check form-switch" *ngFor="let hijos of permiso.permisosModulo">
+                            <input class="form-check-input permiso-{{permiso.modulo}}"
+                                   type="checkbox"
+                                   id="permiso-{{permiso.modulo}}-{{hijos.permiso}}"
+                                   [checked]="hijos.status"
+                                   [disabled]="hijos.disabled"
+                                   (change)="this.funcionGenerica.actualizoHijo($event)"
+                                   (change)="actualizarObjetoPermisosHijo(permiso.modulo, hijos.permiso, $event)"
+                            >
+                            <label class="form-check-label" for="permiso-{{permiso.modulo}}-{{hijos.permiso}}">{{hijos.nombre}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+
                 </form>
 
               </div>
 
               <div class="tab-pane fade pt-3 profile-edit" id="profile-credenciales">
-                <!-- Change Password Form -->
-                <form>
+                
+                <h5 class="card-title" align="center">Credenciales de ingreso</h5>
+                
+                <form class="row g-3" autocomplete="off" [formGroup]="formCredencialesRegistro">
 
-                  <div class="row mb-3">
-                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control" id="currentPassword">
-                    </div>
+                  <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 30px;">
+                    <h4 class="alert-heading">Aviso importante!</h4>
+                    <i class="bi bi-warning-circle me-1"></i>Por defecto al crear un usuario nuevo esta precargada la contraseña <b>"emenetSistemas2021"</b>, la cual se recomienda cambiar por el usuario para evitar vulnerabilidades en GALA.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="newpassword" type="password" class="form-control" id="newPassword">
-                    </div>
+                  <div class="col-md-12">
+                    <label for="correoEmpleado" class="form-label">Correo <b style="color: brown;">*</b>:</label>
+                    <input formControlName="correoEmpleado" type="email" class="form-control" id="correoEmpleado" placeholder="ejemplo@gmail.com" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                    </div>
+                  <div class="col-md-6">
+                    <label for="passwordEmpleado" class="form-label">Contraseña <b style="color: brown;">*</b>:</label>
+                    <input formControlName="passwordEmpleado" type="password" class="form-control" id="passwordEmpleado" placeholder="Contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Change Password</button>
+                  <div class="col-md-6">
+                    <label for="valPassword" class="form-label">Confirmar contraseña <b style="color: brown;">*</b>:</label>
+                    <input formControlName="valPassword" type="password" class="form-control" id="valPassword" placeholder="Confirmar contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
-                </form><!-- End Change Password Form -->
+
+                  <input type="button" class="btn btn-primary" (click)="crearNuevoUsuario()" value="Crear nuevo usuario">
+                </form>
 
               </div>
 
@@ -178,9 +221,16 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <h2>Kevin Anderson</h2>
-            <h3>Web Designer</h3>
+            <img src="assets/img/{{this.prevUsuarioNuevo.sexoEmpleado != undefined && this.prevUsuarioNuevo.sexoEmpleado != '' ? this.prevUsuarioNuevo.sexoEmpleado : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+            <hr>
+            <h2 *ngIf="this.prevUsuarioNuevo.nombreEmpleado != undefined || this.prevUsuarioNuevo.apellidoPaternoEmpleado != undefined">
+              {{ this.prevUsuarioNuevo.nombreEmpleado+ ' ' +this.prevUsuarioNuevo.apellidoPaternoEmpleado }}
+            </h2>
+            <h3 *ngIf="this.prevUsuarioNuevo.rolEmpleado != ''"><b>{{this.prevUsuarioNuevo.rolEmpleado}}</b></h3>
+            <h3 *ngIf="this.prevUsuarioNuevo.poblacionEmpleado != ''">{{this.prevUsuarioNuevo.poblacionEmpleado}}</h3>
+            <h3 *ngIf="this.prevUsuarioNuevo.telefonoEmpleado != ''">{{this.prevUsuarioNuevo.telefonoEmpleado}}</h3>
+            <!--h3>Web Designer</!--h3-->
+            <hr>
             <div class="social-links mt-2">
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
