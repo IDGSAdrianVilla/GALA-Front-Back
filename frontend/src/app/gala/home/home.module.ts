@@ -6,6 +6,9 @@ import { UsuariosRegistroComponent } from './modules/usuarios/usuarios-registro/
 import { UsuariosModificacionComponent } from './modules/usuarios/usuarios-modificacion/usuarios-modificacion.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuariosConsultaComponent } from './modules/usuarios/usuarios-consulta/usuarios-consulta.component';
+import { ClientesRegistroComponent } from './modules/clientes/clientes-registro/clientes-registro.component';
+import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/clientes-consulta.component';
+import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
 
 @NgModule({
   imports: [
@@ -17,7 +20,10 @@ import { UsuariosConsultaComponent } from './modules/usuarios/usuarios-consulta/
   declarations: [
     UsuariosRegistroComponent,
     UsuariosModificacionComponent,
-    UsuariosConsultaComponent
+    UsuariosConsultaComponent,
+    ClientesRegistroComponent,
+    ClientesConsultaComponent,
+    ClientesModificacionComponent
   ]
 })
 export class HomeModule { }

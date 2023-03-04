@@ -204,7 +204,10 @@
                     <input formControlName="valPassword" type="password" class="form-control" id="valPassword" placeholder="Confirmar contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
-                  <input type="button" class="btn btn-primary" (click)="crearNuevoUsuario()" value="Crear nuevo usuario">
+                  <div class="col-md-12 col-lg-12">
+                    <button type="button" class="btn btn-primary form-control" (click)="crearNuevoUsuario()"><b>Crear Nuevo Usuario</b></button>
+                  </div>
+                  
                 </form>
 
               </div>
