@@ -102,7 +102,8 @@ export class UsuariosModificacionComponent implements OnInit{
 
   obtenerPermisosPorRol () : any {
     const rolSeleccionado = this.formPermisosRegistro.get('rolEmpleado')?.value;
-    return JSON.parse( this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos.replace(/'/g, '"') );
+    const cadenaObjeto = this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos;
+    return this.funcionGenerica.obtenerObjetoPermisosDesdeCadena( cadenaObjeto );
   }
 
   consultarDatosUsuarioModificacion() : Promise<any> {
@@ -143,11 +144,11 @@ export class UsuariosModificacionComponent implements OnInit{
   }
 
   cargarObjetoPermisos() : void {
-    const objetoTemporal = this.datosUsuarioModificacion.ObjetoPermisosEspeciales != null ?
+    const cadenaObjeto = this.datosUsuarioModificacion.ObjetoPermisosEspeciales != null ?
                            this.datosUsuarioModificacion.ObjetoPermisosEspeciales :
                            this.datosUsuarioModificacion.ObjetoPermisos;
 
-    this.objetoPermisos = JSON.parse(objetoTemporal.replace(/'/g, '"'));
+    this.objetoPermisos = this.funcionGenerica.obtenerObjetoPermisosDesdeCadena( cadenaObjeto );
   }
 
   actualizarObjetoPermisosPadre( modulo : string, event: Event ) : void {

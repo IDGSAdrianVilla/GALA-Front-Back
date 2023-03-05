@@ -109,7 +109,8 @@ export class UsuariosRegistroComponent implements OnInit {
 
   obtenerPermisosPorRol () : any {
     const rolSeleccionado = this.formPermisosRegistro.get('rolEmpleado')?.value;
-    return JSON.parse( this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos.replace(/'/g, '"') );
+    const cadenaObjeto = this.roles.filter( (rol : any) => rol.PkCatRol == rolSeleccionado )[0].ObjetoPermisos;
+    return this.funcionGenerica.obtenerObjetoPermisosDesdeCadena( cadenaObjeto );
   }
 
   actualizarObjetoPermisosPadre( modulo : string, event: Event ) : void {
