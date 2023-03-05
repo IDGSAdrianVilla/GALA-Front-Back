@@ -35,33 +35,37 @@ export class AdminGuard implements CanActivate {
     }
 
     let token = localStorage.getItem('token');
-    if (token != undefined) {
-      this.loginService.auth(token).subscribe(
-        status => {
-          if (status) {
-            return true;
-          } else {
-            localStorage.removeItem('token');
-            localStorage.clear();
-            this.router.navigate(['/']);
-            this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
-            return false;
-          }
-        },
-        error => {
-          localStorage.removeItem('token');
-          localStorage.clear();
-          this.router.navigate(['/']);
-          this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error');
-          return false;
-        }
-      );
-    } else {
+
+    if (
+      token == undefined ||
+      token == null
+    ) {
       localStorage.removeItem('token');
       localStorage.clear();
       this.router.navigate(['/']);
       this.mensajes.mensajeGenerico('Para navegar dentro de GALA se necesita inicar sesión antes', 'info');
       return false;
     }
+
+    this.loginService.auth(token).subscribe(
+      status => {
+        if (status) {
+          return true;
+        } else {
+          localStorage.removeItem('token');
+          localStorage.clear();
+          this.router.navigate(['/']);
+          this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
+          return false;
+        }
+      },
+      error => {
+        localStorage.removeItem('token');
+        localStorage.clear();
+        this.router.navigate(['/']);
+        this.mensajes.mensajeGenerico('Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas', 'error');
+        return false;
+      }
+    );
   }
 }
