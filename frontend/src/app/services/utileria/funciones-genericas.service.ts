@@ -93,7 +93,7 @@ export class FuncionesGenericasService {
     return data;
   }
 
-  actualizarObjetoPermisosHijo( modulo : string, permiso : string, status: boolean, data : any ) : void {
+  actualizarObjetoPermisosHijo( modulo : string, permiso : string, status: boolean, data : any ) : any {
     data[0].permisosRol.forEach((padre : any) => {
       if ( padre.modulo == modulo ) {
         padre.permisosModulo.forEach((hijo : any) => {
@@ -105,5 +105,9 @@ export class FuncionesGenericasService {
     });
 
     return data;
+  }
+
+  obtenerObjetoPermisosDesdeCadena ( cadenaObjeto : string ) : any {
+    return JSON.parse( cadenaObjeto.replace(/'/g, '"') );
   }
 }
