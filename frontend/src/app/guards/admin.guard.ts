@@ -3,16 +3,23 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { LoginService } from '../auth/services/login.service';
 import { MensajesService } from '../services/mensajes/mensajes.service';
+import { FuncionesGenericasService } from '../services/utileria/funciones-genericas.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
+  private previousUrl: string = '/gala/inicio';
+
+  private exepcionesRutas : string[] = [
+    'inicio'
+  ];
 
   constructor (
     private router : Router,
     private mensajes : MensajesService,
-    private loginService : LoginService
+    private loginService : LoginService,
+    private funcionGenerica : FuncionesGenericasService
   ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -34,16 +41,23 @@ export class AdminGuard implements CanActivate {
       return true;
     }
 
-    let token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    const cadenaPermisos = localStorage.getItem('permisos');
 
     if (
-      token == undefined ||
-      token == null
+      ( token == undefined || token == null ) &&
+      ( cadenaPermisos == undefined || cadenaPermisos == null )
     ) {
       localStorage.removeItem('token');
       localStorage.clear();
       this.router.navigate(['/']);
       this.mensajes.mensajeGenerico('Para navegar dentro de GALA se necesita inicar sesión antes', 'info');
+      return false;
+    }
+
+    if ( !this.validarAccesoRuta(url) ) {
+      this.router.navigate([this.previousUrl]);
+      this.mensajes.mensajeGenerico('Al parecer no tienes permitida esta acción', 'error');
       return false;
     }
 
@@ -67,5 +81,27 @@ export class AdminGuard implements CanActivate {
         return false;
       }
     );
+  }
+
+  validarAccesoRuta ( ruta : string ) : boolean {
+    const nombreModulo = ruta.replace('/gala/', '').split('/')[0];
+
+    if ( !this.exepcionesRutas.includes(nombreModulo) ) {
+      const cadenaPermisos : any = localStorage.getItem('permisos');
+      const permisos = this.funcionGenerica.obtenerObjetoPermisosDesdeCadena(cadenaPermisos);
+
+      const objetoModulo = permisos[0].permisosRol.filter((item : any) => item.modulo == nombreModulo );
+
+      console.log(objetoModulo);
+
+      if ( objetoModulo.length > 0 ) {
+        return objetoModulo[0].status;
+      }
+
+      return false;
+    }
+
+    this.previousUrl = ruta;
+    return true;
   }
 }

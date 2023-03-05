@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', respuesta.data.token);
           localStorage.setItem('permisos', respuesta.data.permisos);
 
-          console.log(respuesta);
           this.router.navigate(['/gala/inicio']);
           this.mensajes.cerrarMensajes();
         } else {
