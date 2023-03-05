@@ -60,7 +60,10 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.formLogin.value).subscribe(
       respuesta => {
         if(respuesta.status == 200){
-          localStorage.setItem('token', respuesta.data);
+          localStorage.setItem('token', respuesta.data.token);
+          localStorage.setItem('permisos', respuesta.data.permisos);
+
+          console.log(respuesta);
           this.router.navigate(['/gala/inicio']);
           this.mensajes.cerrarMensajes();
         } else {

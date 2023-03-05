@@ -50,6 +50,19 @@ class LoginRepository
         return $registro->Token;
     }
 
+    public function obtenerPermisosPorPK ( $pkUsuario ) {
+        $permisos = DB::table('vistageneralusuarios')
+                      ->selectRaw('
+                            CASE
+                                WHEN ObjetoPermisosEspeciales IS NULL THEN ObjetoPermisos 
+                                ELSE ObjetoPermisosEspeciales 
+                            END AS permisos
+                      ')
+                      ->where('PkTblUsuario', $pkUsuario);
+                      
+        return $permisos->get()[0]->permisos;
+    }
+
     public function auth( $token ){
         $sesiones = TblSesiones::where('Token', '=', $token)->count();
         return $sesiones > 0 ? 'true' : 'false';

@@ -46,12 +46,16 @@ class LoginService
 
         DB::beginTransaction();
             $this->loginRepository->depurarSesionPorPK( $pkUsuario );
-            $token = $this->loginRepository->crearSesionYAsignarToken( $pkUsuario );
+            $token      = $this->loginRepository->crearSesionYAsignarToken( $pkUsuario );
+            $permisos   = $this->loginRepository->obtenerPermisosPorPK( $pkUsuario );
         DB::commit();
         
         return response()->json(
             [
-                'data' => $token,
+                'data' => [
+                    'token'     => $token,
+                    'permisos'  => $permisos
+                ],
                 'status' => 200
             ],
             200
