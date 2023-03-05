@@ -60,11 +60,13 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.formLogin.value).subscribe(
       respuesta => {
         if(respuesta.status == 200){
-          localStorage.setItem('token', respuesta.data);
+          localStorage.setItem('token', respuesta.data.token);
+          localStorage.setItem('permisos', respuesta.data.permisos);
+
           this.router.navigate(['/gala/inicio']);
           this.mensajes.cerrarMensajes();
         } else {
-          this.mensajes.mensajeGenerico('Upss! Al parecer las credenciales no son correctas para poder ingresar', 'info');
+          this.mensajes.mensajeGenerico(respuesta.mensaje, 'warning');
         }       
       },
       error => {
