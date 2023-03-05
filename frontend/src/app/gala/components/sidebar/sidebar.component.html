@@ -1,70 +1,184 @@
 <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+  <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['inicio']">
-          <i class="bi bi-grid"></i>
-          <span>Inicio</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['inicio']">
+        <i class="bi bi-grid"></i>
+        <span>Inicio</span>
+      </a>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Reportes</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a [routerLink]="['reportes/pendientes']">
-              <i class="bi bi-circle"></i><span>Pendientes</span>
-            </a>
-          </li>
-          <li>
-            <a [routerLink]="['reportes/atendidos']">
-              <i class="bi bi-circle"></i><span>Atendidos</span>
-            </a>
-          </li>
-        </ul>
-      </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-reportes" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-calendar-x"></i><span>Reportes</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-reportes" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Pendientes</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Atendidos</span>
+          </a>
+        </li>
+      </ul>
+    </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav1" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-people"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a [routerLink]="['clientes/registro']">
-              <i class="bi bi-circle"></i><span>Registro</span>
-            </a>
-          </li>
-          <li>
-            <a [routerLink]="['clientes']">
-              <i class="bi bi-circle"></i><span>Consulta de Clientes</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Components Nav -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-instalaciones" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-tools"></i><span>Instalaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-instalaciones" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Pendientes</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Atendidas</span>
+          </a>
+        </li>
+      </ul>
+    </li>
 
-      <li class="nav-heading">Admin</li>
+    <li class="nav-heading">Insumos</li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav2" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-person-plus"></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a [routerLink]="['usuarios/registro']">
-              <i class="bi bi-circle"></i><span>Registro</span>
-            </a>
-          </li>
-          <li>
-            <a [routerLink]="['usuarios']">
-              <i class="bi bi-circle"></i><span>Consulta de Usuarios</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Components Nav -->
-      
-    </ul>
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-poblaciones" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-compass"></i><span>Poblaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-poblaciones" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
 
-  </aside><!-- End Sidebar-->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-problemas" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-folder-x"></i><span>Problemas</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-problemas" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-tipos-instalacion" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-folder-check"></i><span>Tipos de instalación</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-tipos-instalacion" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-roles" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Roles</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-roles" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-heading">Administración</li>
+    
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-clientes" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-people"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-clientes" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a [routerLink]="['clientes/registro']">
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['clientes']">
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-usuarios" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-file-person"></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-usuarios" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a [routerLink]="['usuarios/registro']">
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['usuarios']">
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-heading">Bitacoras</li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed">
+        <i class="bi bi-file-earmark-ruled"></i><span>Sesiones</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed">
+        <i class="bi bi-list-ol"></i><span>Acciones</span>
+      </a>
+    </li>
+
+    <li class="nav-heading">Reportes del sistema</li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed">
+        <i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span>
+      </a>
+    </li>
+    
+  </ul>
+
+</aside>
