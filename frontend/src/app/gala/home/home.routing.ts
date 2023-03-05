@@ -5,6 +5,9 @@ import { AdminGuard } from '../../guards/admin.guard';
 import { UsuariosRegistroComponent } from './modules/usuarios/usuarios-registro/usuarios-registro.component';
 import { UsuariosConsultaComponent } from './modules/usuarios/usuarios-consulta/usuarios-consulta.component';
 import { UsuariosModificacionComponent } from './modules/usuarios/usuarios-modificacion/usuarios-modificacion.component';
+import { ClientesRegistroComponent } from './modules/clientes/clientes-registro/clientes-registro.component';
+import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/clientes-consulta.component';
+import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -27,6 +30,18 @@ export const HomeRoutes: Routes = [
       {
         path : 'usuarios/modificacion/:pkusuario',
         component: UsuariosModificacionComponent
+      },
+      {
+        path : 'clientes/registro',
+        component: ClientesRegistroComponent
+      },
+      {
+        path : 'clientes',
+        component: ClientesConsultaComponent
+      },
+      {
+        path : 'clientes/modificacion/:pkcliente',
+        component: ClientesModificacionComponent
       }
     ]
   }

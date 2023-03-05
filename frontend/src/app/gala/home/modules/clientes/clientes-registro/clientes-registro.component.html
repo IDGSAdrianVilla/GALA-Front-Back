@@ -1,0 +1,151 @@
+<div class="pagetitle">
+    <h1>Registro de clientes</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Cliente</li>
+            <li class="breadcrumb-item active">Registro</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section profile">
+    <div class="row">
+      <div class="col-xl-8">
+
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-informacion">Información Personal</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-direccion">Dirección Personal</button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade show active profile-edit" id="profile-informacion">
+
+                <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
+
+                <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro" (input)="prevNuevoCliente()" (change)="prevNuevoCliente()">
+                  <div class="col-md-6">
+                    <label for="nombreCliente" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
+                    <input formControlName="nombreCliente" type="text" class="form-control" id="nombreCliente" placeholder="Nombre(s)" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="apellidoPaternoCliente" class="form-label">Apellido Paterno <b style="color: brown;">*</b>:</label>
+                    <input formControlName="apellidoPaternoCliente" type="text" class="form-control" id="apellidoPaternoCliente" placeholder="Apellido Paterno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="apellidoMaternoCliente" class="form-label">Apellido Materno:</label>
+                    <input formControlName="apellidoMaternoCliente" type="text" class="form-control" id="apellidoMaternoCliente" placeholder="Apellido Materno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="telefonoCliente" class="form-label">Teléfono <b style="color: brown;">*</b>":</label>
+                    <input formControlName="telefonoCliente" type="text" class="form-control" id="telefonoCliente" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="sexoCliente" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
+                    <section style="text-align: center;">
+                      <input class="form-check-input" type="radio" formControlName="sexoCliente" id="sexoClienteM" value="M">
+                      <label class="form-check-label" for="sexoClienteM">&nbsp;Masculino</label>
+                      &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoCliente" id="sexoClienteF" value="F">
+                      <label class="form-check-label" for="sexoClienteF">&nbsp;Femenino</label>
+                    </section>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="fechaNacimientoCliente" class="form-label">Fecha de Nacimiento <b style="color: brown;">*</b>:</label>
+                    <input formControlName="fechaNacimientoCliente" type="date" class="form-control" id="fechaNacimientoCliente">
+                  </div>
+
+                  <div class="col-12">
+                    <label for="observacionesCliente" class="form-label">Observaciones:</label>
+                    <textarea formControlName="observacionesCliente" class="form-control" id="observacionesCliente" style="height: 100px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                  </div>
+                </form>
+
+              </div>
+
+              <div class="tab-pane fade pt-3 profile-edit" id="profile-direccion">
+
+                <h5 class="card-title" align="center">Dirección personal</h5>
+
+                <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro" (input)="prevNuevoCliente()" (change)="prevNuevoCliente()">
+                  <div class="col-md-6">
+                    <label for="poblacionCliente" class="form-label">Población <b style="color: brown;">*</b>:</label>
+                    <select formControlName="poblacionCliente" id="poblacionCliente" class="form-control">
+                      <option value="" style="display: none; visibility: hidden;">Seleccione una Población</option>
+                      <option *ngFor="let opcionPoblacion of this.poblaciones" value="{{opcionPoblacion.PkCatPoblacion}}">{{opcionPoblacion.NombrePoblacion}}</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="coordenadasCliente" class="form-label">Coordenadas:</label>
+                    <input formControlName="coordenadasCliente" type="text" class="form-control" id="coordenadasCliente" placeholder="Coordenadas" (keypress)="this.funcionGenerica.soloTexto($event)">
+                  </div>
+
+                  <div class="col-md-12">
+                    <label for="calleCliente" class="form-label">Calle <b style="color: brown;">*</b>:</label>
+                    <input formControlName="calleCliente" type="text" class="form-control" id="calleCliente" placeholder="Calle" (keypress)="this.funcionGenerica.soloTexto($event)">
+                  </div>
+
+                  <div class="col-6">
+                    <label for="referenciasDomicilioCliente" class="form-label">Referencias <b style="color: brown;">*</b>:</label>
+                    <textarea formControlName="referenciasDomicilioCliente" class="form-control" id="referenciasDomicilioCliente" style="height: 65px" placeholder="Referencias del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                  </div>
+
+                  <div class="col-6">
+                    <label for="caracteristicasDomicilioCliente" class="form-label">Características:</label>
+                    <textarea formControlName="caracteristicasDomicilioCliente" class="form-control" id="caracteristicasDomicilioCliente" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                  </div>
+                  
+                  <div class="col-md-12 col-lg-12">
+                    <button type="button" class="btn btn-primary form-control" (click)="crearNuevoCliente()"><b>Crear Nuevo Cliente</b></button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xl-4">
+
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+            <img src="assets/img/{{this.prevClienteNuevo.sexoCliente != undefined && this.prevClienteNuevo.sexoCliente != '' ? this.prevClienteNuevo.sexoCliente : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+            <hr>
+            <h2 *ngIf="this.prevClienteNuevo.nombreCliente != undefined || this.prevClienteNuevo.apellidoPaternoCliente != undefined">
+              {{ this.prevClienteNuevo.nombreCliente+ ' ' +this.prevClienteNuevo.apellidoPaternoCliente }}
+            </h2>
+            <h3 *ngIf="this.prevClienteNuevo.poblacionCliente != ''">{{this.prevClienteNuevo.poblacionCliente}}</h3>
+            <h3 *ngIf="this.prevClienteNuevo.telefonoCliente != ''">{{this.prevClienteNuevo.telefonoCliente}}</h3>
+            <!--h3>Web Designer</!--h3-->
+            <hr>
+            <div class="social-links mt-2">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
