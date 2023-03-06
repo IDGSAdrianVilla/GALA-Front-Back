@@ -48,8 +48,4 @@ class ClienteService
             200
         );
     }
-
-    public function holi(){
-        Log::alert('holi');
-    }
 }

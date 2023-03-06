@@ -20,10 +20,7 @@ class ClienteController extends Controller
 
     public function crearNuevoCliente( Request $request ){
         try{
-            log::alert($request);
-            $this->clienteService->holi();
             return $this->clienteService->crearNuevoCliente($request->all());
-
         } catch( \Exception $error) {
             Log::alert($error);
             return response()->json(
