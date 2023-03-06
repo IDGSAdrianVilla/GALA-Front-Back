@@ -71,7 +71,7 @@ class UsuarioRepository
 		$registro->FkTblEmpleado 			= $fkEmpleado; 
 		$registro->FkCatRol 				= $rolPermisos['rolEmpleado'];
 		$registro->Correo 					= trim($credenciales['correoEmpleado']);
-		$registro->Password 				= trim($credenciales['passwordEmpleado']);
+		$registro->Password 				= bcrypt(trim($credenciales['passwordEmpleado']));
 		$registro->ObjetoPermisosEspeciales = $rolPermisos['objetoPermisos'];
 		$registro->FkTblUsuarioAlta 		= $pkUsuario;
 		$registro->FechaAlta 				= Carbon::now();

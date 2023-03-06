@@ -20,13 +20,18 @@ class LoginRepository
      */
 
     public function validarExistenciaUsuario ( $correo, $password ) {
-        $temporal = TblUsuarios::select('PkTblUsuario')
-                               ->where([
-                                   ['Correo', $correo], 
-                                   ['Password', $password]
-                               ]);
-        
-        return $temporal->get()[0]->PkTblUsuario ?? null;
+        $temporal = TblUsuarios::select(
+                                   'PkTblUsuario',
+                                   'Password'
+                               )
+                               ->where('Correo', $correo)
+                               ->first();
+
+        if ($temporal && password_verify($password, $temporal->Password)) {
+            return $temporal->PkTblUsuario;
+        } else {
+            return null;
+        }
     }
 
     public function validarUsuarioActivo ( $pkUsuario ) {
@@ -46,7 +51,7 @@ class LoginRepository
     public function crearSesionYAsignarToken ( $pkUsuario ){
         $registro = new TblSesiones();
         $registro->FkTblUsuario = $pkUsuario;
-        $registro->Token        = Str::random(50);
+        $registro->Token        = bcrypt(Str::random(50));
         $registro->save();
         
         return $registro->Token;
