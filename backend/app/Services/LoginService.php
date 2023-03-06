@@ -46,8 +46,9 @@ class LoginService
 
         DB::beginTransaction();
             $this->loginRepository->depurarSesionPorPK( $pkUsuario );
-            $token      = $this->loginRepository->crearSesionYAsignarToken( $pkUsuario );
-            $permisos   = $this->loginRepository->obtenerPermisosPorPK( $pkUsuario );
+            $token = $this->loginRepository->crearSesionYAsignarToken( $pkUsuario );
+            $permisos = $this->loginRepository->obtenerPermisosPorPK( $pkUsuario );
+            $this->bitacoraSesion( $pkUsuario );
         DB::commit();
         
         return response()->json(
@@ -60,6 +61,11 @@ class LoginService
             ],
             200
         );
+    }
+
+    public function bitacoraSesion ( $pkUsuario ) {
+        $this->loginRepository->validarSesionSinFinalizar( $pkUsuario );
+        $this->loginRepository->crearRegistroBitacora( $pkUsuario );
     }
 
     public function auth( $token ){

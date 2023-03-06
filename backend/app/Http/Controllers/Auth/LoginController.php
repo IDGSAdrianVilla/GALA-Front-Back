@@ -12,11 +12,12 @@ class LoginController extends Controller
     protected $loginService;
 
     public function __construct(
-        LoginService $loginService
+        LoginService $LoginService
     )
     {
-        $this->loginService = $loginService;
+        $this->loginService = $LoginService;
     }
+    
     public function login ( Request $request ){
         try{
             return $this->loginService->login( $request->all());

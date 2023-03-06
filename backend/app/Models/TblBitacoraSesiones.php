@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class TblBitacoraSesiones extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkTblBitacoraSesion';
     protected $table = 'tblbitacorasesiones';
-    protected $fillable = 
-    [
-        'PkTblBitacoraSesiones',
+    protected $fillable = [
+        'PkTblBitacoraSesion',
         'FkTblUsuario',
-        'FechaRegistroEntrada',
-        'FechaRegistroSalida'
+        'RegistroEntrada',
+        'RegistroSalida'
     ];
 }

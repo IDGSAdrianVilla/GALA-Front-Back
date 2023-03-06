@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\TblBitacoraSesiones;
 use App\Models\TblSesiones;
 use App\Models\TblUsuarios;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -44,10 +46,33 @@ class LoginRepository
     public function crearSesionYAsignarToken ( $pkUsuario ){
         $registro = new TblSesiones();
         $registro->FkTblUsuario = $pkUsuario;
-        $registro->Token = Str::random(50);
+        $registro->Token        = Str::random(50);
         $registro->save();
         
         return $registro->Token;
+    }
+
+    public function validarSesionSinFinalizar ( $pkUsuario ) {
+        $registro = TblBitacoraSesiones::select('PkTblBitacoraSesion')
+                                       ->where('FkTblUsuario', $pkUsuario)
+                                       ->whereNull('RegistroSalida')
+                                       ->orderBy('PkTblBitacoraSesion', 'desc')
+                                       ->limit(1)
+                                       ->get();
+
+        $pkBS = $registro[0]->PkTblBitacoraSesion ?? null;
+
+        TblBitacoraSesiones::where('PkTblBitacoraSesion', $pkBS)
+                           ->update([
+                               'RegistroSalida' => Carbon::now()
+                           ]);
+    }
+
+    public function crearRegistroBitacora ( $pkUsuario ) {
+        $registro = new TblBitacoraSesiones();
+        $registro->FkTblUsuario    = $pkUsuario;
+        $registro->RegistroEntrada = Carbon::now();
+        $registro->save();
     }
 
     public function obtenerPermisosPorPK ( $pkUsuario ) {
@@ -64,11 +89,20 @@ class LoginRepository
     }
 
     public function auth( $token ){
-        $sesiones = TblSesiones::where('Token', '=', $token)->count();
+        $sesiones = TblSesiones::where('Token', $token)->count();
         return $sesiones > 0 ? 'true' : 'false';
     }
     
     public function logout( $token ){
-        return TblSesiones::where('Token', '=', $token)->delete();
+        $sesion = TblSesiones::where('Token', $token);
+
+        $pkUsuarioSesion = $sesion->get()[0]->FkTblUsuario ?? null;
+
+        TblBitacoraSesiones::where('PkTblBitacoraSesion', $pkUsuarioSesion)
+                           ->update([
+                               'RegistroSalida' => Carbon::now()
+                           ]);
+        
+        $sesion->delete();
     }
 }
