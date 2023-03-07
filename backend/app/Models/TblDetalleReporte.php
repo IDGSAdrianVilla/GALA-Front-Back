@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TblDetalleReporte extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkTblDetalleReporte';
     protected $table = 'tbldetallereporte';
     protected $fillable = 
