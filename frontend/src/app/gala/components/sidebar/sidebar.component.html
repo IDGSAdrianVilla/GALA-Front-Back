@@ -9,7 +9,7 @@
       </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('reportes')">
       <a class="nav-link collapsed" data-bs-target="#components-nav-reportes" data-bs-toggle="collapse" href="#">
         <i class="bi bi-calendar-x"></i><span>Reportes</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -27,7 +27,7 @@
       </ul>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('instalaciones')">
       <a class="nav-link collapsed" data-bs-target="#components-nav-instalaciones" data-bs-toggle="collapse" href="#">
         <i class="bi bi-tools"></i><span>Instalaciones</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -45,83 +45,89 @@
       </ul>
     </li>
 
-    <li class="nav-heading">Insumos</li>
+    <section *ngIf="obtenerPermisoPorModulo('catalogos')">
+      <li class="nav-heading">Insumos</li>
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav-poblaciones" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-compass"></i><span>Poblaciones</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav-poblaciones" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Registro</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Consulta</span>
-          </a>
-        </li>
-      </ul>
-    </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-poblaciones" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-compass"></i><span>Poblaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-poblaciones" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Registro</span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Consulta</span>
+            </a>
+          </li>
+        </ul>
+      </li>
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav-problemas" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-folder-x"></i><span>Problemas</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav-problemas" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Registro</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Consulta</span>
-          </a>
-        </li>
-      </ul>
-    </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-problemas" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-folder-x"></i><span>Problemas</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-problemas" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Registro</span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Consulta</span>
+            </a>
+          </li>
+        </ul>
+      </li>
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav-tipos-instalacion" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-folder-check"></i><span>Tipos de instalación</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav-tipos-instalacion" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Registro</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Consulta</span>
-          </a>
-        </li>
-      </ul>
-    </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-tipos-instalacion" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-folder-check"></i><span>Tipos de instalación</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-tipos-instalacion" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Registro</span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Consulta</span>
+            </a>
+          </li>
+        </ul>
+      </li>
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav-roles" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Roles</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav-roles" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Registro</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Consulta</span>
-          </a>
-        </li>
-      </ul>
-    </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-roles" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear-wide-connected"></i><span>Roles</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-roles" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Registro</span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <i class="bi bi-circle"></i><span>Consulta</span>
+            </a>
+          </li>
+        </ul>
+      </li>
 
-    <li class="nav-heading">Administración</li>
+    </section>
+
+    <li
+      class="nav-heading"
+      *ngIf="obtenerPermisoPorModulo('clientes') || obtenerPermisoPorModulo('usuarios')"
+    >Administración</li>
     
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('clientes')">
       <a class="nav-link collapsed" data-bs-target="#components-nav-clientes" data-bs-toggle="collapse" href="#">
         <i class="bi bi-people"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -139,7 +145,7 @@
       </ul>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('usuarios')">
       <a class="nav-link collapsed" data-bs-target="#components-nav-usuarios" data-bs-toggle="collapse" href="#">
         <i class="bi bi-file-person"></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -157,23 +163,29 @@
       </ul>
     </li>
 
-    <li class="nav-heading">Bitacoras</li>
+    <li
+      class="nav-heading"
+      *ngIf="obtenerPermisoPorModulo('sesiones') || obtenerPermisoPorModulo('acciones')"
+    >Bitacoras</li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('sesiones')">
       <a class="nav-link collapsed">
         <i class="bi bi-file-earmark-ruled"></i><span>Sesiones</span>
       </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('acciones')">
       <a class="nav-link collapsed">
         <i class="bi bi-list-ol"></i><span>Acciones</span>
       </a>
     </li>
 
-    <li class="nav-heading">Reportes del sistema</li>
+    <li
+      class="nav-heading"
+      *ngIf="obtenerPermisoPorModulo('reportesSistema')"
+    >Reportes del sistema</li>
 
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('reportesSistema')">
       <a class="nav-link collapsed">
         <i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span>
       </a>
