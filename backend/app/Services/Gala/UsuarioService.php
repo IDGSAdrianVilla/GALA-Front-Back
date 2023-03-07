@@ -34,17 +34,17 @@ class UsuarioService
         if ( $validarUsuario > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Upss! Al parecer ya existe un registro con información similar. Por favor valida la información',
+                    'message' => 'Upss! Al parecer ya existe un Usuario con información similar. Por favor valida la información',
                     'status' => 409
                 ],
                 200
             );
         }
-
-        $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosUsuario['token'] );
     
         DB::beginTransaction();
+            $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosUsuario['token'] );
             $pkEmpleado = $this->usuarioRepository->crearEmpleadoNuevo( $datosUsuario['informacionPersonal'] );
+            
             $this->usuarioRepository->crearUsuarioNuevo( $datosUsuario['credenciales'], $datosUsuario['rolPermisos'], $pkEmpleado, $sesion[0]->PkTblUsuario );
             $this->usuarioRepository->crearDireccionEmpleado( $datosUsuario['direccion'], $pkEmpleado );
         DB::commit();

@@ -37,11 +37,12 @@ export class ClientesRegistroComponent implements OnInit {
 
   crearFormInformacionRegistro() : void {
     this.formInformacionRegistro = this.fb.group({
-      nombreCliente          : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-      apellidoPaternoCliente : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-      apellidoMaternoCliente : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-      telefonoCliente        : ['', [Validators.required, Validators.pattern('[0-9]*')]],
-      sexoCliente            : ['', [Validators.required]]
+      nombreCliente           : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      apellidoPaternoCliente  : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      apellidoMaternoCliente  : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      sexoCliente             : ['', [Validators.required]],
+      telefonoCliente         : ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      telefonoOpcionalCliente : ['', [Validators.required, Validators.pattern('[0-9]*')]]
     });
   }
 
@@ -95,7 +96,8 @@ export class ClientesRegistroComponent implements OnInit {
 
           let datosNuevoCliente = {
             'informacionPersonal' : this.formInformacionRegistro.value,
-            'direccion' : this.formDireccionRegistro.value
+            'direccion'           : this.formDireccionRegistro.value,
+            'token'               : localStorage.getItem('token')
           };
 
           this.clientesService.crearNuevoCliente(datosNuevoCliente).subscribe(
