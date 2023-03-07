@@ -63,15 +63,6 @@
                     </section>
                   </div>
 
-                  <div class="col-md-6">
-                    <label for="fechaNacimientoCliente" class="form-label">Fecha de Nacimiento <b style="color: brown;">*</b>:</label>
-                    <input formControlName="fechaNacimientoCliente" type="date" class="form-control" id="fechaNacimientoCliente">
-                  </div>
-
-                  <div class="col-12">
-                    <label for="observacionesCliente" class="form-label">Observaciones:</label>
-                    <textarea formControlName="observacionesCliente" class="form-control" id="observacionesCliente" style="height: 100px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
-                  </div>
                 </form>
 
               </div>
@@ -108,7 +99,7 @@
                     <label for="caracteristicasDomicilioCliente" class="form-label">Características:</label>
                     <textarea formControlName="caracteristicasDomicilioCliente" class="form-control" id="caracteristicasDomicilioCliente" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                   </div>
-                  
+
                   <div class="col-md-12 col-lg-12">
                     <button type="button" class="btn btn-primary form-control" (click)="crearNuevoCliente()"><b>Crear Nuevo Cliente</b></button>
                   </div>

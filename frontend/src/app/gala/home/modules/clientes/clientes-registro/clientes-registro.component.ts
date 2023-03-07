@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
+import { ClientesService } from '../../../../services/clientes/clientes.service';
 
 @Component({
   selector: 'app-clientes-registro',
@@ -20,6 +21,7 @@ export class ClientesRegistroComponent implements OnInit {
     private fb : FormBuilder,
     public funcionGenerica : FuncionesGenericasService,
     private catalogosService : CatalogosService,
+    private clientesService : ClientesService,
     private mensajes : MensajesService
   ){}
 
@@ -39,9 +41,7 @@ export class ClientesRegistroComponent implements OnInit {
       apellidoPaternoCliente : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       apellidoMaternoCliente : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       telefonoCliente        : ['', [Validators.required, Validators.pattern('[0-9]*')]],
-      sexoCliente            : ['', [Validators.required]],
-      fechaNacimientoCliente : ['', [Validators.required]],
-      observacionesCliente   : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+      sexoCliente            : ['', [Validators.required]]
     });
   }
 
@@ -87,6 +87,42 @@ export class ClientesRegistroComponent implements OnInit {
       return;
     }
     this.mensajes.mensajeGenerico('Se creó con éxito','success');
+
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nuevo Usuario').then(
+      confirm =>{
+        if(confirm.isConfirmed){
+          this.mensajes.mensajeEsperar();
+
+          let datosNuevoCliente = {
+            'informacionPersonal' : this.formInformacionRegistro.value,
+            'direccion' : this.formDireccionRegistro.value
+          };
+
+          this.clientesService.crearNuevoCliente(datosNuevoCliente).subscribe(
+            respuesta =>{
+              if ( respuesta.status != 409 ) {
+                this.limpiarFormularios();
+                this.mensajes.mensajeGenerico(respuesta.message, 'success');
+                return;
+              }
+
+              this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+              return;
+            },
+
+            error =>{
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+        }
+      }
+    );
+  }
+
+  limpiarFormularios() : void {
+    this.formInformacionRegistro.reset();
+    this.formDireccionRegistro.reset();
+    this.formDireccionRegistro.get('poblacionCliente')?.setValue('');
   }
   
 }
