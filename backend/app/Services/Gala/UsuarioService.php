@@ -97,9 +97,7 @@ class UsuarioService
                 200
             );
         }
-        //crearEmpleadoNuevo
-        //crearUsuarioNuevo
-        //crearDireccionEmpleado
+        
         DB::beginTransaction();
             $pkEmpleado = $this->usuarioRepository->obtenerPkEmpleado( $datosModificacion['pkUsuarioModificacion'] );
             $this->usuarioRepository->modificarDatosEmpleado( $pkEmpleado, $datosModificacion['informacionPersonal'] );
