@@ -8,6 +8,7 @@ import { UsuariosModificacionComponent } from './modules/usuarios/usuarios-modif
 import { ClientesRegistroComponent } from './modules/clientes/clientes-registro/clientes-registro.component';
 import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/clientes-consulta.component';
 import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
+import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -42,7 +43,11 @@ export const HomeRoutes: Routes = [
       {
         path : 'clientes/modificacion/:pkcliente',
         component: ClientesModificacionComponent
-      }
+      },
+      {
+        path : 'catalogos/poblaciones',
+        component: PoblacionesComponent
+      },
     ]
   }
 ]

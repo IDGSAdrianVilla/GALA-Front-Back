@@ -1,0 +1,140 @@
+<div class="pagetitle">
+    <h1>Poblaciones</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Catálogos</li>
+            <li class="breadcrumb-item active">Poblaciones</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <form autocomplete="off" class="col-12">
+                            <section class="row">
+                                <div class="col-xl-2 col-md-4">
+                                    <label class="form-label">&nbsp;</label>
+                                    <button class="btn btn-primary form-control"><b>Consultar</b></button>
+                                </div>
+
+                                <div class="col-xl-2 col-md-4">
+                                    <label class="form-label">&nbsp;</label>
+                                    <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop"><b>Nueva Población</b></button>
+                                </div>
+
+                                <div class="col-xl-2 col-md-4">
+                                    <label class="form-label">&nbsp;</label>
+                                    <button class="btn btn-primary form-control" disabled="true"><b>Exportar excel</b></button>
+                                </div>
+
+                                <div class="col-xl-2 col-md-4">
+                                    <label class="form-label">&nbsp;</label>
+                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()"><b>Limpiar</b></button>
+                                </div>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                    <h5 class="card-title">Poblaciones</h5>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="floatingName"
+                                placeholder="Buscar en empleados"
+                                [(ngModel)]="busqueda"
+                                (input)="filtrarUsuarios()"
+                                [disabled]="activarFiltroBusqueda()"
+                                autocomplete="off"
+                            >
+                            <label for="floatingName">Buscar Población</label>
+                        </div>
+                    </div>
+
+                    <br>
+                    
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Poblacion</th>
+                                <th scope="col">C.P.</th>
+                                <th scope="col">Activo</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let poblacion of this.poblacionesFiltradas">
+                                <th scope="row"><a>#{{poblacion.PkCatPoblacion}}</a></th>
+                                <td>{{poblacion.NombrePoblacion}}</td>
+                                <td>{{poblacion.CodigoPostal}}</td>
+                                <td><span class="badge bg-{{poblacion.Activo == 1 ? 'success' : 'danger'}}">{{poblacion.Activo == 1 ? 'Activo' : 'Incativo'}}</span></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                          Opciones
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li><button [routerLink]="['modificacion',poblacion.PkCatPoblacion]" class="dropdown-item" type="button">Módificar</button></li>
+                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title" style="text-align: center !important;"><b>Nueva Población</b></h5><br>
+
+                <div class="card">
+                    <div class="card-body">
+                        <br>
+                        <div class="d-flex align-items-center">
+                            <form class="row g-3 col-12" autocomplete="off" [formGroup]="formNuevaPoblacion">
+                                <div class="col-md-6">
+                                    <label for="nombrePoblacion" class="form-label">Nombre de la población <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="nombrePoblacion" type="text" class="form-control" id="nombrePoblacion" placeholder="Nombre de la población" (keypress)="this.funcionGenerica.soloLetras($event)">
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="cpPoblacion" class="form-label">C.P. <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="cpPoblacion" type="text" class="form-control" id="cpPoblacion" placeholder="C.P." (keypress)="this.funcionGenerica.soloNumeros($event)">
+                                </div>
+                
+                                <div class="col-12">
+                                    <label for="observacionesPoblacion" class="form-label">Observaciones:</label>
+                                    <textarea formControlName="observacionesPoblacion" class="form-control" id="observacionesPoblacion" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+
+                                <div class="col-12" style="text-align: center;">
+                                    <button type="button" class="btn btn-primary"><b>Crear nueva población</b></button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><b>Cancelar</b></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

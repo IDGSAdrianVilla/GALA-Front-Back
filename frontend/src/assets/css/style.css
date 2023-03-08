@@ -233,11 +233,11 @@ h6 {
 }
 
 /* Card */
-.card {
-  margin-bottom: 30px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+.card, .modal-content {
+  margin-bottom: 30px !important;
+  border: none !important;
+  border-radius: 5px !important;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1) !important;
 }
 
 .card-header,
@@ -1046,7 +1046,7 @@ h6 {
   font-size: 15px;
 }
 
-.profile .profile-overview .card-title {
+.profile .profile-overview .card-title, .modal-title {
   color: #012970;
 }
 
