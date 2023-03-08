@@ -25,7 +25,7 @@ class ClienteService
         $this->usuarioRepository = $UsuarioRepository;
     }
 
-    public function crearNuevoCliente( $datosCliente){
+    public function crearNuevoCliente( $datosCliente ){
         $validarCliente = $this->clienteRepository->validarClienteExistente( $datosCliente['informacionPersonal'] );
 
         if( $validarCliente > 0 ){
@@ -50,6 +50,16 @@ class ClienteService
                 'message' => 'Se creó con éxito el nuevo cliente'
             ],
             200
+        );
+    }
+
+    public function consultarClientes(){
+        $clienteConsultar = $this->clienteRepository->consultarClientes();
+        return response()->json(
+            [
+                'message' => 'Se consultó con éxito la información',
+                'data' => $clienteConsultar
+            ]
         );
     }
 }

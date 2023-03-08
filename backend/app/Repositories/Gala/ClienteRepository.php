@@ -5,6 +5,7 @@ namespace App\Repositories\gala;
 use App\Models\TblClientes;
 use App\Models\TblDirecciones;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model
 
@@ -54,5 +55,11 @@ class ClienteRepository
 		$registro->CaracteristicasDomicilio = trim($direccion['caracteristicasDomicilioCliente']);
 		$registro->Calle                    = trim($direccion['calleCliente']);
 		$registro->save();
+	}
+
+	public function consultarClientes(){
+		$clienteConsulta = DB::table('vistageneralclientes');
+		
+		return $clienteConsulta->get();
 	}
 }
