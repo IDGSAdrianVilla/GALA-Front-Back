@@ -43,7 +43,7 @@ class UsuarioRepository
 		$registro->ApellidoPaterno 	= trim($informacionUsuario['apellidoPaternoEmpleado']);
 		$registro->ApellidoMaterno 	= trim($informacionUsuario['apellidoMaternoEmpleado']);
 		$registro->Sexo 			= $informacionUsuario['sexoEmpleado'];
-		$registro->Telefono 		= $informacionUsuario['telefonoEmpleado'];
+		$registro->Telefono 		= trim($informacionUsuario['telefonoEmpleado']);
 		$registro->FechaNacimiento 	= $informacionUsuario['fechaNacimientoEmpleado'];
 		$registro->Observaciones 	= trim($informacionUsuario['observacionesEmpleado']);
 		$registro->Activo 			= 1;

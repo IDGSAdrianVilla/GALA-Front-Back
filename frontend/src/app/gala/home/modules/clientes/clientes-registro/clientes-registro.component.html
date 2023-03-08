@@ -49,11 +49,6 @@
                   </div>
 
                   <div class="col-md-6">
-                    <label for="telefonoCliente" class="form-label">Teléfono <b style="color: brown;">*</b>":</label>
-                    <input formControlName="telefonoCliente" type="text" class="form-control" id="telefonoCliente" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
-                  </div>
-
-                  <div class="col-md-6">
                     <label for="sexoCliente" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
                     <section style="text-align: center;">
                       <input class="form-check-input" type="radio" formControlName="sexoCliente" id="sexoClienteM" value="M">
@@ -61,6 +56,16 @@
                       &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoCliente" id="sexoClienteF" value="F">
                       <label class="form-check-label" for="sexoClienteF">&nbsp;Femenino</label>
                     </section>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="telefonoCliente" class="form-label">Teléfono <b style="color: brown;">*</b>:</label>
+                    <input formControlName="telefonoCliente" type="text" class="form-control" id="telefonoCliente" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="telefonoOpcionalCliente" class="form-label">Teléfono Secundario:</label>
+                    <input formControlName="telefonoOpcionalCliente" type="text" class="form-control" id="telefonoOpcionalCliente" placeholder="Teléfono Secundario" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
                   </div>
 
                 </form>

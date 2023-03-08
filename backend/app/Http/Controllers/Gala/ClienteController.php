@@ -33,4 +33,19 @@ class ClienteController extends Controller
         }
 
     }
+
+    public function consultarClientes(){
+        try{
+            return $this->clienteService->consultarClientes();
+        } catch( \Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }
