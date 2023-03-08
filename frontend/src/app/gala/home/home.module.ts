@@ -9,6 +9,7 @@ import { UsuariosConsultaComponent } from './modules/usuarios/usuarios-consulta/
 import { ClientesRegistroComponent } from './modules/clientes/clientes-registro/clientes-registro.component';
 import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/clientes-consulta.component';
 import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
+import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { ClientesModificacionComponent } from './modules/clientes/clientes-modif
     UsuariosConsultaComponent,
     ClientesRegistroComponent,
     ClientesConsultaComponent,
-    ClientesModificacionComponent
+    ClientesModificacionComponent,
+    PoblacionesComponent
   ]
 })
 export class HomeModule { }
