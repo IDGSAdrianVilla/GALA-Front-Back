@@ -21,4 +21,11 @@ export class ClientesService {
     return this.http.get<any>(this.urlHost+'/clientes/consultarClientes');
   }
   
+  public consultarDatosClienteModificacion( pkcliente : any ) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/clientes/consultarDatosClienteModificacion', {pkcliente});
+  }
+
+  public modificarDatosCliente(datosClienteModificacion : any) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/clientes/modificarDatosCliente', datosClienteModificacion);
+  }
 }

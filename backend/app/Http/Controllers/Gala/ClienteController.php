@@ -48,4 +48,34 @@ class ClienteController extends Controller
             );
         }
     }
+
+    public function consultarDatosClienteModificacion( Request $request ){
+        try{
+            return $this->clienteService->consultarDatosClienteModificacion($request->all());
+        } catch( \Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function modificarDatosCliente( Request $request){
+        try{
+            return $this->clienteService->modificarDatosCliente($request->all());
+        } catch( \Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

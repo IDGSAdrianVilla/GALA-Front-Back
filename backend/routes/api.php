@@ -26,6 +26,8 @@ Route::post('/usuarios/modificarDatosUsuario', 'App\Http\Controllers\Gala\Usuari
 
 Route::post('/clientes/crearNuevoCliente', 'App\Http\Controllers\Gala\ClienteController@crearNuevoCliente');
 Route::get('/clientes/consultarClientes','App\Http\Controllers\Gala\ClienteController@consultarClientes');
+Route::post('/clientes/consultarDatosClienteModificacion','App\Http\Controllers\Gala\ClienteController@consultarDatosClienteModificacion');
+Route::post('/clientes/modificarDatosCliente','App\Http\Controllers\Gala\ClienteController@modificarDatosCliente');
 
 Route::get('/catalogos/obtenerPoblaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerPoblaciones');
 Route::get('/catalogos/obtenerRoles', 'App\Http\Controllers\Gala\CatalogoController@obtenerRoles');

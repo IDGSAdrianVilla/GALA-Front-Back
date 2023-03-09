@@ -42,7 +42,7 @@ export class ClientesRegistroComponent implements OnInit {
       apellidoMaternoCliente  : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       sexoCliente             : ['', [Validators.required]],
       telefonoCliente         : ['', [Validators.required, Validators.pattern('[0-9]*')]],
-      telefonoOpcionalCliente : ['', [Validators.required, Validators.pattern('[0-9]*')]]
+      telefonoOpcionalCliente : ['', [Validators.pattern('[0-9]*')]]
     });
   }
 
