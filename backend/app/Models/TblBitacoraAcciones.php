@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TblBitacoraAcciones extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkTblBitacoraAccion';
     protected $table = 'tblbitacoraacciones';
     protected $fillable = 

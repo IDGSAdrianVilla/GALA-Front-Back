@@ -108,6 +108,7 @@ export class UsuariosModificacionComponent implements OnInit{
 
   consultarDatosUsuarioModificacion() : Promise<any> {
     this.pkusuario = this.rutaActiva.snapshot.params['pkusuario'];
+    
     return this.usuariosService.consultarDatosUsuarioModificacion(this.pkusuario).toPromise().then(
       usuarioModificacion =>{
         if(usuarioModificacion.data[0] != undefined){
@@ -115,7 +116,7 @@ export class UsuariosModificacionComponent implements OnInit{
           this.cargarFormulario();
           this.prevNuevoUsuario();
           this.cargarObjetoPermisos();
-          this.mensajes.mensajeGenericoToast('Se consultó con éxito la información','success');
+          this.mensajes.mensajeGenericoToast(usuarioModificacion.message, 'success');
         } else {
           this.router.navigate(['/gala/usuarios']);
         }
@@ -135,6 +136,7 @@ export class UsuariosModificacionComponent implements OnInit{
     this.formInformacionRegistro.get('sexoEmpleado')?.setValue(this.datosUsuarioModificacion.Sexo);
     this.formInformacionRegistro.get('fechaNacimientoEmpleado')?.setValue(this.datosUsuarioModificacion.FechaNacimiento);
     this.formInformacionRegistro.get('observacionesEmpleado')?.setValue(this.datosUsuarioModificacion.Observaciones);
+    
     this.formDireccionRegistro.get('poblacionEmpleado')?.setValue(this.datosUsuarioModificacion.PkCatPoblacion);
     this.formDireccionRegistro.get('coordenadasEmpleado')?.setValue(this.datosUsuarioModificacion.Coordenadas);
     this.formDireccionRegistro.get('calleEmpleado')?.setValue(this.datosUsuarioModificacion.Calle);

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CatProblemasGenericos extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkCatProblema';
     protected $fillable = 
     [
