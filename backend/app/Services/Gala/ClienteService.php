@@ -62,4 +62,40 @@ class ClienteService
             ]
         );
     }
+
+    public function consultarDatosClienteModificacion( $pkcliente ){
+        $clienteModifcar = $this->clienteRepository->consultarDatosClienteModificacion( $pkcliente );
+        return response()->json(
+            [
+                'message' => 'Se consultó con éxito la información',
+                'data' => $clienteModifcar
+            ]
+        );
+    }
+
+    public function modificarDatosCliente( $datosCliente ){
+        $validarCliente = $this->clienteRepository->validarClienteExistente( $datosCliente['informacionPersonal'], $datosCliente['pkClienteModificacion'] );
+
+        if( $validarCliente > 0 ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Cliente con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        DB::beginTransaction();
+            $this->clienteRepository->modificarDatosCliente( $datosCliente['pkClienteModificacion'], $datosCliente['informacionPersonal']);
+            $this->clienteRepository->modificarDatosDireccion( $datosCliente['pkClienteModificacion'], $datosCliente['direccionPersonal']);
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se modificó el cliente '.$datosCliente['informacionPersonal']['nombreCliente'].' con éxito'
+            ],
+            200
+        );
+    }
 }
