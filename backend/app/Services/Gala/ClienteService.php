@@ -93,7 +93,7 @@ class ClienteService
 
         return response()->json(
             [
-                'message' => 'Se modificó el cliente '.$datosCliente['informacionPersonal']['nombreCliente'].' con éxito'
+                'message' => 'Se modificó el cliente con éxito'
             ],
             200
         );

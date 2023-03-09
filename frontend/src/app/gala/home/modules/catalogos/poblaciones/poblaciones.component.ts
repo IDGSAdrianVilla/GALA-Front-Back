@@ -170,12 +170,9 @@ export class PoblacionesComponent implements OnInit{
       this.poblacionesFiltradas = this.datosPoblaciones;
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
-      this.poblacionesFiltradas = this.datosPoblaciones.filter((usuario : any) => {
-        return usuario.Nombre.toLowerCase().includes(textoBusqueda) ||
-               usuario.ApellidoPaterno.toLowerCase().includes(textoBusqueda) ||
-               usuario.Telefono.toLowerCase().includes(textoBusqueda) ||
-               usuario.Calle.toLowerCase().includes(textoBusqueda) ||
-               usuario.NombrePoblacion.toLowerCase().includes(textoBusqueda);
+      this.poblacionesFiltradas = this.datosPoblaciones.filter((poblacion : any) => {
+        return poblacion.NombrePoblacion.toLowerCase().includes(textoBusqueda) ||
+               poblacion.CodigoPostal.toLowerCase().includes(textoBusqueda);
       });
     }
   }

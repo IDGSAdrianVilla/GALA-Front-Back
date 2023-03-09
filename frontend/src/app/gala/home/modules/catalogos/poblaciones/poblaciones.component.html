@@ -18,22 +18,22 @@
                             <section class="row">
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" (click)="consultaPoblaciones()"><b>Consultar</b></button>
+                                    <button class="btn btn-primary form-control" (click)="consultaPoblaciones()">Consultar</button>
                                 </div>
 
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop"><b>Nueva Población</b></button>
+                                    <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva Población</button>
                                 </div>
 
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" disabled="true"><b>Exportar excel</b></button>
+                                    <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
                                 </div>
 
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()"><b>Limpiar</b></button>
+                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
                                 </div>
                             </section>
                         </form>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="card recent-sales overflow-auto">
+            <div class="card recent-sales overflow-auto" style="max-height: 570px;">
                 <div class="card-body">
                     <h5 class="card-title">Poblaciones</h5>
 
@@ -51,7 +51,7 @@
                                 type="text"
                                 class="form-control"
                                 id="floatingName"
-                                placeholder="Buscar en empleados"
+                                placeholder="Buscar Población"
                                 [(ngModel)]="busqueda"
                                 (input)="filtrarPoblaciones()"
                                 [disabled]="activarFiltroBusqueda()"
@@ -67,8 +67,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Poblacion</th>
-                                <th scope="col" style="text-align: center;">C.P.</th>
+                                <th scope="col">Población</th>
+                                <th scope="col" style="text-align: center;">Código Postal</th>
                                 <th scope="col" style="text-align: center;">Activo</th>
                                 <th scope="col" style="text-align: center;">Acciones</th>
                             </tr>
@@ -116,11 +116,11 @@
 
                                 <div class="col-md-6">
                                     <label for="nombrePoblacion" class="form-label">Nombre de la población <b style="color: brown;">*</b>:</label>
-                                    <input formControlName="nombrePoblacion" type="text" class="form-control" id="nombrePoblacion" placeholder="Nombre de la población" (keypress)="this.funcionGenerica.soloLetras($event)">
+                                    <input formControlName="nombrePoblacion" type="text" class="form-control" id="nombrePoblacion" placeholder="Nombre de la población" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
                                 </div>
                 
                                 <div class="col-md-6">
-                                    <label for="cpPoblacion" class="form-label">C.P. <b style="color: brown;">*</b>:</label>
+                                    <label for="cpPoblacion" class="form-label">Código Postal <b style="color: brown;">*</b>:</label>
                                     <input formControlName="cpPoblacion" type="text" class="form-control" id="cpPoblacion" placeholder="C.P." (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="5">
                                 </div>
                 
