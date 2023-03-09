@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CatStatus extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkCatStatus';
     protected $table = 'catstatus';
     protected $fillable = 

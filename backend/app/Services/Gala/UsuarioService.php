@@ -51,7 +51,7 @@ class UsuarioService
 
         return response()->json(
             [
-                'message' => 'Se creó con éxito el nuevo usuario'
+                'message' => 'Se registró con éxito el nuevo usuario'
             ],
             200
         );
@@ -76,16 +76,16 @@ class UsuarioService
         $usuarioModificar = $this->usuarioRepository->consultarDatosUsuarioModificacion( $pkusuario );
         return response()->json(
             [
-                'message' => 'Se encontró con éxito la información',
+                'message' => 'Se consultó la información con éxito',
                 'data' => $usuarioModificar
             ]
         );
     }
 
-    public function modificarDatosUsuario( $datosModificacion ){
+    public function modificarDatosUsuario( $datosUsuario ){
         $validarUsuario = $this->usuarioRepository->validarUsuarioPorTelefono(
-            $datosModificacion['informacionPersonal']['telefonoEmpleado'],
-            $datosModificacion['pkUsuarioModificacion']
+            $datosUsuario['informacionPersonal']['telefonoEmpleado'],
+            $datosUsuario['pkUsuarioModificacion']
         );
         
         if ( $validarUsuario > 0 ) {
@@ -99,16 +99,17 @@ class UsuarioService
         }
         
         DB::beginTransaction();
-            $pkEmpleado = $this->usuarioRepository->obtenerPkEmpleado( $datosModificacion['pkUsuarioModificacion'] );
-            $this->usuarioRepository->modificarDatosEmpleado( $pkEmpleado, $datosModificacion['informacionPersonal'] );
-            $this->usuarioRepository->modificarDatosUsuario( $datosModificacion['pkUsuarioModificacion'], $datosModificacion['rolPermisos'] );
-            $this->usuarioRepository->modificarDatosDireccion( $datosModificacion['direccion'], $pkEmpleado);
+            $pkEmpleado = $this->usuarioRepository->obtenerPkEmpleado( $datosUsuario['pkUsuarioModificacion'] );
+            $this->usuarioRepository->modificarDatosEmpleado( $pkEmpleado, $datosUsuario['informacionPersonal'] );
+            $this->usuarioRepository->modificarDatosUsuario( $datosUsuario['pkUsuarioModificacion'], $datosUsuario['rolPermisos'] );
+            $this->usuarioRepository->modificarDatosDireccion( $datosUsuario['direccion'], $pkEmpleado);
         DB::commit();
         
         return response()->json(
             [
-                'message' => 'Se modificó con éxito el usuario'
-            ]
+                'message' => 'Se modificó el usuario '.$datosUsuario['informacionPersonal']['nombreEmpleado'].' con éxito'
+            ],
+            200
         );
     }
 }

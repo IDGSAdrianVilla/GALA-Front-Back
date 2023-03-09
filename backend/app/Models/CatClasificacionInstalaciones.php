@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CatClasificacionInstalaciones extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey ='PkCatClasificacionInstalacion';
     protected $table = 'catclasificacioninstalaciones';
     protected $fillable = 

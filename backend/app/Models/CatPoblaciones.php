@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CatPoblaciones extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $primaryKey = 'PkCatPoblacion';
     protected $table = 'catpoblaciones';
     protected $fillable = 
@@ -15,6 +16,7 @@ class CatPoblaciones extends Model
         'PkCatPoblacion',
         'NombrePoblacion',
         'FkTblUusuaio',
+        'FechaAlta',
         'Activo'
     ];
 }

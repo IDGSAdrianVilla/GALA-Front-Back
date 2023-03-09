@@ -20,4 +20,16 @@ export class CatalogosService {
   public obtenerRoles() : Observable<any>{
     return this.http.get<any>(this.urlHost+'/catalogos/obtenerRoles');
   }
+
+  public crearNuevaPoblacion( dataRegistro : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/crearNuevaPoblacion', dataRegistro);
+  }
+
+  public consultaDatosPoblacionModificacion( PkCatPoblacion : number ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/consultaDatosPoblacionModificacion', {PkCatPoblacion});
+  }
+
+  public modificarPoblacion( dataRegistro : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/modificarPoblacion', dataRegistro);
+  }
 }

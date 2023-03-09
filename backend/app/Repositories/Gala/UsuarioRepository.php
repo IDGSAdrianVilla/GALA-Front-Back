@@ -124,13 +124,13 @@ class UsuarioRepository
 	public function modificarDatosEmpleado( $pkEmpleado, $datosEmpleados ){
 		TblEmpleados::where('PkTblEmpleado', '=', $pkEmpleado)
 					->update([
-						'Nombre' => $datosEmpleados['nombreEmpleado'],
+						'Nombre' 		  => $datosEmpleados['nombreEmpleado'],
 						'ApellidoPaterno' => $datosEmpleados['apellidoPaternoEmpleado'],
 						'ApellidoMaterno' => $datosEmpleados['apellidoMaternoEmpleado'],
-						'Sexo' => $datosEmpleados['sexoEmpleado'],
-						'Telefono' => $datosEmpleados['telefonoEmpleado'],
+						'Sexo' 			  => $datosEmpleados['sexoEmpleado'],
+						'Telefono' 		  => $datosEmpleados['telefonoEmpleado'],
 						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'],
-						'Observaciones' => $datosEmpleados['observacionesEmpleado']
+						'Observaciones'   => $datosEmpleados['observacionesEmpleado']
 					]);
 	} 
 
@@ -150,19 +150,19 @@ class UsuarioRepository
 
 		TblUsuarios::where('PkTblUsuario','=', $pkUsuario)
 				   ->update([
-						'FkCatRol' => $datosUsuario['rolEmpleado'],
-						'ObjetoPermisosEspeciales' => $datosUsuario['objetoPermisos']
+						'FkCatRol' 					=> $datosUsuario['rolEmpleado'],
+						'ObjetoPermisosEspeciales' 	=> $datosUsuario['objetoPermisos']
 				   ]);
 	}
 
 	public function modificarDatosDireccion( $datosDireccion, $pkEmpleado){
 		TblDirecciones::where('FkTblEmpleado', '=', $pkEmpleado)
 					  ->update([
-						'FkCatPoblacion' => $datosDireccion['poblacionEmpleado'],
-						'Coordenadas' => $datosDireccion['coordenadasEmpleado'],
-						'ReferenciasDomicilio' => $datosDireccion['referenciasDomicilioEmpleado'],
+						'FkCatPoblacion' 		   => $datosDireccion['poblacionEmpleado'],
+						'Coordenadas' 			   => $datosDireccion['coordenadasEmpleado'],
+						'ReferenciasDomicilio' 	   => $datosDireccion['referenciasDomicilioEmpleado'],
 						'CaracteristicasDomicilio' => $datosDireccion['caracteristicasDomicilioEmpleado'],
-						'Calle' => $datosDireccion['calleEmpleado']
+						'Calle' 				   => $datosDireccion['calleEmpleado']
 					  ]);
 	}
 }

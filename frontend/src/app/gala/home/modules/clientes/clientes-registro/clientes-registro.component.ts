@@ -87,7 +87,6 @@ export class ClientesRegistroComponent implements OnInit {
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
     }
-    this.mensajes.mensajeGenerico('Se creó con éxito','success');
 
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nuevo Usuario').then(
       confirm =>{

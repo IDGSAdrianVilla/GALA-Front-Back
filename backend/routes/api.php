@@ -31,3 +31,6 @@ Route::post('/clientes/modificarDatosCliente','App\Http\Controllers\Gala\Cliente
 
 Route::get('/catalogos/obtenerPoblaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerPoblaciones');
 Route::get('/catalogos/obtenerRoles', 'App\Http\Controllers\Gala\CatalogoController@obtenerRoles');
+Route::post('/catalogos/poblaciones/crearNuevaPoblacion', 'App\Http\Controllers\Gala\CatalogoController@crearNuevaPoblacion');
+Route::post('/catalogos/poblaciones/consultaDatosPoblacionModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosPoblacionModificacion');
+Route::post('/catalogos/poblaciones/modificarPoblacion', 'App\Http\Controllers\Gala\CatalogoController@modificarPoblacion');
