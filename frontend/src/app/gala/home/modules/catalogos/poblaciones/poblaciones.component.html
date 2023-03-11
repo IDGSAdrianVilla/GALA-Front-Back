@@ -13,37 +13,37 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <form autocomplete="off" class="col-12">
-                            <section class="row">
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" (click)="consultaPoblaciones()">Consultar</button>
-                                </div>
+                    <form autocomplete="off" class="col-12">
+                        <section class="row">
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" (click)="consultaPoblaciones()">Consultar</button>
+                            </div>
 
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva Población</button>
-                                </div>
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva Población</button>
+                            </div>
 
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
-                                </div>
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
+                            </div>
 
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
-                                </div>
-                            </section>
-                        </form>
-                    </div>
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                            </div>
+                        </section>
+                    </form>
                 </div>
             </div>
 
             <div class="card recent-sales overflow-auto" style="max-height: 570px;">
                 <div class="card-body">
-                    <h5 class="card-title">Poblaciones</h5>
+                    <h5 class="card-title">
+                        Poblaciones
+                    </h5>
 
                     <div class="col-12">
                         <div class="form-floating">
@@ -78,7 +78,11 @@
                                 <th scope="row"><a>#{{poblacion.PkCatPoblacion}}</a></th>
                                 <td>{{poblacion.NombrePoblacion}}</td>
                                 <td style="text-align: center;">{{poblacion.CodigoPostal}}</td>
-                                <td style="text-align: center;"><span class="badge bg-{{poblacion.Activo == 1 ? 'success' : 'danger'}}">{{poblacion.Activo == 1 ? 'Activo' : 'Incativo'}}</span></td>
+                                <td style="text-align: center;">
+                                    <span class="badge bg-{{poblacion.Activo == 1 ? 'success' : 'danger'}}">
+                                        {{poblacion.Activo == 1 ? 'Activo' : 'Incativo'}}
+                                    </span>
+                                </td>
                                 <td style="text-align: center;">
                                     <div class="dropdown">
                                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
@@ -121,7 +125,7 @@
                 
                                 <div class="col-md-6">
                                     <label for="cpPoblacion" class="form-label">Código Postal <b style="color: brown;">*</b>:</label>
-                                    <input formControlName="cpPoblacion" type="text" class="form-control" id="cpPoblacion" placeholder="C.P." (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="5">
+                                    <input formControlName="cpPoblacion" type="text" class="form-control" id="cpPoblacion" placeholder="Código Postal" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="5">
                                 </div>
                 
                                 <div class="col-12">

@@ -3,6 +3,7 @@
 namespace App\Repositories\Gala;
 
 use App\Models\CatPoblaciones;
+use App\Models\CatProblemasGenericos;
 use App\Models\CatRoles;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +20,12 @@ class CatalogoRepository
         $poblaciones = CatPoblaciones::orderBy('NombrePoblacion', 'asc');
 
         return $poblaciones->get();
+    }
+
+    public function obtenerProblemas(){
+        $problemas = CatProblemasGenericos::orderBy('TituloProblema', 'asc');
+
+        return $problemas->get();
     }
 
     public function obtenerRoles(){
@@ -40,9 +47,9 @@ class CatalogoRepository
 
     public function crearNuevaPoblacion ( $datosPoblacion, $pkUsuario ) {
         $registro = new CatPoblaciones();
-        $registro->NombrePoblacion  = $datosPoblacion['nombrePoblacion'];
-        $registro->CodigoPostal     = $datosPoblacion['cpPoblacion'];
-        $registro->Observaciones    = $datosPoblacion['observacionesPoblacion'];
+        $registro->NombrePoblacion  = trim($datosPoblacion['nombrePoblacion']);
+        $registro->CodigoPostal     = trim($datosPoblacion['cpPoblacion']);
+        $registro->Observaciones    = trim($datosPoblacion['observacionesPoblacion']);
         $registro->FkTblUsuarioAlta = $pkUsuario;
         $registro->FechaAlta        = Carbon::now();
         $registro->Activo           = 1;
@@ -62,5 +69,38 @@ class CatalogoRepository
                         'CodigoPostal'    => $datosModificacion['cpPoblacion'],
                         'Observaciones'   => $datosModificacion['observacionesPoblacion']
                       ]);
+    }
+
+    public function validarProblemaExistente ( $titulo, $pkProblema = 0 ) {
+        $problemaExistente = CatProblemasGenericos::where('TituloProblema', 'like', '%'.$titulo.'%')
+                                                  ->where('PkCatProblema', '!=', $pkProblema);
+
+        return $problemaExistente->count();
+    }
+
+    public function crearNuevoProblema ( $datosProblema, $pkUsuario ) {
+        $registro = new CatProblemasGenericos();
+        $registro->TituloProblema      = trim($datosProblema['tituloProblema']);
+        $registro->DescripcionProblema = trim($datosProblema['descripcionProblema']);
+        $registro->Observaciones       = trim($datosProblema['observacionesProblema']);
+        $registro->FkTblUsuarioAlta    = $pkUsuario;
+        $registro->FechaAlta           = Carbon::now();
+        $registro->Activo              = 1;
+        $registro->save();
+    }
+
+    public function consultaDatosProblemaModificacion ( $pkCatProblema ) {
+        $return = CatProblemasGenericos::where('PkCatProblema', $pkCatProblema);
+
+        return $return->get();
+    }
+
+    public function modificarProblema ( $datosModificacion ) {
+        CatProblemasGenericos::where('PkCatProblema', $datosModificacion['pkCatProblema'])
+                             ->update([
+                                'TituloProblema'      => $datosModificacion['tituloProblema'],
+                                'DescripcionProblema' => $datosModificacion['descripcionProblema'],
+                                'Observaciones'       => $datosModificacion['observacionesProblema']
+                             ]);
     }
 }

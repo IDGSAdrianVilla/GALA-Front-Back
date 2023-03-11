@@ -92,4 +92,64 @@ class CatalogoController extends Controller
             );
         }
     }
+
+    public function crearNuevoProblema( Request $request ){
+        try{
+            return $this->catalogoService->crearNuevoProblema( $request->all() );
+        } catch( \Exception $error ){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function obtenerProblemas () {
+        try{
+            return $this->catalogoService->obtenerProblemas();
+        } catch( \Exception $error ){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function consultaDatosProblemaModificacion ( Request $request ) {
+        try{
+            return $this->catalogoService->consultaDatosProblemaModificacion( $request->all() );
+        } catch( \Exception $error ){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function modificarProblema ( Request $request) {
+        try{
+            return $this->catalogoService->modificarProblema( $request->all() );
+        } catch( \Exception $error ){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

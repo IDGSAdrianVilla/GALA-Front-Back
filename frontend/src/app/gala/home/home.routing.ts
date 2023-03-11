@@ -9,6 +9,7 @@ import { ClientesRegistroComponent } from './modules/clientes/clientes-registro/
 import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/clientes-consulta.component';
 import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
 import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
+import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -47,7 +48,10 @@ export const HomeRoutes: Routes = [
       {
         path : 'catalogos/poblaciones',
         component: PoblacionesComponent
-      },
+      },{
+        path : 'catalogos/problemas',
+        component: ProblemasComponent
+      }
     ]
   }
 ]

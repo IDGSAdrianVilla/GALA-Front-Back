@@ -34,6 +34,15 @@ export class PoblacionesComponent implements OnInit{
     this.consultaPoblaciones();
   }
 
+  crearFormularioPoblaciones() : void {
+    this.formNuevaPoblacion = this.fb.group({
+      pkCatPoblacion         : [],
+      nombrePoblacion        : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+      cpPoblacion            : ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      observacionesPoblacion : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+    });
+  }
+
   consultaPoblaciones () : void {
     this.mensajes.mensajeEsperar();
     this.catalogoService.obtenerPoblaciones().subscribe(
@@ -49,15 +58,6 @@ export class PoblacionesComponent implements OnInit{
     );
   }
 
-  crearFormularioPoblaciones() : void {
-    this.formNuevaPoblacion = this.fb.group({
-      pkCatPoblacion         : [],
-      nombrePoblacion        : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-      cpPoblacion            : ['', [Validators.required, Validators.pattern('[0-9]*')]],
-      observacionesPoblacion : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
-    });
-  }
-
   crearRegistroPoblacion () : void {
     if ( this.formNuevaPoblacion.invalid ) {
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta.', 'info', 'Los campos requeridos están marcados con un *');
@@ -65,14 +65,14 @@ export class PoblacionesComponent implements OnInit{
     }
 
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nueva Población').then(
-      confirm =>{
-        if(confirm.isConfirmed){
+      respuestaMensaje =>{
+        if(respuestaMensaje.isConfirmed){
           this.mensajes.mensajeEsperar();
 
           let dataRegistro = {
-            datosPoblacion : this.formNuevaPoblacion.value,
-            token : localStorage.getItem('token')
-          }
+            'datosPoblacion'  : this.formNuevaPoblacion.value,
+            'token'           : localStorage.getItem('token')
+          };
 
           this.catalogoService.crearNuevaPoblacion(dataRegistro).subscribe(
             respuesta => {
@@ -98,6 +98,23 @@ export class PoblacionesComponent implements OnInit{
     );
   }
 
+  consultaDatosPoblacionModificacion ( PkCatPoblacion : number ) : void {
+    this.mensajes.mensajeEsperar();
+    this.modificacionPoblacion = true;
+    
+    this.catalogoService.consultaDatosPoblacionModificacion( PkCatPoblacion ).subscribe(
+      poblacionModificacion =>{
+        this.datosPoblacionModificacion = poblacionModificacion.data[0];
+        this.cargarFormulario();
+        this.mensajes.mensajeGenericoToast(poblacionModificacion.message, 'success');
+      },
+      
+      error =>{
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    )
+  }
+
   modificarPoblacion () : void {
     if ( this.formNuevaPoblacion.invalid ) {
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta.', 'info', 'Los campos requeridos están marcados con un *');
@@ -105,13 +122,13 @@ export class PoblacionesComponent implements OnInit{
     }
 
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Modificar Población').then(
-      confirm =>{
-        if(confirm.isConfirmed){
+      respuestaMensaje =>{
+        if(respuestaMensaje.isConfirmed){
           this.mensajes.mensajeEsperar();
 
           let dataRegistro = {
-            datosPoblacion : this.formNuevaPoblacion.value
-          }
+            'datosPoblacion' : this.formNuevaPoblacion.value
+          };
 
           this.catalogoService.modificarPoblacion(dataRegistro).subscribe(
             respuesta => {
@@ -139,23 +156,6 @@ export class PoblacionesComponent implements OnInit{
   limpiarFormulario() : void {
     this.modificacionPoblacion = false;
     this.formNuevaPoblacion.reset();
-  }
-
-  consultaDatosPoblacionModificacion ( PkCatPoblacion : number ) : void {
-    this.mensajes.mensajeEsperar();
-    this.modificacionPoblacion = true;
-    
-    this.catalogoService.consultaDatosPoblacionModificacion( PkCatPoblacion ).subscribe(
-      poblacionModificacion =>{
-        this.datosPoblacionModificacion = poblacionModificacion.data[0];
-        this.cargarFormulario();
-        this.mensajes.mensajeGenericoToast(poblacionModificacion.message, 'success');
-      },
-      
-      error =>{
-        this.mensajes.mensajeGenerico('error', 'error');
-      }
-    )
   }
 
   cargarFormulario () : void {

@@ -32,4 +32,20 @@ export class CatalogosService {
   public modificarPoblacion( dataRegistro : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/modificarPoblacion', dataRegistro);
   }
+
+  public crearNuevoProblema( dataRegistro : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/problemas/crearNuevoProblema', dataRegistro);
+  }
+
+  public obtenerProblemas() : Observable<any> {
+    return this.http.get<any>(this.urlHost+'/catalogos/obtenerProblemas');
+  }
+
+  public consultaDatosProblemaModificacion( PkCatProblema : number ) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/catalogos/problemas/consultaDatosProblemaModificacion', {PkCatProblema});
+  }
+
+  public modificarProblema( datosModificados : any ) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/catalogos/problemas/modificarProblema', datosModificados);
+  }
 }
