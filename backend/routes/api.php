@@ -31,6 +31,12 @@ Route::post('/clientes/modificarDatosCliente','App\Http\Controllers\Gala\Cliente
 
 Route::get('/catalogos/obtenerPoblaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerPoblaciones');
 Route::get('/catalogos/obtenerRoles', 'App\Http\Controllers\Gala\CatalogoController@obtenerRoles');
+
 Route::post('/catalogos/poblaciones/crearNuevaPoblacion', 'App\Http\Controllers\Gala\CatalogoController@crearNuevaPoblacion');
 Route::post('/catalogos/poblaciones/consultaDatosPoblacionModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosPoblacionModificacion');
 Route::post('/catalogos/poblaciones/modificarPoblacion', 'App\Http\Controllers\Gala\CatalogoController@modificarPoblacion');
+
+Route::post('/catalogos/problemas/crearNuevoProblema', 'App\Http\Controllers\Gala\CatalogoController@crearNuevoProblema');
+Route::get('/catalogos/obtenerProblemas', 'App\Http\Controllers\Gala\CatalogoController@obtenerProblemas');
+Route::post('/catalogos/problemas/consultaDatosProblemaModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosProblemaModificacion');
+Route::post('/catalogos/problemas/modificarProblema', 'App\Http\Controllers\Gala\CatalogoController@modificarProblema');

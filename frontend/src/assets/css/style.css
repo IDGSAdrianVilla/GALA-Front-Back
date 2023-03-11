@@ -37,6 +37,15 @@ h6 {
   font-family: "Nunito", sans-serif;
 }
 
+button {
+  font-weight: bold !important;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background-color: transparent;
+}
+
 /*--------------------------------------------------------------
 # Main
 --------------------------------------------------------------*/

@@ -25,10 +25,11 @@ class CatalogoService
 
     public function obtenerPoblaciones(){
         $poblaciones = $this->catalogoRepository->obtenerPoblaciones();
+        
         return response()->json(
             [
-                'data' => $poblaciones,
-                'mensaje' => 'Se consultaron la poblaciones con éxito'
+                'data'      => $poblaciones,
+                'mensaje'   => 'Se consultaron las poblaciones con éxito'
             ],
             200
         );
@@ -77,10 +78,11 @@ class CatalogoService
 
     public function consultaDatosPoblacionModificacion ( $pkCatPoblacion ) {
         $poblacion = $this->catalogoRepository->consultaDatosPoblacionPorPk($pkCatPoblacion['PkCatPoblacion']);
+        
         return response()->json(
             [
                 'data' => $poblacion,
-                'message' => 'Se consultó la información con éxito',
+                'message' => 'Se consultó la información con éxito'
             ],
             200
         );
@@ -111,6 +113,89 @@ class CatalogoService
             [
                 'poblaciones'   => $this->catalogoRepository->obtenerPoblaciones(),
                 'message'       => 'Se modificó con éxito la población'
+            ],
+            200
+        );
+    }
+
+    public function crearNuevoProblema ( $datosProblema ) {
+        $validarProblema = $this->catalogoRepository->validarProblemaExistente(
+            $datosProblema['datosProblema']['tituloProblema']
+        );
+
+        if ( $validarProblema > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Problema con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        DB::beginTransaction();
+            $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosProblema['token'] );
+
+            $this->catalogoRepository->crearNuevoProblema( $datosProblema['datosProblema'], $sesion[0]->PkTblUsuario );
+        DB::commit();
+
+        return response()->json(
+            [
+                'problemas' => $this->catalogoRepository->obtenerProblemas(),
+                'message'   => 'Se registró con éxito el nuevo problema'
+            ],
+            200
+        );
+    }
+
+    public function obtenerProblemas () {
+        $problemas = $this->catalogoRepository->obtenerProblemas();
+
+        return response()->json(
+            [
+                'data'      => $problemas,
+                'mensaje'   => 'Se consultaron los problemas con éxito'
+            ],
+            200
+        );
+    }
+
+    public function consultaDatosProblemaModificacion ( $pkCatProblema ) {
+        $problema = $this->catalogoRepository->consultaDatosProblemaModificacion( $pkCatProblema );
+
+        return response()->json(
+            [
+                'data'      => $problema,
+                'message'   => 'Se consultó la información con éxito'
+            ],
+            200
+        );
+    }
+
+    public function modificarProblema ( $datosProblema ) {
+        $validarProblema = $this->catalogoRepository->validarProblemaExistente(
+            $datosProblema['datosProblema']['tituloProblema'],
+            $datosProblema['datosProblema']['pkCatProblema']
+        );
+
+        if ( $validarProblema > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Problema con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        DB::beginTransaction();
+            $this->catalogoRepository->modificarProblema( $datosProblema['datosProblema'] );
+        DB::commit();
+
+        return response()->json(
+            [
+                'problemas' => $this->catalogoRepository->obtenerProblemas(),
+                'message'   => 'Se modificó con éxito el problema'
             ],
             200
         );

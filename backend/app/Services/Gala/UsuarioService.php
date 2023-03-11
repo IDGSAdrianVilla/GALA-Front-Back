@@ -107,7 +107,7 @@ class UsuarioService
         
         return response()->json(
             [
-                'message' => 'Se modificó el usuario '.$datosUsuario['informacionPersonal']['nombreEmpleado'].' con éxito'
+                'message' => 'Se modificó el usuario con éxito'
             ],
             200
         );

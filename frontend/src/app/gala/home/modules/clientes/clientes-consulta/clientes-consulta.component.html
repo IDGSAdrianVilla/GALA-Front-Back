@@ -18,24 +18,24 @@
                             <section class="row">
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" (click)="consultaClientes()"><b>Consultar</b></button>
+                                    <button class="btn btn-primary form-control" (click)="consultaClientes()">Consultar</button>
                                 </div>
 
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" disabled="true"><b>Exportar excel</b></button>
+                                    <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
                                 </div>
 
                                 <div class="col-xl-2 col-md-4">
                                     <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()"><b>Limpiar</b></button>
+                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
                                 </div>
                             </section>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="card recent-sales overflow-auto">
+            <div class="card recent-sales overflow-auto" style="max-height: 570px;">
                 <div class="card-body">
                     
                     <h5 class="card-title">Clientes</h5>
@@ -46,13 +46,13 @@
                                 type="text"
                                 class="form-control"
                                 id="floatingName"
-                                placeholder="Buscar en empleados"
+                                placeholder="Buscar Cliente"
                                 [(ngModel)]="busqueda"
                                 (input)="filtrarClientes()"
                                 [disabled]="activarFiltroBusqueda()"
                                 autocomplete="off"
                             >
-                            <label for="floatingName">Buscar Clientes</label>
+                            <label for="floatingName">Buscar Cliente</label>
                         </div>
                     </div>
 

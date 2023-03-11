@@ -1,9 +1,9 @@
 <div class="pagetitle">
-    <h1>Poblaciones</h1>
+    <h1>Problemas</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Catálogos</li>
-            <li class="breadcrumb-item active">Poblaciones</li>
+            <li class="breadcrumb-item active">Problemas</li>
         </ol>
     </nav>
 </div>
@@ -22,7 +22,7 @@
 
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva Población</button>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo Problema</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
@@ -32,7 +32,7 @@
 
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                                <button class="btn btn-danger form-control">Limpiar</button>
                             </div>
                         </section>
                     </form>
@@ -42,7 +42,7 @@
             <div class="card recent-sales overflow-auto" style="max-height: 570px;">
                 <div class="card-body">
                     <h5 class="card-title">
-                        Poblaciones
+                        Problemas
                     </h5>
 
                     <div class="col-12">
@@ -51,36 +51,36 @@
                                 type="text"
                                 class="form-control"
                                 id="floatingName"
-                                placeholder="Buscar Población"
+                                placeholder="Buscar Problema"
                                 [(ngModel)]="busqueda"
-                                (input)="filtrarPoblaciones()"
+                                (input)="filtrarProblemas()"
                                 [disabled]="activarFiltroBusqueda()"
                                 autocomplete="off"
                             >
-                            <label for="floatingName">Buscar Población</label>
+                            <label for="floatingName">Buscar Problema</label>
                         </div>
                     </div>
 
                     <br>
-                    
+
                     <table class="table table-borderless datatable">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Población</th>
-                                <th scope="col" style="text-align: center;">Código Postal</th>
+                                <th scope="col">Problema</th>
+                                <th scope="col">Descripción</th>
                                 <th scope="col" style="text-align: center;">Activo</th>
                                 <th scope="col" style="text-align: center;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let poblacion of this.poblacionesFiltradas">
-                                <th scope="row"><a>#{{poblacion.PkCatPoblacion}}</a></th>
-                                <td>{{poblacion.NombrePoblacion}}</td>
-                                <td style="text-align: center;">{{poblacion.CodigoPostal}}</td>
+                            <tr *ngFor="let problema of this.problemasFiltrados">
+                                <th scope="row"><a>#{{problema.PkCatProblema}}</a></th>
+                                <td>{{problema.TituloProblema}}</td>
+                                <td>{{problema.DescripcionProblema}}</td>
                                 <td style="text-align: center;">
-                                    <span class="badge bg-{{poblacion.Activo == 1 ? 'success' : 'danger'}}">
-                                        {{poblacion.Activo == 1 ? 'Activo' : 'Incativo'}}
+                                    <span class="badge bg-{{problema.Activo == 1 ? 'success' : 'danger'}}">
+                                        {{problema.Activo == 1 ? 'Activo' : 'Incativo'}}
                                     </span>
                                 </td>
                                 <td style="text-align: center;">
@@ -89,7 +89,7 @@
                                           Opciones
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosPoblacionModificacion(poblacion.PkCatPoblacion)">Módificar</button></li>
+                                          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosProblemaModificacion(problema.PkCatProblema)">Módificar</button></li>
                                           <li><button class="dropdown-item" type="button">Inactivar</button></li>
                                         </ul>
                                     </div>
@@ -107,35 +107,35 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-body">
-                <h5 *ngIf="!modificacionPoblacion" class="modal-title" style="text-align: center !important;"><b>Nueva Población</b></h5><br>
-                <h5 *ngIf="modificacionPoblacion" class="modal-title" style="text-align: center !important;"><b>Modificar Población</b></h5><br>
+                <h5 *ngIf="!modificacionProblema" class="modal-title" style="text-align: center !important;"><b>Nuevo Problema</b></h5><br>
+                <h5 *ngIf="modificacionProblema" class="modal-title" style="text-align: center !important;"><b>Modificar Problema</b></h5><br>
 
                 <div class="card">
                     <div class="card-body">
                         <br>
                         <div class="d-flex align-items-center">
-                            <form class="row g-3 col-12" autocomplete="off" [formGroup]="formNuevaPoblacion">
+                            <form class="row g-3 col-12" autocomplete="off" [formGroup]="formNuevoProblema">
 
-                                <input type="hidden" formControlName="pkCatPoblacion">
+                                <input type="hidden" formControlName="pkCatProblema">
 
-                                <div class="col-md-6">
-                                    <label for="nombrePoblacion" class="form-label">Nombre de la población <b style="color: brown;">*</b>:</label>
-                                    <input formControlName="nombrePoblacion" type="text" class="form-control" id="nombrePoblacion" placeholder="Nombre de la población" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                                <div class="col-md-12">
+                                    <label for="tituloProblema" class="form-label">Título del problema <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="tituloProblema" type="text" class="form-control" id="tituloProblema" placeholder="Título del problema" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                                 </div>
                 
-                                <div class="col-md-6">
-                                    <label for="cpPoblacion" class="form-label">Código Postal <b style="color: brown;">*</b>:</label>
-                                    <input formControlName="cpPoblacion" type="text" class="form-control" id="cpPoblacion" placeholder="Código Postal" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="5">
+                                <div class="col-md-12">
+                                    <label for="descripcionProblema" class="form-label">Descripción del problema:</label>
+                                    <textarea formControlName="descripcionProblema" type="text" class="form-control" id="descripcionProblema" placeholder="Descripción del problema" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                                 </div>
                 
                                 <div class="col-12">
-                                    <label for="observacionesPoblacion" class="form-label">Observaciones:</label>
-                                    <textarea formControlName="observacionesPoblacion" class="form-control" id="observacionesPoblacion" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                    <label for="observacionesProblema" class="form-label">Observaciones:</label>
+                                    <textarea formControlName="observacionesProblema" class="form-control" id="observacionesProblema" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                                 </div>
 
                                 <div class="col-12" style="text-align: center;">
-                                    <button *ngIf="!modificacionPoblacion" type="button" class="btn btn-primary" (click)="crearRegistroPoblacion()"><b>Crear nueva población</b></button>
-                                    <button *ngIf="modificacionPoblacion" type="button" class="btn btn-primary" (click)="modificarPoblacion()"><b>Modificar población</b></button>
+                                    <button *ngIf="!modificacionProblema" type="button" class="btn btn-primary" (click)="crearRegistroProblema()"><b>Crear nuevo problema</b></button>
+                                    <button *ngIf="modificacionProblema" type="button" class="btn btn-primary" (click)="modificarProblema()"><b>Modificar población</b></button>
                                     <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
                                 </div>
                             </form>

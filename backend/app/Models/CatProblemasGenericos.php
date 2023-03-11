@@ -9,6 +9,7 @@ class CatProblemasGenericos extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $table = 'catproblemasgenericos';
     protected $primaryKey = 'PkCatProblema';
     protected $fillable = 
     [

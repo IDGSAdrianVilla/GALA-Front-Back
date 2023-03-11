@@ -10,6 +10,7 @@ import { ClientesRegistroComponent } from './modules/clientes/clientes-registro/
 import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/clientes-consulta.component';
 import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
 import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
+import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblacione
     ClientesRegistroComponent,
     ClientesConsultaComponent,
     ClientesModificacionComponent,
-    PoblacionesComponent
+    PoblacionesComponent,
+    ProblemasComponent
   ]
 })
 export class HomeModule { }
