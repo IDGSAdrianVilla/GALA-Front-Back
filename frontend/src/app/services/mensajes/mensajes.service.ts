@@ -7,8 +7,7 @@ import Swal from 'sweetalert2';
 export class MensajesService {
   
   private mensajeError500 : string = 'Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas';
-
-  constructor() { }
+  
   mensajeEsperar():void{
     Swal.fire({
       allowOutsideClick: false,
