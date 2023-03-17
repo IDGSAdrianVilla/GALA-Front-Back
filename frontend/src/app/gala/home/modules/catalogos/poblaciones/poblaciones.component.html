@@ -17,17 +17,17 @@
                         <section class="row">
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
                                 <button class="btn btn-primary form-control" (click)="consultaPoblaciones()">Consultar</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva Población</button>
-                            </div>
-
-                            <div class="col-xl-2 col-md-4">
-                                <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
+                                <button class="btn btn-primary form-control" disabled="true">Excel</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
@@ -57,7 +57,7 @@
                                 [disabled]="activarFiltroBusqueda()"
                                 autocomplete="off"
                             >
-                            <label for="floatingName">Buscar Población</label>
+                            <label for="floatingName">Buscar población</label>
                         </div>
                     </div>
 

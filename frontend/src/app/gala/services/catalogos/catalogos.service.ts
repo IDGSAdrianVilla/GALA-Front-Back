@@ -61,7 +61,7 @@ export class CatalogosService {
     return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/modificarTipoInstalacion',datosModificadosTipoInstalacion);
   }
 
-  public obtenerTipoIntalaciones() : Observable<any> {
+  public consultaTiposDeInstalacion() : Observable<any> {
     return this.http.get<any>(this.urlHost+'/catalogos/obtenerTipoInstalaciones');
   }
 }

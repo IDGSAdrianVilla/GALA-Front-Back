@@ -17,22 +17,22 @@
                         <section class="row">
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
                                 <button class="btn btn-primary form-control" (click)="consultaProblemas()">Consultar</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo Problema</button>
+                                <button class="btn btn-primary form-control" disabled="true">Excel</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
-                            </div>
-
-                            <div class="col-xl-2 col-md-4">
-                                <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-danger form-control">Limpiar</button>
+                                <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
                             </div>
                         </section>
                     </form>
@@ -57,7 +57,7 @@
                                 [disabled]="activarFiltroBusqueda()"
                                 autocomplete="off"
                             >
-                            <label for="floatingName">Buscar Problema</label>
+                            <label for="floatingName">Buscar problema</label>
                         </div>
                     </div>
 

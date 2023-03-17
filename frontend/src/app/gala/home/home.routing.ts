@@ -55,7 +55,7 @@ export const HomeRoutes: Routes = [
         component: ProblemasComponent
       },
       {
-        path : 'catalogos/tipo-instalaciones',
+        path : 'catalogos/clasificacionInstalaciones',
         component: TipoInstalacionesComponent
       },{
         path: 'catalogos/roles',

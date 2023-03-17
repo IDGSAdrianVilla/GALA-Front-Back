@@ -180,4 +180,14 @@ export class ProblemasComponent implements OnInit {
   activarFiltroBusqueda () : boolean {
     return this.datosProblemas.length == 0;
   }
+
+  activarBotonLimpiar() : boolean {
+    return this.datosProblemas.length == 0;
+  }
+
+  limpiarTabla() : void {
+    this.busqueda = '';
+    this.datosProblemas = [];
+    this.problemasFiltrados = this.datosProblemas;
+  }
 }

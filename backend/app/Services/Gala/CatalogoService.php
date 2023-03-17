@@ -239,7 +239,7 @@ class CatalogoService
         return response()->json(
             [
                 'data' => $tipoInstalaciones,
-                'mensaje'   => 'Se consultaron las Instalacones con éxito'
+                'mensaje'   => 'Se consultaron las clasificaciones con éxito'
             ],
             200
         );
