@@ -16,6 +16,7 @@ class CatClasificacionInstalaciones extends Model
         'PkCatClasificacionInstalacion',
         'NombreClasificacion',
         'Descripcion',
+        'Observaciones',
         'FkTblUsuario',
         'FechaAlta',
         'Activo'

@@ -152,4 +152,65 @@ class CatalogoController extends Controller
             );
         }
     }
+
+    public function crearNuevoTipoInstalacion( Request $request ){
+        try{
+            return $this->catalogoService->crearNuevoTipoInstalacion($request->all() );
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function obtenerTipoInstalaciones(){
+        try{
+            return $this->catalogoService->obtenerTipoInstalaciones();
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function consultaDatosTipoInstalacionModificacion( Request $request){
+        try{
+            return $this->catalogoService->consultaDatosTipoInstalacionModificacion($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        } 
+    }
+
+    public function modificarTipoInstalacion( Request $request){
+        try{
+            return $this->catalogoService->modificarTipoInstalacion($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+
+    }
 }

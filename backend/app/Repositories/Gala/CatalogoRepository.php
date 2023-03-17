@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Gala;
 
+use App\Models\CatClasificacionInstalaciones;
 use App\Models\CatPoblaciones;
 use App\Models\CatProblemasGenericos;
 use App\Models\CatRoles;
@@ -35,6 +36,8 @@ class CatalogoRepository
         return $roles->get();
     }
 
+
+
     public function validarPoblacionExistente ( $nombrePoblacion, $cpPoblacion, $pkPoblacion = 0 ) {
         $poblacionExistente = CatPoblaciones::where(function ( $condiciones ) use ( $nombrePoblacion, $cpPoblacion ) {
                                                 $condiciones->where('NombrePoblacion', 'like', '%'.$nombrePoblacion.'%')
@@ -65,9 +68,9 @@ class CatalogoRepository
     public function modificarPoblacion ( $datosModificacion ) {
         CatPoblaciones::where('PkCatPoblacion', $datosModificacion['pkCatPoblacion'])
                       ->update([
-                        'NombrePoblacion' => $datosModificacion['nombrePoblacion'],
-                        'CodigoPostal'    => $datosModificacion['cpPoblacion'],
-                        'Observaciones'   => $datosModificacion['observacionesPoblacion']
+                        'NombrePoblacion' => trim($datosModificacion['nombrePoblacion']),
+                        'CodigoPostal'    => trim($datosModificacion['cpPoblacion']),
+                        'Observaciones'   => trim($datosModificacion['observacionesPoblacion'])
                       ]);
     }
 
@@ -98,9 +101,48 @@ class CatalogoRepository
     public function modificarProblema ( $datosModificacion ) {
         CatProblemasGenericos::where('PkCatProblema', $datosModificacion['pkCatProblema'])
                              ->update([
-                                'TituloProblema'      => $datosModificacion['tituloProblema'],
-                                'DescripcionProblema' => $datosModificacion['descripcionProblema'],
-                                'Observaciones'       => $datosModificacion['observacionesProblema']
+                                'TituloProblema'      => trim($datosModificacion['tituloProblema']),
+                                'DescripcionProblema' => trim($datosModificacion['descripcionProblema']),
+                                'Observaciones'       => trim($datosModificacion['observacionesProblema'])
                              ]);
+    }
+
+    public function validarTipoInstalacionExistente( $titulo, $pkTipoInstalacion = 0 ) {
+        $tipoInstalacionExistente = CatClasificacionInstalaciones::where('NombreClasificacion', 'like', '%'.$titulo.'%')
+                                                                 ->where('PkCatClasificacionInstalacion', '!=', $pkTipoInstalacion);
+
+        return $tipoInstalacionExistente->count();
+    }
+
+    public function obtenerTipoInstalaciones(){
+        $tipoInstalaciones = CatClasificacionInstalaciones::orderBy('NombreClasificacion', 'asc');
+
+        return $tipoInstalaciones->get();
+    }
+
+    public function crearNuevoTipoInstalacion( $datosTipoInstalacion, $pkUsuario){
+        $registro = new CatClasificacionInstalaciones();
+        $registro->NombreClasificacion      = trim($datosTipoInstalacion['nombreClasificacion']);
+        $registro->Descripcion              = trim($datosTipoInstalacion['descripcionClasificacion']);
+        $registro->Observaciones            = trim($datosTipoInstalacion['observacionesClasificacion']);
+        $registro->FkTblUsuario             = $pkUsuario;
+        $registro->FechaAlta                = Carbon::now();
+        $registro->Activo                   = 1;
+        $registro->save();
+    }
+
+    public function consultaDatosTipoInstalacionModificacion( $pkCatClasificacionInstalacion ){
+        $return = CatClasificacionInstalaciones::where('PkCatClasificacionInstalacion', $pkCatClasificacionInstalacion);
+
+        return $return->get();
+    }
+
+    public function modificarTipoInstalacion( $datosModificacion ){
+        CatClasificacionInstalaciones::where('PkCatClasificacionInstalacion', $datosModificacion['pkCatClasificacionInstalacion'])
+                                     ->update([
+                                        'NombreClasificacion' => trim($datosModificacion['nombreClasificacion']),  
+                                        'Descripcion'         => trim($datosModificacion['descripcionClasificacion']),
+                                        'Observaciones'       => trim($datosModificacion['observacionesClasificacion'])
+                                    ]);
     }
 }

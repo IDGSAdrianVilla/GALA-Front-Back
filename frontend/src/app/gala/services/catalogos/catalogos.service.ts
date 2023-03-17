@@ -48,4 +48,20 @@ export class CatalogosService {
   public modificarProblema( datosModificados : any ) : Observable<any> {
     return this.http.post<any>(this.urlHost+'/catalogos/problemas/modificarProblema', datosModificados);
   }
+
+  public crearNuevoTipoInstalacion( dataRegistro : any) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/crearNuevoTipoInstalacion', dataRegistro);
+  }
+
+  public consultaDatosTipoInstalacionModificacion( PkCatClasificacionInstalacion : number) :Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/consultaDatosTipoInstalacionModificacion',{PkCatClasificacionInstalacion});
+  }
+
+  public modificarTipoInstalacion(datosModificadosTipoInstalacion : any) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/modificarTipoInstalacion',datosModificadosTipoInstalacion);
+  }
+
+  public obtenerTipoIntalaciones() : Observable<any> {
+    return this.http.get<any>(this.urlHost+'/catalogos/obtenerTipoInstalaciones');
+  }
 }

@@ -10,6 +10,7 @@ import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/
 import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
 import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
 import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
+import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -51,6 +52,10 @@ export const HomeRoutes: Routes = [
       },{
         path : 'catalogos/problemas',
         component: ProblemasComponent
+      },
+      {
+        path : 'catalogos/tipo-instalaciones',
+        component: TipoInstalacionesComponent
       }
     ]
   }

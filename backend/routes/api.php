@@ -40,3 +40,8 @@ Route::post('/catalogos/problemas/crearNuevoProblema', 'App\Http\Controllers\Gal
 Route::get('/catalogos/obtenerProblemas', 'App\Http\Controllers\Gala\CatalogoController@obtenerProblemas');
 Route::post('/catalogos/problemas/consultaDatosProblemaModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosProblemaModificacion');
 Route::post('/catalogos/problemas/modificarProblema', 'App\Http\Controllers\Gala\CatalogoController@modificarProblema');
+
+Route::post('/catalogos/tipoInstalaciones/crearNuevoTipoInstalacion', 'App\Http\Controllers\Gala\CatalogoController@crearNuevoTipoInstalacion');
+Route::get('/catalogos/obtenerTipoInstalaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerTipoInstalaciones');
+Route::post('/catalogos/tipoInstalaciones/consultaDatosTipoInstalacionModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosTipoInstalacionModificacion');
+Route::post('/catalogos/tipoInstalaciones/modificarTipoInstalacion', 'App\Http\Controllers\Gala\CatalogoController@modificarTipoInstalacion');

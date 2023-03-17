@@ -4,6 +4,7 @@ namespace App\Services\Gala;
 use App\Repositories\Gala\CatalogoRepository;
 use App\Repositories\Gala\UsuarioRepository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class CatalogoService
@@ -200,4 +201,89 @@ class CatalogoService
             200
         );
     }
+
+    public function crearNuevoTipoInstalacion( $datosTipoInstalacion ){
+        $validarTipoInstalacion = $this->catalogoRepository->validarTipoInstalacionExistente(
+            $datosTipoInstalacion['datosTipoInstalacion']['nombreClasificacion']
+        );
+
+        if( $validarTipoInstalacion > 0 ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Problema con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        DB::beginTransaction();
+            $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosTipoInstalacion['token']);
+
+            $this->catalogoRepository->crearNuevoTipoInstalacion( $datosTipoInstalacion['datosTipoInstalacion'], $sesion[0]->PkTblUsuario);
+
+        DB::commit();
+
+        return response()->json(
+            [
+                'tipoInstalacion' => $this->catalogoRepository->obtenerTipoInstalaciones(),
+                'message' => 'Se registró con éxito el nuevo problema'
+            ],
+            200
+        );
+    }
+
+    public function obtenerTipoInstalaciones(){
+        $tipoInstalaciones = $this->catalogoRepository->obtenerTipoInstalaciones();
+        Log::alert($tipoInstalaciones);
+        return response()->json(
+            [
+                'data' => $tipoInstalaciones,
+                'mensaje'   => 'Se consultaron las Instalacones con éxito'
+            ],
+            200
+        );
+    }
+
+    public function consultaDatosTipoInstalacionModificacion( $pkCatClasificacionInstalacion ){
+        $tipoInstalacion = $this->catalogoRepository->consultaDatosTipoInstalacionModificacion( $pkCatClasificacionInstalacion );
+        
+        return response()->json(
+            [
+                'data'      => $tipoInstalacion,
+                'message'   => 'Se consultó la información con éxito'
+            ],
+            200
+        );
+    }
+
+    public function modificarTipoInstalacion( $datosTipoInstalacion ){
+        $validarTipoInstalacion = $this->catalogoRepository->validarTipoInstalacionExistente(
+            $datosTipoInstalacion['datosTipoInstalacion']['nombreClasificacion'],
+            $datosTipoInstalacion['datosTipoInstalacion']['pkCatClasificacionInstalacion']
+        );
+       
+        if( $validarTipoInstalacion > 0){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Problema con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        DB::beginTransaction();
+            $this->catalogoRepository->modificarTipoInstalacion($datosTipoInstalacion['datosTipoInstalacion']);
+        DB::commit();
+
+        return response()->json(
+            [
+                'tipoInstalaciones' => $this->catalogoRepository->obtenerTipoInstalaciones(),
+                'message'   => 'Se modificó con éxito el tipo de instalación'
+            ],
+            200
+        );
+    }
+    
 }
