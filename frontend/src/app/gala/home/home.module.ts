@@ -11,6 +11,7 @@ import { ClientesConsultaComponent } from './modules/clientes/clientes-consulta/
 import { ClientesModificacionComponent } from './modules/clientes/clientes-modificacion/clientes-modificacion.component';
 import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
 import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
+import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { ProblemasComponent } from './modules/catalogos/problemas/problemas.comp
     ClientesConsultaComponent,
     ClientesModificacionComponent,
     PoblacionesComponent,
-    ProblemasComponent
+    ProblemasComponent,
+    TipoInstalacionesComponent
   ]
 })
 export class HomeModule { }

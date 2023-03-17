@@ -31,19 +31,19 @@ export class ProblemasComponent implements OnInit {
 
   ngOnInit(): void {
     this.crearFormularioProblemas();
-    this.consultaPoblaciones();
+    this.consultaProblemas();
   }
 
   crearFormularioProblemas() : void {
     this.formNuevoProblema = this.fb.group({
       pkCatProblema : [],
-      tituloProblema : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      tituloProblema : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       descripcionProblema : ['',[Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       observacionesProblema : ['',[Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
 
-  consultaPoblaciones() : void {
+  consultaProblemas() : void {
     this.mensajes.mensajeEsperar();
     this.catalogoService.obtenerProblemas().subscribe(
       respuesta => {

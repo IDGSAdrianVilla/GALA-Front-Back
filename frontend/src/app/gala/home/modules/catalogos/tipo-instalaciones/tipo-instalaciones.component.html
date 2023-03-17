@@ -1,0 +1,148 @@
+<div class="pagetitle">
+    <h1>Clasificación Instalaciones</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Catálogos</li>
+            <li class="breadcrumb-item active">Clasificación Instalaciones</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <form autocomplete="off" class="col-12">
+                        <section class="row">
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" (click)="consultaTipoDeInstalaciones()">Consultar</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" disabled="true">Excel</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="card recent-sales overflow-auto" style="max-height: 570px;">
+        <div class="card-body">
+            <h5 class="card-title">
+                Clasificación Instalaciones
+            </h5>
+
+            <div class="col-12">
+                <div class="form-floating">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="floatingName"
+                        placeholder="Buscar Tipo instalación"
+                        [(ngModel)]="busqueda"
+                        (input)="filtrarTipoInstalaciones()"
+                        [disabled]="activarFiltroBusqueda()"
+                        autocomplete="off"
+                    >
+                    <label for="floatingName">Buscar clasificación de instalación</label>
+                </div>
+            </div>
+
+            <br>
+
+            <table class="table table-borderless datatable">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre clasificación</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col" style="text-align: center;">Activo</th>
+                        <th scope="col" style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let tipoInstalacion of this.tipoInstalacionesFiltrados">
+                        <th scope="row"><a>#{{tipoInstalacion.PkCatClasificacionInstalacion}}</a></th>
+                        <td>{{tipoInstalacion.NombreClasificacion}}</td>
+                        <td>{{tipoInstalacion.Descripcion}}</td>
+                        <td style="text-align: center;">
+                            <span class="badge bg-{{tipoInstalacion.Activo == 1 ? 'success' : 'danger'}}">
+                                {{tipoInstalacion.Activo == 1 ? 'Activo' : 'Incativo'}}
+                            </span>
+                        </td>
+                        <td style="text-align: center;">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                  Opciones
+                                </button>
+                                <ul class="dropdown-menu">
+                                  <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosTipoInstalacionModificacion(tipoInstalacion.PkCatClasificacionInstalacion)">Módificar</button></li>
+                                  <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 *ngIf="!modificacionTipoInstalacion" class="modal-title" style="text-align: center !important;"><b>Nueva clasificación de instalación</b></h5><br>
+                <h5 *ngIf="modificacionTipoInstalacion" class="modal-title" style="text-align: center !important;"><b>Modificar clasificación de instalación</b></h5><br>
+
+                <div class="card">
+                    <div class="card-body">
+                        <br>
+                        <div class="d-flex align-items-center">
+                            <form class="row g-3 col-12" autocomplete="off" [formGroup]="formNuevoTipoInstalacion">
+
+                                <input type="hidden" formControlName="pkCatClasificacionInstalacion">
+
+                                <div class="col-md-12">
+                                    <label for="nombreClasificacion" class="form-label">Nombre clasificación de instalación <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="nombreClasificacion" type="text" class="form-control" id="nombreClasificacion" placeholder="Nombre clasificación de instalación" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                                </div>
+                
+                                <div class="col-md-12">
+                                    <label for="descripcionClasificacion" class="form-label">Descripción de la clasificación:</label>
+                                    <textarea formControlName="descripcionClasificacion" type="text" class="form-control" id="descripcionClasificacion" placeholder="Descripción de la clasificación" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+                
+                                <div class="col-12">
+                                    <label for="observacionesClasificacion" class="form-label">Observaciones:</label>
+                                    <textarea formControlName="observacionesClasificacion" class="form-control" id="observacionesClasificacion" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+
+                                <div class="col-12" style="text-align: center;">
+                                    <button *ngIf="!modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="crearRegistroTipoInstalacion()"><b>Crear nueva clasificación</b></button>
+                                    <button *ngIf="modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="modificarTipoInstalacion()"><b>Modificar clasisficación</b></button>
+                                    <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
