@@ -211,6 +211,65 @@ class CatalogoController extends Controller
                 500
             );
         }
+    }
 
+    public function crearRegistroRol ( Request $request ) {
+        try{
+            return $this->catalogoService->crearRegistroRol($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function consultaDatosRolModificacion ( Request $request ) {
+        try{
+            return $this->catalogoService->consultaDatosRolModificacion($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validaRolExistente ( Request $request ) {
+        try{
+            return $this->catalogoService->validaRolExistente($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function modificarRol ( Request $request ) {
+        try{
+            return $this->catalogoService->modificarRol($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
     }
 }

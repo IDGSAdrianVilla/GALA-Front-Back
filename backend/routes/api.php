@@ -31,17 +31,22 @@ Route::post('/clientes/modificarDatosCliente','App\Http\Controllers\Gala\Cliente
 
 Route::get('/catalogos/obtenerPoblaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerPoblaciones');
 Route::get('/catalogos/obtenerRoles', 'App\Http\Controllers\Gala\CatalogoController@obtenerRoles');
+Route::get('/catalogos/obtenerProblemas', 'App\Http\Controllers\Gala\CatalogoController@obtenerProblemas');
+Route::get('/catalogos/obtenerTipoInstalaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerTipoInstalaciones');
 
 Route::post('/catalogos/poblaciones/crearNuevaPoblacion', 'App\Http\Controllers\Gala\CatalogoController@crearNuevaPoblacion');
 Route::post('/catalogos/poblaciones/consultaDatosPoblacionModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosPoblacionModificacion');
 Route::post('/catalogos/poblaciones/modificarPoblacion', 'App\Http\Controllers\Gala\CatalogoController@modificarPoblacion');
 
 Route::post('/catalogos/problemas/crearNuevoProblema', 'App\Http\Controllers\Gala\CatalogoController@crearNuevoProblema');
-Route::get('/catalogos/obtenerProblemas', 'App\Http\Controllers\Gala\CatalogoController@obtenerProblemas');
 Route::post('/catalogos/problemas/consultaDatosProblemaModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosProblemaModificacion');
 Route::post('/catalogos/problemas/modificarProblema', 'App\Http\Controllers\Gala\CatalogoController@modificarProblema');
 
 Route::post('/catalogos/tipoInstalaciones/crearNuevoTipoInstalacion', 'App\Http\Controllers\Gala\CatalogoController@crearNuevoTipoInstalacion');
-Route::get('/catalogos/obtenerTipoInstalaciones', 'App\Http\Controllers\Gala\CatalogoController@obtenerTipoInstalaciones');
 Route::post('/catalogos/tipoInstalaciones/consultaDatosTipoInstalacionModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosTipoInstalacionModificacion');
 Route::post('/catalogos/tipoInstalaciones/modificarTipoInstalacion', 'App\Http\Controllers\Gala\CatalogoController@modificarTipoInstalacion');
+
+Route::post('/catalogos/roles/crearRegistroRol', 'App\Http\Controllers\Gala\CatalogoController@crearRegistroRol');
+Route::post('/catalogos/roles/consultaDatosRolModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosRolModificacion');
+Route::post('/catalogos/roles/validaRolExistente', 'App\Http\Controllers\Gala\CatalogoController@validaRolExistente');
+Route::post('/catalogos/roles/modificarRol', 'App\Http\Controllers\Gala\CatalogoController@modificarRol');

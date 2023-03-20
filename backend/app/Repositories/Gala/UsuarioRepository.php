@@ -155,7 +155,7 @@ class UsuarioRepository
 				   ]);
 	}
 
-	public function modificarDatosDireccion( $datosDireccion, $pkEmpleado){
+	public function modificarDatosDireccion( $datosDireccion, $pkEmpleado ){
 		TblDirecciones::where('FkTblEmpleado', '=', $pkEmpleado)
 					  ->update([
 						'FkCatPoblacion' 		   => $datosDireccion['poblacionEmpleado'],

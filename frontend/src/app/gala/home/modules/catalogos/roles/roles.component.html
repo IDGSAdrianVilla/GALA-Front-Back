@@ -1,0 +1,194 @@
+<div class="pagetitle">
+    <h1>Roles</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Catálogos</li>
+            <li class="breadcrumb-item active">Roles</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <form autocomplete="off" class="col-12">
+                        <section class="row">
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" (click)="consultaRoles()">Consultar</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" disabled="true">Excel</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card recent-sales overflow-auto" style="max-height: 570px;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Roles
+                    </h5>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="floatingName"
+                                placeholder="Buscar rol"
+                                [(ngModel)]="busqueda"
+                                (input)="filtrarRoles()"
+                                [disabled]="activarFiltroBusqueda()"
+                                autocomplete="off"
+                            >
+                            <label for="floatingName">Buscar rol</label>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col" style="text-align: center;">Activo</th>
+                                <th scope="col" style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let rol of this.rolesFiltrados">
+                                <th scope="row"><a>#{{rol.PkCatRol}}</a></th>
+                                <td>{{rol.NombreRol}}</td>
+                                <td>{{rol.DescripcionRol}}</td>
+                                <td style="text-align: center;">
+                                    <span class="badge bg-{{rol.Activo == 1 ? 'success' : 'danger'}}">
+                                        {{rol.Activo == 1 ? 'Activo' : 'Incativo'}}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                          Opciones
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosRolModificacion(rol.PkCatRol)">Módificar</button></li>
+                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 *ngIf="!modificacionRol" class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Nuevo Rol</b></h5>
+                <h5 *ngIf="modificacionRol" class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Modificar Rol</b></h5>
+
+                <div class="card">
+                    <div class="card-body">
+                        <br>
+                        <div class="d-flex align-items-center">
+                            <form class="row g-3 col-12" autocomplete="off" [formGroup]="formNuevoRol">
+
+                                <input type="hidden" formControlName="pkCatRol">
+
+                                <div class="col-md-12">
+                                    <label for="nombreRol" class="form-label">Nombre rol <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="nombreRol" type="text" class="form-control" id="nombreRol" placeholder="Nombre rol" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                                </div>
+                
+                                <div class="col-md-12">
+                                    <label for="descripcionRol" class="form-label">Descripción del rol:</label>
+                                    <textarea formControlName="descripcionRol" type="text" class="form-control" id="descripcionRol" placeholder="Descripción del rol" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+
+                                <section class="card">
+                                    <br>
+                                    <div class="card-body">
+                                        <div class="col-md-12 row">
+                                            <label for="" class="form-label">Módulos <b style="color: brown;">*</b>:</label>
+                                            <div class="form-check col modulos-check" *ngFor="let modulo of this.dataService.objModulos">
+                                                <input class="form-check-input" type="checkbox" id="{{ modulo.nombreFormulario }}" (click)="cambioObjetoPermisos( modulo.etiquetaModulo, $event )" [checked]="modulo.status" #checkboxes>
+                                                <label class="form-check-label" for="{{ modulo.nombreFormulario }}" align="center">
+                                                  &nbsp;{{ modulo.nombreModulo }}
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <div *ngIf="this.objetoPermisos.length > 0">
+                                            <section class="row" *ngFor="let permisos of this.objetoPermisos">
+                                                <div class="col" *ngFor="let permiso of permisos.permisosRol" style="margin-bottom: 10px;">
+                                                    <div class="form-check form-switch" style="margin-top: 5px;">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="modulo-{{permiso.modulo}}"
+                                                            [checked]="permiso.status"
+                                                            (change)="this.funcionGenerica.actualizoPadre($event)"
+                                                            (change)="actualizarObjetoPermisosPadre(permiso.modulo, $event)"
+                                                        >
+                                                        <label class="form-check-label" for="modulo-{{permiso.modulo}}"><b>{{permiso.nombreModulo}}</b></label>
+                                                
+                                                        <div class="form-check form-switch" *ngFor="let hijos of permiso.permisosModulo">
+                                                            <input class="form-check-input permiso-{{permiso.modulo}}"
+                                                                type="checkbox"
+                                                                id="permiso-{{permiso.modulo}}-{{hijos.permiso}}"
+                                                                [checked]="hijos.status"
+                                                                [disabled]="hijos.disabled"
+                                                                (change)="this.funcionGenerica.actualizoHijo($event)"
+                                                                (change)="actualizarObjetoPermisosHijo(permiso.modulo, hijos.permiso, $event)"
+                                                            >
+                                                            <label class="form-check-label" for="permiso-{{permiso.modulo}}-{{hijos.permiso}}">{{hijos.nombre}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </section>
+                
+                                <div class="col-12" style="margin-top: -15px;">
+                                    <label for="observacionesRol" class="form-label">Observaciones:</label>
+                                    <textarea formControlName="observacionesRol" class="form-control" id="observacionesRol" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button *ngIf="!modificacionRol" type="button" class="btn btn-primary" (click)="validarRegistroRol()"><b>Crear nuevo rol</b></button>
+                <button *ngIf="modificacionRol" type="button" class="btn btn-primary" (click)="validarModificarRol()"><b>Modificar rol</b></button>
+                <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
+            </div>
+        </div>
+    </div>
+</div>

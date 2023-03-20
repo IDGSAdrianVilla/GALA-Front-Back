@@ -37,11 +37,11 @@ export class UsuariosConsultaComponent implements OnInit{
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
       this.usuariosFiltrados = this.usuariosPorRoles.filter((usuario : any) => {
-        return usuario.Nombre.toLowerCase().includes(textoBusqueda) ||
-               usuario.ApellidoPaterno.toLowerCase().includes(textoBusqueda) ||
-               usuario.Telefono.toLowerCase().includes(textoBusqueda) ||
-               usuario.Calle.toLowerCase().includes(textoBusqueda) ||
-               usuario.NombrePoblacion.toLowerCase().includes(textoBusqueda);
+        return usuario.Nombre?.toLowerCase().includes(textoBusqueda) ||
+               usuario.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
+               usuario.Telefono?.toLowerCase().includes(textoBusqueda) ||
+               usuario.Calle?.toLowerCase().includes(textoBusqueda) ||
+               usuario.NombrePoblacion?.toLowerCase().includes(textoBusqueda);
       });
     }
   }

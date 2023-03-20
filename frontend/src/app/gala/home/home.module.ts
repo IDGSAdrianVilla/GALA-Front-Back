@@ -12,6 +12,7 @@ import { ClientesModificacionComponent } from './modules/clientes/clientes-modif
 import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblaciones.component';
 import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
 import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
+import { RolesComponent } from './modules/catalogos/roles/roles.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalacion
     ClientesModificacionComponent,
     PoblacionesComponent,
     ProblemasComponent,
-    TipoInstalacionesComponent
+    TipoInstalacionesComponent,
+    RolesComponent
   ]
 })
 export class HomeModule { }

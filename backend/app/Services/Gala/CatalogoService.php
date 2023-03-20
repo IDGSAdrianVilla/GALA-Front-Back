@@ -40,7 +40,8 @@ class CatalogoService
         $roles = $this->catalogoRepository->obtenerRoles();
         return response()->json(
             [
-                'data' => $roles
+                'data' => $roles,
+                'mensaje'   => 'Se consultaron los roles con éxito'
             ],
             200
         );
@@ -221,7 +222,6 @@ class CatalogoService
             $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosTipoInstalacion['token']);
 
             $this->catalogoRepository->crearNuevoTipoInstalacion( $datosTipoInstalacion['datosTipoInstalacion'], $sesion[0]->PkTblUsuario);
-
         DB::commit();
 
         return response()->json(
@@ -235,11 +235,11 @@ class CatalogoService
 
     public function obtenerTipoInstalaciones(){
         $tipoInstalaciones = $this->catalogoRepository->obtenerTipoInstalaciones();
-        Log::alert($tipoInstalaciones);
+
         return response()->json(
             [
                 'data' => $tipoInstalaciones,
-                'mensaje'   => 'Se consultaron las Instalacones con éxito'
+                'mensaje'   => 'Se consultaron las clasificaciones con éxito'
             ],
             200
         );
@@ -286,4 +286,87 @@ class CatalogoService
         );
     }
     
+    public function crearRegistroRol ( $datosRol ) {
+        DB::beginTransaction();
+            $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosRol['token'] );
+
+            $pkCatRol = $this->catalogoRepository->crearNuevoRol( $datosRol['datosRol'], $sesion[0]->PkTblUsuario );
+            $this->catalogoRepository->crearNuevoPremiso( $datosRol['datosRol']['objetoPermisos'], $pkCatRol);
+        DB::commit();
+
+        return response()->json(
+            [
+                'roles' => $this->catalogoRepository->obtenerRoles(),
+                'message'   => 'Se registró con éxito el nuevo problema'
+            ],
+            200
+        );
+    }
+
+    public function consultaDatosRolModificacion ( $pkCatRol ) {
+        $rol = $this->catalogoRepository->consultaDatosRolModificacion( $pkCatRol );
+
+        return response()->json(
+            [
+                'data'      => $rol,
+                'message'   => 'Se consultó la información con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validaRolExistente ( $datosRol ) {
+        $validarRol = $this->catalogoRepository->validarRolExistente(
+            $datosRol['datosRol']['nombreRol'],
+            $datosRol['datosRol']['pkCatRol']
+        );
+
+        if ( $validarRol > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Rol con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        $validarPermisos = $this->catalogoRepository->validarPermisosExistentes(
+            $datosRol['datosRol']['objetoPermisos'],
+            $datosRol['datosRol']['pkCatRol']
+        );
+
+        if ( $validarPermisos > 0 ) {
+            return response()->json(
+                [
+                    'pregunta' => $datosRol['type'] == 'registro' ? '¿Estás seguro de continuar con el registro?' : '¿Estás seguro de continuar con la modificación?',
+                    'message' => 'Al parecer ya existe un Rol con los mismos permisos',
+                    'status' => 300
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message'   => 'Se puede modificar el registro con éxito'
+            ],
+            200
+        );
+    }
+
+    public function modificarRol ( $datosRol ) {
+        DB::beginTransaction();
+            $this->catalogoRepository->modificarRol( $datosRol['datosRol'] );
+            $this->catalogoRepository->modificarPermisos( $datosRol['datosRol']['objetoPermisos'], $datosRol['datosRol']['pkCatRol'] );
+        DB::commit();
+
+        return response()->json(
+            [
+                'problemas' => $this->catalogoRepository->obtenerRoles(),
+                'message'   => 'Se modificó con éxito el rol'
+            ],
+            200
+        );
+    }
 }

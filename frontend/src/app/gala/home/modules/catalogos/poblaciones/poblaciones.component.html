@@ -17,17 +17,17 @@
                         <section class="row">
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva</button>
+                            </div>
+
+                            <div class="col-xl-2 col-md-4">
+                                <label class="form-label">&nbsp;</label>
                                 <button class="btn btn-primary form-control" (click)="consultaPoblaciones()">Consultar</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
                                 <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva Población</button>
-                            </div>
-
-                            <div class="col-xl-2 col-md-4">
-                                <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
+                                <button class="btn btn-primary form-control" disabled="true">Excel</button>
                             </div>
 
                             <div class="col-xl-2 col-md-4">
@@ -57,7 +57,7 @@
                                 [disabled]="activarFiltroBusqueda()"
                                 autocomplete="off"
                             >
-                            <label for="floatingName">Buscar Población</label>
+                            <label for="floatingName">Buscar población</label>
                         </div>
                     </div>
 
@@ -104,11 +104,11 @@
 </section>
 
 <div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
-                <h5 *ngIf="!modificacionPoblacion" class="modal-title" style="text-align: center !important;"><b>Nueva Población</b></h5><br>
-                <h5 *ngIf="modificacionPoblacion" class="modal-title" style="text-align: center !important;"><b>Modificar Población</b></h5><br>
+                <h5 *ngIf="!modificacionPoblacion" class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Nueva Población</b></h5>
+                <h5 *ngIf="modificacionPoblacion" class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Modificar Población</b></h5>
 
                 <div class="card">
                     <div class="card-body">
@@ -132,17 +132,16 @@
                                     <label for="observacionesPoblacion" class="form-label">Observaciones:</label>
                                     <textarea formControlName="observacionesPoblacion" class="form-control" id="observacionesPoblacion" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                                 </div>
-
-                                <div class="col-12" style="text-align: center;">
-                                    <button *ngIf="!modificacionPoblacion" type="button" class="btn btn-primary" (click)="crearRegistroPoblacion()"><b>Crear nueva población</b></button>
-                                    <button *ngIf="modificacionPoblacion" type="button" class="btn btn-primary" (click)="modificarPoblacion()"><b>Modificar población</b></button>
-                                    <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
-                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="modal-footer">
+                <button *ngIf="!modificacionPoblacion" type="button" class="btn btn-primary" (click)="crearRegistroPoblacion()"><b>Crear nueva población</b></button>
+                <button *ngIf="modificacionPoblacion" type="button" class="btn btn-primary" (click)="modificarPoblacion()"><b>Modificar población</b></button>
+                <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>
     </div>

@@ -36,10 +36,10 @@ export class ProblemasComponent implements OnInit {
 
   crearFormularioProblemas() : void {
     this.formNuevoProblema = this.fb.group({
-      pkCatProblema : [],
-      tituloProblema : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-      descripcionProblema : ['',[Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-      observacionesProblema : ['',[Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+      pkCatProblema         : [],
+      tituloProblema        : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      descripcionProblema   : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      observacionesProblema : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
 
@@ -171,13 +171,23 @@ export class ProblemasComponent implements OnInit {
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
       this.problemasFiltrados = this.datosProblemas.filter((poblacion : any) => {
-        return poblacion.NombrePoblacion.toLowerCase().includes(textoBusqueda) ||
-               poblacion.CodigoPostal.toLowerCase().includes(textoBusqueda);
+        return poblacion.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
+               poblacion.CodigoPostal?.toLowerCase().includes(textoBusqueda);
       });
     }
   }
 
   activarFiltroBusqueda () : boolean {
     return this.datosProblemas.length == 0;
+  }
+
+  activarBotonLimpiar() : boolean {
+    return this.datosProblemas.length == 0;
+  }
+
+  limpiarTabla() : void {
+    this.busqueda = '';
+    this.datosProblemas = [];
+    this.problemasFiltrados = this.datosProblemas;
   }
 }

@@ -34,7 +34,7 @@ export class TipoInstalacionesComponent implements OnInit{
 
   ngOnInit(): void {
     this.crearFormularioTipoInstalaciones();
-    this.consultaTipoDeInstalaciones();
+    this.consultaTiposDeInstalacion();
   }
 
   crearFormularioTipoInstalaciones() : void {
@@ -46,9 +46,9 @@ export class TipoInstalacionesComponent implements OnInit{
     });
   }
 
-  consultaTipoDeInstalaciones() : void {
+  consultaTiposDeInstalacion() : void {
     this.mensajes.mensajeEsperar();
-    this.catalogoService.obtenerTipoIntalaciones().subscribe(
+    this.catalogoService.consultaTiposDeInstalacion().subscribe(
       respuesta => {
         this.datosTipoInstalacion = respuesta.data;
         this.tipoInstalacionesFiltrados = this.datosTipoInstalacion;
@@ -79,7 +79,6 @@ export class TipoInstalacionesComponent implements OnInit{
 
           this.catalogoService.crearNuevoTipoInstalacion( dataRegistro ).subscribe(
             respuesta => {
-              console.log(respuesta);
               if ( respuesta.status != 409 ) {
                 this.limpiarFormulario();
                 this.datosTipoInstalacion = respuesta.tipoInstalacion;
@@ -177,8 +176,8 @@ export class TipoInstalacionesComponent implements OnInit{
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
       this.tipoInstalacionesFiltrados = this.datosTipoInstalacion.filter((tipoInstalacion : any) => {
-        return tipoInstalacion.NombreClasificacion.toLowerCase().includes(textoBusqueda) ||
-               tipoInstalacion.Descripcion.toLowerCase().includes(textoBusqueda);
+        return tipoInstalacion.NombreClasificacion?.toLowerCase().includes(textoBusqueda) ||
+               tipoInstalacion.Descripcion?.toLowerCase().includes(textoBusqueda);
       });
     }
   }

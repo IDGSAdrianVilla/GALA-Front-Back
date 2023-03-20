@@ -6,6 +6,7 @@ use App\Models\CatClasificacionInstalaciones;
 use App\Models\CatPoblaciones;
 use App\Models\CatProblemasGenericos;
 use App\Models\CatRoles;
+use App\Models\TblPermisos;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -31,12 +32,10 @@ class CatalogoRepository
 
     public function obtenerRoles(){
         $roles = CatRoles::join('tblpermisos', 'tblpermisos.FkCatRol', 'catroles.PkCatRol')
-                         ->orderBy('catroles.PkCatRol', 'desc');
+                         ->orderBy('catroles.NombreRol', 'asc');
 
         return $roles->get();
     }
-
-
 
     public function validarPoblacionExistente ( $nombrePoblacion, $cpPoblacion, $pkPoblacion = 0 ) {
         $poblacionExistente = CatPoblaciones::where(function ( $condiciones ) use ( $nombrePoblacion, $cpPoblacion ) {
@@ -144,5 +143,101 @@ class CatalogoRepository
                                         'Descripcion'         => trim($datosModificacion['descripcionClasificacion']),
                                         'Observaciones'       => trim($datosModificacion['observacionesClasificacion'])
                                     ]);
+    }
+
+    public function validarRolExistente ( $nombre, $pkRol = 0 ) {
+        $rolExistente = CatRoles::where('NombreRol', 'like', '%'.$nombre.'%')
+                                     ->where('PkCatRol', '!=', $pkRol);
+
+        return $rolExistente->count();
+    }
+
+    public function validarPermisosExistentes ( $objetoPermisos, $pkRol = 0 ) {
+        if ( !is_null($objetoPermisos) ) {
+			$reemplazos = array(
+				'\u00e1' => 'á',
+				'\u00e9' => 'é',
+				'\u00f3' => 'ó',
+				'\u00fa' => 'ú'
+			);
+			
+			$nuevaCadenaPermisos = json_encode($objetoPermisos['permisosRol']);
+			$objetoPermisos = str_replace(array_keys($reemplazos), array_values($reemplazos), $nuevaCadenaPermisos);
+		}
+
+        $permisosExistentes = TblPermisos::where('ObjetoPermisos', 'like', '%'.$objetoPermisos.'%')
+                                         ->where('FkCatRol', '!=', $pkRol);
+
+        return $permisosExistentes->count();
+    }
+
+    public function crearNuevoRol ( $informacionRol, $pkUsuario ) {
+        $registro = new CatRoles();
+		$registro->NombreRol 	     = trim($informacionRol['nombreRol']);
+		$registro->DescripcionRol 	 = trim($informacionRol['descripcionRol']);
+        $registro->Observaciones 	 = trim($informacionRol['observacionesRol']);
+		$registro->FkTblUsuariosAlta = $pkUsuario;
+		$registro->FechaAlta 	     = Carbon::now();
+		$registro->Activo 		     = 1;
+		$registro->save();
+
+		return $registro->PkCatRol;
+    }
+
+    public function crearNuevoPremiso ( $objetoPermisos, $pkCatRol ) {
+        if ( !is_null($objetoPermisos) ) {
+			$reemplazos = array(
+				'\u00e1' => 'á',
+				'\u00e9' => 'é',
+				'\u00f3' => 'ó',
+				'\u00fa' => 'ú'
+			);
+			
+			$nuevaCadenaPermisos = json_encode($objetoPermisos);
+			$nuevaCadenaPermisos = str_replace(array_keys($reemplazos), array_values($reemplazos), $nuevaCadenaPermisos);
+			$objetoPermisos = '['.$nuevaCadenaPermisos.']';
+		}
+
+        $registro = new TblPermisos();
+        $registro->FkCatRol       = $pkCatRol;
+        $registro->ObjetoPermisos = $objetoPermisos;
+        $registro->save();
+    }
+
+    public function consultaDatosRolModificacion ( $pkCatRol ) {
+        $roles = CatRoles::join('tblpermisos', 'tblpermisos.FkCatRol', 'catroles.PkCatRol')
+                         ->where('catroles.PkCatRol', $pkCatRol)
+                         ->orderBy('catroles.PkCatRol', 'desc');
+
+        return $roles->get();
+    }
+
+    public function modificarRol ( $datosRol ) {
+        CatRoles::where('PkCatRol', $datosRol['pkCatRol'])
+                ->update([
+                    'NombreRol'      => $datosRol['nombreRol'],
+                    'DescripcionRol' => $datosRol['descripcionRol'],
+                    'Observaciones'  => $datosRol['observacionesRol']
+                ]);
+    }
+
+    public function modificarPermisos ( $objetoPermisos, $pkCatRol ) {
+        if ( !is_null($objetoPermisos) ) {
+			$reemplazos = array(
+				'\u00e1' => 'á',
+				'\u00e9' => 'é',
+				'\u00f3' => 'ó',
+				'\u00fa' => 'ú'
+			);
+			
+			$nuevaCadenaPermisos = json_encode($objetoPermisos);
+			$nuevaCadenaPermisos = str_replace(array_keys($reemplazos), array_values($reemplazos), $nuevaCadenaPermisos);
+			$objetoPermisos = '['.$nuevaCadenaPermisos.']';
+		}
+
+        TblPermisos::where('FkCatRol', $pkCatRol)
+                   ->update([
+                        'ObjetoPermisos' => $objetoPermisos
+                   ]);
     }
 }
