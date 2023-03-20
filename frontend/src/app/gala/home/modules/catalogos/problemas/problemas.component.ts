@@ -171,8 +171,8 @@ export class ProblemasComponent implements OnInit {
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
       this.problemasFiltrados = this.datosProblemas.filter((poblacion : any) => {
-        return poblacion.NombrePoblacion.toLowerCase().includes(textoBusqueda) ||
-               poblacion.CodigoPostal.toLowerCase().includes(textoBusqueda);
+        return poblacion.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
+               poblacion.CodigoPostal?.toLowerCase().includes(textoBusqueda);
       });
     }
   }

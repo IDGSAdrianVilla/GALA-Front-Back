@@ -176,8 +176,8 @@ export class TipoInstalacionesComponent implements OnInit{
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
       this.tipoInstalacionesFiltrados = this.datosTipoInstalacion.filter((tipoInstalacion : any) => {
-        return tipoInstalacion.NombreClasificacion.toLowerCase().includes(textoBusqueda) ||
-               tipoInstalacion.Descripcion.toLowerCase().includes(textoBusqueda);
+        return tipoInstalacion.NombreClasificacion?.toLowerCase().includes(textoBusqueda) ||
+               tipoInstalacion.Descripcion?.toLowerCase().includes(textoBusqueda);
       });
     }
   }

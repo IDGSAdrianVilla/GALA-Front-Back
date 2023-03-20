@@ -45,11 +45,11 @@ export class ClientesConsultaComponent implements OnInit{
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
       this.clientesFiltrados = this.datosClientes.filter((cliente : any) => {
-        return cliente.Nombre.toLowerCase().includes(textoBusqueda) ||
-               cliente.ApellidoPaterno.toLowerCase().includes(textoBusqueda) ||
-               cliente.Telefono.toLowerCase().includes(textoBusqueda) ||
-               cliente.Calle.toLowerCase().includes(textoBusqueda) ||
-               cliente.NombrePoblacion.toLowerCase().includes(textoBusqueda);
+        return cliente.Nombre?.toLowerCase().includes(textoBusqueda) ||
+               cliente.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
+               cliente.Telefono?.toLowerCase().includes(textoBusqueda) ||
+               cliente.Calle?.toLowerCase().includes(textoBusqueda) ||
+               cliente.NombrePoblacion?.toLowerCase().includes(textoBusqueda);
       });
     }
   }

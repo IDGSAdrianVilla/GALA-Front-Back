@@ -29,8 +29,8 @@ export class CatalogosService {
     return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/consultaDatosPoblacionModificacion', {PkCatPoblacion});
   }
 
-  public modificarPoblacion( dataRegistro : any ) : Observable<any>{
-    return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/modificarPoblacion', dataRegistro);
+  public modificarPoblacion( datosModificados : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/poblaciones/modificarPoblacion', datosModificados);
   }
 
   public crearNuevoProblema( dataRegistro : any ) : Observable<any>{
@@ -57,11 +57,27 @@ export class CatalogosService {
     return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/consultaDatosTipoInstalacionModificacion',{PkCatClasificacionInstalacion});
   }
 
-  public modificarTipoInstalacion(datosModificadosTipoInstalacion : any) : Observable<any>{
-    return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/modificarTipoInstalacion',datosModificadosTipoInstalacion);
+  public modificarTipoInstalacion(datosModificados : any) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/tipoInstalaciones/modificarTipoInstalacion',datosModificados);
   }
 
   public consultaTiposDeInstalacion() : Observable<any> {
     return this.http.get<any>(this.urlHost+'/catalogos/obtenerTipoInstalaciones');
+  }
+
+  public crearRegistroRol( dataRegistro : any ) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/catalogos/roles/crearRegistroRol', dataRegistro);
+  }
+
+  public consultaDatosRolModificacion( PkCatRol : number ) : Observable<any> {
+    return this.http.post<any>(this.urlHost+'/catalogos/roles/consultaDatosRolModificacion', PkCatRol);
+  }
+
+  public validaRolExistente( dataModificacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/roles/validaRolExistente', dataModificacion);
+  }
+  
+  public modificarRol( dataModificacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/catalogos/roles/modificarRol', dataModificacion);
   }
 }

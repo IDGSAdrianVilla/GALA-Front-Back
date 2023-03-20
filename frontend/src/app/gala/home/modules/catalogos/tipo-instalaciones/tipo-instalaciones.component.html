@@ -103,11 +103,11 @@
 </section>
 
 <div class="modal fade" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
-                <h5 *ngIf="!modificacionTipoInstalacion" class="modal-title" style="text-align: center !important;"><b>Nueva clasificación de instalación</b></h5><br>
-                <h5 *ngIf="modificacionTipoInstalacion" class="modal-title" style="text-align: center !important;"><b>Modificar clasificación de instalación</b></h5><br>
+                <h5 *ngIf="!modificacionTipoInstalacion" class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Nueva clasificación de instalación</b></h5>
+                <h5 *ngIf="modificacionTipoInstalacion" class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Modificar clasificación de instalación</b></h5>
 
                 <div class="card">
                     <div class="card-body">
@@ -131,17 +131,16 @@
                                     <label for="observacionesClasificacion" class="form-label">Observaciones:</label>
                                     <textarea formControlName="observacionesClasificacion" class="form-control" id="observacionesClasificacion" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                                 </div>
-
-                                <div class="col-12" style="text-align: center;">
-                                    <button *ngIf="!modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="crearRegistroTipoInstalacion()"><b>Crear nueva clasificación</b></button>
-                                    <button *ngIf="modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="modificarTipoInstalacion()"><b>Modificar clasisficación</b></button>
-                                    <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
-                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="modal-footer">
+                <button *ngIf="!modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="crearRegistroTipoInstalacion()"><b>Crear nueva clasificación</b></button>
+                <button *ngIf="modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="modificarTipoInstalacion()"><b>Modificar clasisficación</b></button>
+                <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>
     </div>
