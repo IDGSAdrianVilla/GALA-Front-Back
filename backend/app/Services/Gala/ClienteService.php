@@ -57,7 +57,7 @@ class ClienteService
         $clienteConsultar = $this->clienteRepository->consultarClientes();
         return response()->json(
             [
-                'message' => 'Se consultó la información con éxito',
+                'message' => 'Se consultaron los clientes con éxito',
                 'data' => $clienteConsultar
             ]
         );

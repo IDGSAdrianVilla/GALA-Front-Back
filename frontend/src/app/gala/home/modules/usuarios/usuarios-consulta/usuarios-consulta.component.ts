@@ -77,7 +77,7 @@ export class UsuariosConsultaComponent implements OnInit{
       usuariosPorRoles =>{
         this.usuariosPorRoles = usuariosPorRoles.data;
         this.usuariosFiltrados = this.usuariosPorRoles;
-        this.mensajes.mensajeGenerico(usuariosPorRoles.message, usuariosPorRoles.status == 200 ? 'success' : 'info');
+        this.mensajes.mensajeGenericoToast(usuariosPorRoles.message, usuariosPorRoles.status == 200 ? 'success' : 'info');
       },
 
       error =>{

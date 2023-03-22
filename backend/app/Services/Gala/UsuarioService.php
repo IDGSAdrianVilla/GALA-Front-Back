@@ -64,7 +64,7 @@ class UsuarioService
 
         return response()->json(
             [
-                'message' => count($usuariosPorRoles) > 0 ? 'Se consultaron con éxito los datos' : 'No se encontraron Usuarios con los filtros seleccionados',
+                'message' => count($usuariosPorRoles) > 0 ? 'Se consultaron los usuarios con éxito' : 'No se encontraron Usuarios con los filtros seleccionados',
                 'data' => $usuariosPorRoles,
                 'status' => count($usuariosPorRoles) > 0 ? 200 : 204
             ], 

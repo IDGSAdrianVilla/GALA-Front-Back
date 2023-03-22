@@ -1,5 +1,5 @@
 <div class="pagetitle">
-    <h1>Consulta Usuarios</h1>
+    <h1>Consulta de Usuarios</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item active">Usuarios</li>
@@ -31,22 +31,11 @@
                                 </div>
                             </div>
 
-                            <section class="row">
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" (click)="consultaUsuariosPorRoles()">Consultar</button>
-                                </div>
-
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-primary form-control" disabled="true">Exportar excel</button>
-                                </div>
-
-                                <div class="col-xl-2 col-md-4">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-danger form-control" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
-                                </div>
-                            </section>
+                            <div class="botonera">
+                                <button class="btn btn-primary" (click)="consultaUsuariosPorRoles()">Consultar</button>
+                                <button class="btn btn-primary" disabled="true">Excel</button>
+                                <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                            </div>
                         </form>
                     </div>
                 </div>

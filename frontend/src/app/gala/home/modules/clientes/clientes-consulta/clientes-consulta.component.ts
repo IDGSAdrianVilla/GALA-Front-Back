@@ -30,7 +30,7 @@ export class ClientesConsultaComponent implements OnInit{
       respuestaClientes =>{
         this.datosClientes = respuestaClientes.data;
         this.clientesFiltrados = this.datosClientes;
-        this.mensajes.mensajeGenerico(respuestaClientes.message,'success');
+        this.mensajes.mensajeGenericoToast(respuestaClientes.message,'success');
       },
 
       error =>{

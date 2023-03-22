@@ -41,6 +41,19 @@ button {
   font-weight: bold !important;
 }
 
+.botonera {
+  margin-top: 20px;
+  width: 100%;
+  height: auto;
+}
+
+.botonera .btn {
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
   background-color: transparent;
