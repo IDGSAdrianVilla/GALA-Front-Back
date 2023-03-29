@@ -166,6 +166,4 @@ export class ClientesModificacionComponent implements OnInit{
     this.formDireccionRegistro.reset();
     this.formDireccionRegistro.get('poblacionCliente')?.setValue('');
   }
-  
-
 }

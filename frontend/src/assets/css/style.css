@@ -1298,6 +1298,7 @@ button {
   align-content: center !important;
 }
 
-.modal .modal-dialog .modal-content .modal-body div.card {
+.modal .modal-dialog .modal-content .modal-body div.card,
+.modal .modal-dialog .modal-content .modal-body section.cards {
   margin-top: -30px !important;
 }

@@ -164,18 +164,18 @@ export class UsuariosRegistroComponent implements OnInit {
     }
 
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nuevo Usuario').then(
-      confirm =>{
-        if(confirm.isConfirmed){
+      respuestaMensaje =>{
+        if(respuestaMensaje.isConfirmed){
           this.mensajes.mensajeEsperar();
 
           this.formPermisosRegistro.value.objetoPermisos = this.validarPermisosEspeciales();
 
-          let datosNuevoUsuario = {
+          const datosNuevoUsuario = {
             'informacionPersonal' : this.formInformacionRegistro.value,
-            'direccion' : this.formDireccionRegistro.value,
-            'rolPermisos' : this.formPermisosRegistro.value,
-            'credenciales' : this.formCredencialesRegistro.value,
-            'token' : localStorage.getItem('token')
+            'direccion'           : this.formDireccionRegistro.value,
+            'rolPermisos'         : this.formPermisosRegistro.value,
+            'credenciales'        : this.formCredencialesRegistro.value,
+            'token'               : localStorage.getItem('token')
           };
 
           this.usuariosService.crearNuevoUsuario(datosNuevoUsuario).subscribe(

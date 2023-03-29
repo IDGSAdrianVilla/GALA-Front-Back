@@ -10,39 +10,15 @@
     </li>
 
     <li class="nav-item" *ngIf="obtenerPermisoPorModulo('reportes')">
-      <a class="nav-link collapsed" data-bs-target="#components-nav-reportes" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-calendar-x"></i><span>Reportes</span><i class="bi bi-chevron-down ms-auto"></i>
+      <a class="nav-link collapsed" [routerLink]="['reportes']">
+        <i class="bi bi-calendar-x"></i><span>Reportes</span>
       </a>
-      <ul id="components-nav-reportes" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Pendientes</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Atendidos</span>
-          </a>
-        </li>
-      </ul>
     </li>
 
     <li class="nav-item" *ngIf="obtenerPermisoPorModulo('instalaciones')">
-      <a class="nav-link collapsed" data-bs-target="#components-nav-instalaciones" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-tools"></i><span>Instalaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+      <a class="nav-link collapsed" [routerLink]="['instalaciones']">
+        <i class="bi bi-tools"></i><span>Instalaciones</span>
       </a>
-      <ul id="components-nav-instalaciones" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Pendientes</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <i class="bi bi-circle"></i><span>Atendidas</span>
-          </a>
-        </li>
-      </ul>
     </li>
 
     <section *ngIf="obtenerPermisoPorModulo('catalogos')">

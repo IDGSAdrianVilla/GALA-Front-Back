@@ -12,6 +12,7 @@ import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblacione
 import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
 import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
 import { RolesComponent } from './modules/catalogos/roles/roles.component';
+import { ReportesComponent } from './modules/reportes/reportes/reportes.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -60,6 +61,9 @@ export const HomeRoutes: Routes = [
       },{
         path: 'catalogos/roles',
         component: RolesComponent
+      },{
+        path: 'reportes',
+        component: ReportesComponent
       }
     ]
   }

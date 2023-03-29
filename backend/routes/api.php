@@ -50,3 +50,7 @@ Route::post('/catalogos/roles/crearRegistroRol', 'App\Http\Controllers\Gala\Cata
 Route::post('/catalogos/roles/consultaDatosRolModificacion', 'App\Http\Controllers\Gala\CatalogoController@consultaDatosRolModificacion');
 Route::post('/catalogos/roles/validaRolExistente', 'App\Http\Controllers\Gala\CatalogoController@validaRolExistente');
 Route::post('/catalogos/roles/modificarRol', 'App\Http\Controllers\Gala\CatalogoController@modificarRol');
+
+Route::post('/reportes/validarReportePendienteExistente','App\Http\Controllers\Gala\ReporteController@validarReportePendienteExistente');
+Route::post('/reportes/crearNuevoReporte','App\Http\Controllers\Gala\ReporteController@crearNuevoReporte');
+Route::get('/reportes/consultarReportesPorStatus/{status}','App\Http\Controllers\Gala\ReporteController@consultarReportesPorStatus');

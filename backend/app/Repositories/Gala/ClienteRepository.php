@@ -7,7 +7,6 @@ use App\Models\TblDirecciones;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model
 
 /**
