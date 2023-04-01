@@ -5,6 +5,7 @@ import { ClientesService } from 'src/app/gala/services/clientes/clientes.service
 import { ReportesService } from 'src/app/gala/services/reportes/reportes.service';
 import { MensajesService } from 'src/app/services/mensajes/mensajes.service';
 import { FuncionesGenericasService } from 'src/app/services/utileria/funciones-genericas.service';
+import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-reportes',
@@ -24,6 +25,7 @@ export class ReportesComponent implements OnInit{
   public clientes : any = [];
   public prevClienteReporte : any = {};
   public problemas : any = [];
+  protected usuarioCurso : any;
 
   constructor (
     private mensajes : MensajesService,
@@ -31,7 +33,8 @@ export class ReportesComponent implements OnInit{
     private fb : FormBuilder,
     private clienteService : ClientesService,
     private catalogoService : CatalogosService,
-    private reporteService : ReportesService
+    private reporteService : ReportesService,
+    private usuarioService : UsuariosService
   ) {
 
   }
@@ -44,7 +47,8 @@ export class ReportesComponent implements OnInit{
 
     await Promise.all([
       this.obtenerClientes(),
-      this.obtenerProblemas()
+      this.obtenerProblemas(),
+      this.obtenerDatosUsuario()
     ]);
 
     this.mensajes.cerrarMensajes();
@@ -83,6 +87,19 @@ export class ReportesComponent implements OnInit{
     return this.catalogoService.obtenerProblemas().toPromise().then(
       respuesta => {
         this.problemas = respuesta.data;
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  obtenerDatosUsuario () : Promise<void> {
+    const token = localStorage.getItem('token');
+    return this.usuarioService.obtenerInformacion(token).toPromise().then(
+      respuesta => {
+        this.usuarioCurso = respuesta[0];
       },
 
       error => {
@@ -211,7 +228,19 @@ export class ReportesComponent implements OnInit{
   }
 
   filtrarReportes () : void {
-
+    if (!this.busqueda) {
+      this.reportesFiltrados = this.datosReportes;
+    } else {
+      const textoBusqueda = this.busqueda.toLowerCase();
+      this.reportesFiltrados = this.datosReportes.filter((reporte : any) => {
+        return reporte.PkTblReporte == textoBusqueda ||
+                reporte.Nombre?.toLowerCase().includes(textoBusqueda) ||
+                reporte.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
+                reporte.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
+                reporte.TituloProblema?.toLowerCase().includes(textoBusqueda) ||
+                reporte.FechaAlta?.toLowerCase().includes(textoBusqueda);
+      });
+    }
   }
 
   activarFiltroBusqueda () : boolean {

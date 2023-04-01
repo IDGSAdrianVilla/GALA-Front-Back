@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <form autocomplete="off" class="col-12" [formGroup]="formConsultaReportes">
-                        <div class="col-md-2" style="margin-top: 10px;">
+                        <div class="col-md-3" style="margin-top: 10px;">
                             <label for="statusReportes" class="form-label">Status <b style="color: brown;">*</b>:</label>
                             <select formControlName="statusReportes" type="text" class="form-control" id="statusReportes">
                                 <option value="" style="display: none; visibility: hidden;">Seleccione un Status</option>
@@ -61,9 +61,9 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Cliente</th>
-                                <th scope="col">Población<th>
-                                <th scope="col">Problema<th>
-                                <th scope="col">Registro<th>
+                                <th scope="col">Población</th>
+                                <th scope="col">Problema</th>
+                                <th scope="col">Registro</th>
                                 <th scope="col" style="text-align: center;">Status</th>
                                 <th scope="col" style="text-align: center;">Acciones</th>
                             </tr>
@@ -76,8 +76,8 @@
                                 <td>{{reporte.TituloProblema}}</td>
                                 <td>{{reporte.FechaAlta}}</td>
                                 <td style="text-align: center;">
-                                    <span class="badge bg-{{reporte.Activo == 1 ? 'success' : 'danger'}}">
-                                        {{reporte.Activo == 1 ? 'Activo' : 'Incativo'}}
+                                    <span class="badge" style="color:white; background: orange;">
+                                        {{reporte.NombreStatus}}
                                     </span>
                                 </td>
                                 <td style="text-align: center;">
@@ -86,8 +86,19 @@
                                           Opciones
                                         </button>
                                         <ul class="dropdown-menu">
-                                          <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
+                                                <button class="dropdown-item" type="button" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                            </li>
+                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button">Eliminar</button>
+                                            </li>
+                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button">Atender</button>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -107,7 +118,7 @@
                 <h5 class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Nuevo Reporte</b></h5>
 
                 <section class="row cards">
-                    <div class="col-xl-8">
+                    <div class="col-lg-8">
     
                         <section class="card">
                             <div class="card-body">
@@ -167,8 +178,7 @@
                         </section>
                     </div>
     
-                    <div class="col-xl-4">
-    
+                    <div class="col-lg-4">
                         <section class="card">
                             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                                 <img src="assets/img/{{this.prevClienteReporte.Sexo != undefined && this.prevClienteReporte.Sexo != '' ? this.prevClienteReporte.Sexo : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">

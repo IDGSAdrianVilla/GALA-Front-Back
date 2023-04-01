@@ -1302,3 +1302,10 @@ button {
 .modal .modal-dialog .modal-content .modal-body section.cards {
   margin-top: -30px !important;
 }
+
+.modal-body-special {
+  position: relative;
+  flex: 1 1 auto;
+  padding: var(--bs-modal-padding);
+  overflow-y: auto;
+}

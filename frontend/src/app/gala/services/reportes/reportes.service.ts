@@ -24,4 +24,16 @@ export class ReportesService {
   public consultarReportesPorStatus( status : any ) : Observable<any>{
     return this.http.get<any>(this.urlHost+`/reportes/consultarReportesPorStatus/${status}`);
   }
+
+  public cargaComponenteModificacionReporte( pkReporte : any ) : Observable<any>{
+    return this.http.get<any>(this.urlHost+`/reportes/cargaComponenteModificacionReporte/${pkReporte}`);
+  }
+
+  public validarReporteProblemaPendienteExistente ( datosReporteModificado : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/validarReporteProblemaPendienteExistente', datosReporteModificado);
+  }
+
+  public modificarReporteCliente ( datosReporteModificado : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/modificarReporteCliente', datosReporteModificado);
+  }
 }

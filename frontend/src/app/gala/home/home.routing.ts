@@ -13,6 +13,7 @@ import { ProblemasComponent } from './modules/catalogos/problemas/problemas.comp
 import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
 import { RolesComponent } from './modules/catalogos/roles/roles.component';
 import { ReportesComponent } from './modules/reportes/reportes/reportes.component';
+import { ReportesModificacionComponent } from './modules/reportes/reportes-modificacion/reportes-modificacion.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -64,6 +65,9 @@ export const HomeRoutes: Routes = [
       },{
         path: 'reportes',
         component: ReportesComponent
+      },{
+        path: 'reportes/modificacion/:pkreporte',
+        component: ReportesModificacionComponent
       }
     ]
   }

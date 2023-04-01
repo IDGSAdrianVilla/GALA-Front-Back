@@ -61,4 +61,49 @@ class ReporteController extends Controller
             );
         }
     }
+
+    public function cargaComponenteModificacionReporte( $pkReporte ){
+        try{
+            return $this->reporteService->cargaComponenteModificacionReporte($pkReporte);
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarReporteProblemaPendienteExistente( Request $request ){
+        try{
+            return $this->reporteService->validarReporteProblemaPendienteExistente($request->all());
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function modificarReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->modificarReporteCliente($request->all());
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

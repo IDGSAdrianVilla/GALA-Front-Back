@@ -73,4 +73,73 @@ class ReporteService
             200
         );
     }
+
+    public function cargaComponenteModificacionReporte ( $pkReporte ) {
+        $dataReporte = [];
+
+        $dataReporte['datosReporte'] = $this->reporteRepository->consultarDatosReporteModificacionPorPK( $pkReporte );
+
+        if ( count($dataReporte['datosReporte']) == 0 ) {
+            return response()->json(
+                [
+                    'message'   => 'No se ha encontrado registro de la información proporcionada',
+                    'status'    => 204
+                ],
+                200
+            );
+        }
+
+        $dataReporte['datosDetalleReporte']    = $this->reporteRepository->obtenerDetalleReportePorPK( $dataReporte['datosReporte'][0]->PkTblReporte );
+        $dataReporte['datosUsuarioAtencion']   = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtencion );
+        $dataReporte['datosUsuarioAtendiendo'] = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtendiendo );
+        $dataReporte['datosCliente']           = $this->reporteRepository->obtenerClientePorPK( $dataReporte['datosReporte'][0]->FkTblCliente );
+        $dataReporte['datosUsuarioRecibio']    = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosReporte'][0]->FkTblUsuarioRecibio );
+
+        return response()->json(
+            [
+                'data'  => $dataReporte,
+                'message'   => 'Se consultarón los datos con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validarReporteProblemaPendienteExistente ( $datosReporteModificado ) {
+        $validaReportes = $this->reporteRepository->validarReporteProblemaPendientePorPK(
+                              $datosReporteModificado['informacionReporteModificado']['pkReporte'],
+                              $datosReporteModificado['informacionReporteModificado']['pkCliente'],
+                              $datosReporteModificado['informacionReporteModificado']['problemaReporte']
+                          );
+
+        if ( $validaReportes > 0 ) {
+            return response()->json(
+                [
+                    'pregunta' => '¿Estás seguro de continuar con la modificación?',
+                    'message' => 'Al parecer existe un Reporte del mismo cliente y problema con status "Pendiente"',
+                    'status' => 300
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message'   => 'Se puede modificar el registro con éxito'
+            ],
+            200
+        );
+    }
+
+    public function modificarReporteCliente ( $datosReporteModificado ) {
+        DB::beginTransaction();
+            $this->reporteRepository->modificarDetalleReporteCliente($datosReporteModificado['informacionReporteModificado']);
+        DB::commit();
+
+        return response()->json(
+            [
+                'message'   => 'Se modificó el reporte con éxito'
+            ],
+            200
+        );
+    }
 }

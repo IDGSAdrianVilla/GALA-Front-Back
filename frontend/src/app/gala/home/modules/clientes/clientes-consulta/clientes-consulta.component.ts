@@ -39,7 +39,7 @@ export class ClientesConsultaComponent implements OnInit{
     );
   }
 
-  filtrarClientes() {
+  filtrarClientes () : void {
     if (!this.busqueda) {
       this.clientesFiltrados = this.datosClientes;
     } else {
