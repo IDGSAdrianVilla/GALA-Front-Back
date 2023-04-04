@@ -112,4 +112,47 @@ class UsuarioService
             200
         );
     }
+
+    public function consultarDatosUsuarioPerfil( $pkperfil ){
+        $usuarioModificarPerfil = $this->usuarioRepository->consultarDatosUsuarioModificacionPerfil( $pkperfil );
+        return response()->json(
+            [
+                'message' => 'Se consultó la información con éxito',
+                'data' => $usuarioModificarPerfil
+            ]
+        );
+    }
+
+    public function modificarInformacionPerfil($datosUsuarioPerfil){
+        $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $datosUsuarioPerfil['sesionActiva'] );
+        $validarUsuario = $this->usuarioRepository->validarUsuarioModificacionExistente(
+            $datosUsuarioPerfil['informacionPerfil']['telefonoPerfil'],
+            $datosUsuarioPerfil['informacionCredenciales']['correoPerfil'],
+            $sesion[0]->PkTblUsuario
+        );
+
+        if ( $validarUsuario > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Usuario con información similar. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        DB::beginTransaction();
+            $pkEmpleado = $this->usuarioRepository->obtenerPkEmpleado($sesion[0]->PkTblUsuario);
+            $this->usuarioRepository->modificarDatosEmpleado($pkEmpleado, $datosUsuarioPerfil['informacionPerfil']);
+            //$this->usuarioRepository->modificarDatosUsuarioPerfil()
+            $this->usuarioRepository->modificarDatosDireccion($datosUsuarioPerfil['informacionDireccion'], $pkEmpleado);
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se modificó el perfil con éxito'
+            ],
+            200
+        );
+    }
 }

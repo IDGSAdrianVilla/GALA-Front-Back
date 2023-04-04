@@ -1,0 +1,189 @@
+<div class="pagetitle">
+  <h1>Mi Perfil</h1>
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Usarios</li>
+        <li class="breadcrumb-item active">Perfil</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section profile">
+  <div class="row">
+    <div class="col-xl-8">
+
+      <div class="card">
+        <div class="card-body pt-3">
+
+          <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+            <li class="nav-item flex-fill" role="presentation">
+              <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#profile-informacion" type="button" role="tab" aria-controls="home" aria-selected="true">
+                Información Personal
+              </button>
+            </li>
+            <li class="nav-item flex-fill" role="presentation">
+              <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-direccion" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">
+                Dirección Personal
+              </button>
+            </li>
+            <li class="nav-item flex-fill" role="presentation">
+              <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-credenciales" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">
+                Credenciales
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content pt-2">
+
+            <div class="tab-pane fade show active profile-edit" id="profile-informacion">
+
+              <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
+
+              <form class="row g-3" autocomplete="off" [formGroup]="formInformacionRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
+                <div class="col-md-6">
+                  <label for="nombrePerfil" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
+                  <input formControlName="nombrePerfil" type="text" class="form-control" id="nombrePerfil" placeholder="Nombre(s)" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="apellidoPaternoPerfil" class="form-label">Apellido Paterno <b style="color: brown;">*</b>:</label>
+                  <input formControlName="apellidoPaternoPerfil" type="text" class="form-control" id="apellidoPaternoPerfil" placeholder="Apellido Paterno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="apellidoMaternoPerfil" class="form-label">Apellido Materno:</label>
+                  <input formControlName="apellidoMaternoPerfil" type="text" class="form-control" id="apellidoMaternoPerfil" placeholder="Apellido Materno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="telefonoPerfil" class="form-label">Teléfono <b style="color: brown;">*</b>":</label>
+                  <input formControlName="telefonoPerfil" type="text" class="form-control" id="telefonoPerfil" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="sexoPerfil" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
+                  <section style="text-align: center;">
+                    <input class="form-check-input" type="radio" formControlName="sexoPerfil" id="sexoEmpleadoM" value="M">
+                    <label class="form-check-label" for="sexoEmpleadoM">&nbsp;Masculino</label>
+                    &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoPerfil" id="sexoEmpleadoF" value="F">
+                    <label class="form-check-label" for="sexoEmpleadoF">&nbsp;Femenino</label>
+                  </section>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="fechaNacimientoPerfil" class="form-label">Fecha de Nacimiento <b style="color: brown;">*</b>:</label>
+                  <input formControlName="fechaNacimientoPerfil" type="date" class="form-control" id="fechaNacimientoPerfil">
+                </div>
+
+                <div class="col-12">
+                  <label for="observacionesPerfil" class="form-label">Observaciones:</label>
+                  <textarea formControlName="observacionesPerfil" class="form-control" id="observacionesPerfil" style="height: 100px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                </div>
+              </form>
+
+            </div>
+
+            <div class="tab-pane fade pt-3 profile-edit" id="profile-direccion">
+
+              <h5 class="card-title" align="center">Dirección personal</h5>
+
+              <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro" (input)="prevNuevoUsuario()" (change)="prevNuevoUsuario()">
+                <div class="col-md-6">
+                  <label for="poblacionPerfil" class="form-label">Población <b style="color: brown;">*</b>:</label>
+                  <select formControlName="poblacionPerfil" id="poblacionPerfil" class="form-control">
+                    <option value="" style="display: none; visibility: hidden;">Seleccione una Población</option>
+                    <option *ngFor="let opcionPoblacion of this.poblaciones" value="{{opcionPoblacion.PkCatPoblacion}}">{{opcionPoblacion.NombrePoblacion}}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="coordenadasPerfil" class="form-label">Coordenadas:</label>
+                  <input formControlName="coordenadasPerfil" type="text" class="form-control" id="coordenadasPerfil" placeholder="Coordenadas" (keypress)="this.funcionGenerica.soloTexto($event)">
+                </div>
+
+                <div class="col-md-12">
+                  <label for="callePerfil" class="form-label">Calle <b style="color: brown;">*</b>:</label>
+                  <input formControlName="callePerfil" type="text" class="form-control" id="callePerfil" placeholder="Calle" (keypress)="this.funcionGenerica.soloTexto($event)">
+                </div>
+
+                <div class="col-6">
+                  <label for="referenciasDomicilioPerfil" class="form-label">Referencias <b style="color: brown;">*</b>:</label>
+                  <textarea formControlName="referenciasDomicilioPerfil" class="form-control" id="referenciasDomicilioPerfil" style="height: 65px" placeholder="Referencias del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                </div>
+
+                <div class="col-6">
+                  <label for="caracteristicasDomicilioPerfil" class="form-label">Características:</label>
+                  <textarea formControlName="caracteristicasDomicilioPerfil" class="form-control" id="caracteristicasDomicilioPerfil" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                </div>
+              </form>
+            </div>
+
+            <div class="tab-pane fade pt-3 profile-edit" id="profile-credenciales">
+              
+              <h5 class="card-title" align="center">Credenciales de ingreso</h5>
+              
+              <form class="row g-3" autocomplete="off" [formGroup]="formCredencialesRegistro">
+
+                <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 30px;">
+                  <h4 class="alert-heading">Aviso importante!</h4>
+                  <i class="bi bi-warning-circle me-1"></i>Por defecto al crear un usuario nuevo esta precargada la contraseña <b>"emenetSistemas2021"</b>, la cual se recomienda cambiar por el usuario para evitar vulnerabilidades en GALA.
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="col-md-12">
+                  <label for="correoPerfil" class="form-label">Correo <b style="color: brown;">*</b>:</label>
+                  <input formControlName="correoPerfil" type="email" class="form-control" id="correoPerfil" placeholder="ejemplo@gmail.com" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="passwordPerfil" class="form-label">Contraseña <b style="color: brown;">*</b>:</label>
+                  <input formControlName="passwordPerfil" type="password" class="form-control" id="passwordPerfil" placeholder="Contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="valPasswordPerfil" class="form-label">Confirmar contraseña <b style="color: brown;">*</b>:</label>
+                  <input formControlName="valPasswordPerfil" type="password" class="form-control" id="valPasswordPerfil" placeholder="Confirmar contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-12 col-lg-12">
+                  <button type="button" class="btn btn-primary form-control" (click)="modificarInformacionPerfil()"><b>Modificar Perfil</b></button>
+                </div>
+                
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-xl-4">
+
+      <div class="card">
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+          <img src="assets/img/{{this.prevUsuarioNuevo.sexoPerfil != undefined && this.prevUsuarioNuevo.sexoPerfil != '' ? this.prevUsuarioNuevo.sexoPerfil : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+          <hr>
+          <h2 *ngIf="this.prevUsuarioNuevo.nombrePerfil != undefined || this.prevUsuarioNuevo.apellidoPaternoPerfil != undefined">
+            {{ this.prevUsuarioNuevo.nombrePerfil+ ' ' +this.prevUsuarioNuevo.apellidoPaternoPerfil }}
+          </h2>
+          <h3 *ngIf="this.prevUsuarioNuevo.rolPerfil != ''"><b>{{this.prevUsuarioNuevo.rolPerfil}}</b></h3>
+          <h3 *ngIf="this.prevUsuarioNuevo.poblacionPerfil != ''">{{this.prevUsuarioNuevo.poblacionPerfil}}</h3>
+          <h3 *ngIf="this.prevUsuarioNuevo.telefonoPerfil != ''">{{this.prevUsuarioNuevo.telefonoPerfil}}</h3>
+          <!--h3>Web Designer</!--h3-->
+          <hr>
+          <div class="social-links mt-2">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

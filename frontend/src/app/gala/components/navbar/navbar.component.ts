@@ -65,6 +65,5 @@ export class NavbarComponent implements OnInit {
   prueba() : void {
     this.dataService.claseSidebar = this.dataService.claseSidebar == '' ? 'toggle-sidebar' : '';
   }
-
-    
+  
 }
