@@ -142,4 +142,87 @@ class ReporteService
             200
         );
     }
+
+    public function validarComenzarReporteCliente ( $pkReporte ) {
+        $validaReporte = $this->reporteRepository->validarReporteComenzado($pkReporte);
+
+        if ( $validaReporte > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Al parecer este reporte ya está siendo atendido por alguien más, no podemos continuar',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'El reporte se puede atender con éxito'
+            ],
+            200
+        );
+    }
+
+    public function comenzarReporteCliente ( $datosComenzarReporte ) {
+        DB::beginTransaction();
+            $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosComenzarReporte['token'] );
+            $this->reporteRepository->comenzarReporteCliente( $datosComenzarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se comenzó atender el reporte con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validarDejarReporteCliente ( $datosDejarReporte ) {
+        $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
+        $validaReportePorUsuario = $this->reporteRepository->validarDejarReportePorUsuario( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+
+        if ( $validaReportePorUsuario > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Al parecer este reporte está siendo atendido por alguien más, no podemos continuar',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaReporte = $this->reporteRepository->validarReporteSinComenzar( $datosDejarReporte['pkReporte'] );
+
+        if ( $validaReporte > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Al parecer este reporte no esta siendo atendido por nadie actualmente',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'El reporte se puede dejar de atender con éxito'
+            ],
+            200
+        );
+    }
+
+    public function dejarReporteCliente ( $datosDejarReporte ) {
+        DB::beginTransaction();
+            $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
+            $this->reporteRepository->validarDejarReporteEnCurso( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se dejó de atender el reporte con éxito'
+            ],
+            200
+        );
+    }
 }

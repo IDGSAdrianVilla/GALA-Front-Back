@@ -57,3 +57,7 @@ Route::get('/reportes/consultarReportesPorStatus/{status}','App\Http\Controllers
 Route::get('/reportes/cargaComponenteModificacionReporte/{pkReporte}','App\Http\Controllers\Gala\ReporteController@cargaComponenteModificacionReporte');
 Route::post('/reportes/validarReporteProblemaPendienteExistente','App\Http\Controllers\Gala\ReporteController@validarReporteProblemaPendienteExistente');
 Route::post('/reportes/modificarReporteCliente','App\Http\Controllers\Gala\ReporteController@modificarReporteCliente');
+Route::get('/reportes/validarComenzarReporteCliente/{pkReporte}','App\Http\Controllers\Gala\ReporteController@validarComenzarReporteCliente');
+Route::post('/reportes/comenzarReporteCliente','App\Http\Controllers\Gala\ReporteController@comenzarReporteCliente');
+Route::post('/reportes/validarDejarReporteCliente','App\Http\Controllers\Gala\ReporteController@validarDejarReporteCliente');
+Route::post('/reportes/dejarReporteCliente','App\Http\Controllers\Gala\ReporteController@dejarReporteCliente');

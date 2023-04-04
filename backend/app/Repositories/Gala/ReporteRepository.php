@@ -52,6 +52,7 @@ class ReporteRepository
                                     'catpoblaciones.NombrePoblacion',
                                     'catproblemasgenericos.TituloProblema',
                                     'tbldetallereporte.FkTblUsuarioAtendiendo',
+                                    'tbldetallereporte.FkTblUsuarioAtencion',
                                     'catstatus.NombreStatus',
                                     'catstatus.ColorStatus'
                                  )
@@ -119,9 +120,13 @@ class ReporteRepository
 
     public function validarReporteProblemaPendientePorPK ( $pkReporte, $pkCliente, $pkProblema ) {
         $reportes = TblReportes::join('tbldetallereporte', 'tbldetallereporte.FkTblReporte', '=', 'tblreportes.PkTblReporte')
-                                ->where('tblreportes.PkTblReporte', '!=', $pkReporte)
-                                ->where('tblreportes.FkTblCliente', $pkCliente)
-                                ->where('tbldetallereporte.FkCatProblemaGenerico', $pkProblema);
+                                ->join('catstatus', 'catstatus.PkCatStatus', 'tblreportes.FkCatStatus')
+                                ->where([
+                                    ['tblreportes.PkTblReporte', '!=', $pkReporte],
+                                    ['tblreportes.FkTblCliente', $pkCliente],
+                                    ['tbldetallereporte.FkCatProblemaGenerico', $pkProblema],
+                                    ['catstatus.PkCatStatus', 1]
+                                ]);
 
         return $reportes->count();
     }
@@ -135,5 +140,53 @@ class ReporteRepository
                             'Diagnostico'           => $dataReporte['diagnosticoReporte'],
                             'Solucion'              => $dataReporte['solucionReporte'],
                          ]);
+    }
+
+    public function validarReporteComenzado ( $pkReporte ) {
+        $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                                   ->where(function ($query) {
+                                       $query->whereNotNull('FkTblUsuarioAtendiendo')
+                                           ->orWhereNotNull('FechaAtendiendo');
+                                   });
+    
+        return $return->count();
+    }
+
+    public function comenzarReporteCliente ( $pkReporte, $pkUsuario ) {
+        TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                         ->update([
+                            'FkTblUsuarioAtendiendo' => $pkUsuario,
+                            'FechaAtendiendo'        => Carbon::now()
+                         ]);
+    }
+
+    public function validarDejarReportePorUsuario ( $pkReporte, $pkUsuario ) {
+        $return = TblDetalleReporte::where([
+                                        ['FkTblReporte', $pkReporte],
+                                        ['FkTblUsuarioAtendiendo', '!=', $pkUsuario]
+                                     ]);
+
+        return $return->count();
+    }
+
+    public function validarReporteSinComenzar ( $pkReporte ) {
+        $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                                   ->where(function ($query) {
+                                       $query->whereNull('FkTblUsuarioAtendiendo')
+                                           ->orWhereNull('FechaAtendiendo');
+                                   });
+    
+        return $return->count();
+    }
+
+    public function validarDejarReporteEnCurso ( $pkReporte, $pkUsuario ) {
+        TblDetalleReporte::where([
+                             ['FkTblReporte', $pkReporte],
+                             ['FkTblUsuarioAtendiendo', $pkUsuario]
+                           ])
+                         ->update([
+                             'FkTblUsuarioAtendiendo' => null,
+                             'FechaAtendiendo'        => null
+                           ]);
     }
 }
