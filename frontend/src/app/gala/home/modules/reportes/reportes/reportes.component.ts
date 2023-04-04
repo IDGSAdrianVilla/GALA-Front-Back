@@ -256,4 +256,119 @@ export class ReportesComponent implements OnInit{
     this.datosReportes = [];
     this.reportesFiltrados = this.datosReportes;
   }
+
+  funcionalidadComenzarReporteCliente ( pkReporte : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de comenzar atender el reporte?', 'question', 'Comenzar atender reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+          this.reporteService.validarComenzarReporteCliente( pkReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.comenzarReporteCliente( pkReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private comenzarReporteCliente ( pkReporte : number ) : void {
+    const datosComenzarReporte = {
+      'pkReporte' : pkReporte,
+      'token'     : localStorage.getItem('token')
+    };
+
+    this.reporteService.comenzarReporteCliente( datosComenzarReporte ).subscribe(
+      respuesta => {
+        const mensajeComenzar = respuesta.message;
+        const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
+
+        this.reporteService.consultarReportesPorStatus( statusConsulta ).subscribe(
+          respuesta => {
+            this.datosReportes = respuesta.reportes;
+            this.reportesFiltrados= this.datosReportes;
+            this.mensajes.mensajeGenericoToast(mensajeComenzar, 'success');
+          },
+
+          error => {
+            this.mensajes.mensajeGenerico('error', 'error');
+          }
+        );
+        return;
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  funcionalidadDejarReporteCliente ( pkReporte : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro dejar de atender el reporte?', 'question', 'Dejar de atender reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosDejarReporte = {
+            'pkReporte' : pkReporte,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.reporteService.validarDejarReporteCliente( datosDejarReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.dejarReporteCliente( datosDejarReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private dejarReporteCliente ( datosDejarReporte : any ) : void {
+    this.reporteService.dejarReporteCliente( datosDejarReporte ).subscribe(
+      respuesta => {
+        const mensajeComenzar = respuesta.message;
+        const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
+
+        this.reporteService.consultarReportesPorStatus( statusConsulta ).subscribe(
+          respuesta => {
+            this.datosReportes = respuesta.reportes;
+            this.reportesFiltrados= this.datosReportes;
+            this.mensajes.mensajeGenericoToast(mensajeComenzar, 'success');
+          },
+
+          error => {
+            this.mensajes.mensajeGenerico('error', 'error');
+          }
+        );
+        return;
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
 }

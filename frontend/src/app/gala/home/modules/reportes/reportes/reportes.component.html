@@ -86,19 +86,29 @@
                                           Opciones
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                <button class="dropdown-item" type="button" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
-                                                <button class="dropdown-item" type="button" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
-                                            </li>
-                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                <button class="dropdown-item" type="button">Eliminar</button>
-                                            </li>
-                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                <button class="dropdown-item" type="button">Atender</button>
-                                            </li>
+                                            <section *ngIf="reporte.FkTblUsuarioAtencion === null">
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadDejarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadComenzarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                </li>
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button">Eliminar</button>
+                                                </li>
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button">Atender</button>
+                                                </li>
+                                            </section>
+                                            <section *ngIf="reporte.FkTblUsuarioAtencion !== null">
+                                                <li>
+                                                    <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button">Retomar</button>
+                                                </li>
+                                            </section>
                                         </ul>
                                     </div>
                                 </td>

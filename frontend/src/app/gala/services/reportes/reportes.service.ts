@@ -36,4 +36,20 @@ export class ReportesService {
   public modificarReporteCliente ( datosReporteModificado : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/reportes/modificarReporteCliente', datosReporteModificado);
   }
+
+  public validarComenzarReporteCliente ( pkReporte : number ) : Observable<any>{
+    return this.http.get<any>(this.urlHost+`/reportes/validarComenzarReporteCliente/${pkReporte}`);
+  }
+
+  public comenzarReporteCliente ( datosComenzarReporte : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/comenzarReporteCliente', datosComenzarReporte);
+  }
+
+  public validarDejarReporteCliente ( datosDejarReporte : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/validarDejarReporteCliente', datosDejarReporte);
+  }
+
+  public dejarReporteCliente ( datosDejarReporte : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/dejarReporteCliente', datosDejarReporte);
+  }
 }

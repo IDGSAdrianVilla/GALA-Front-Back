@@ -63,10 +63,16 @@
                         </div>
 
                         <div class="col-12 botonera d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
-                            <button type="button" class="btn btn-success" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == null"><b>Comenzar</b></button>
-                            <button type="button" class="btn btn-danger" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Dejar</b></button>
-                            <button type="button" class="btn btn-info" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == null || this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Atender</b></button>
+                            <section *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion === null">
+                                <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
+                                <button type="button" class="btn btn-success" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo === null"><b>Comenzar</b></button>
+                                <button type="button" class="btn btn-danger" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Dejar</b></button>
+                                <button type="button" class="btn btn-info" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo === null || this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Atender</b></button>
+                            </section>
+                            <section *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion !== null">
+                                <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
+                                <button type="button" class="btn btn-warning"><b>Retomar</b></button>
+                            </section>
                         </div>
                     </form>
                 </div>
@@ -82,7 +88,7 @@
                     <h3>{{this.prevModificacionReporte.Telefono ?? ''}}</h3>
                     <h3>{{this.prevModificacionReporte.Calle ?? ''}}</h3>
                     <div class="social-links mt-2" *ngIf="this.prevModificacionReporte.Coordenadas != null && this.prevModificacionReporte.Coordenadas != '' && this.prevModificacionReporte.Coordenadas != undefined">
-                        <a href="https://www.google.com/maps/place/{{this.prevModificacionReporte.Coordenadas}}" class="twitter"><i class="ri-user-location-line"></i></a>
+                        <a href="https://www.google.com/maps/place/{{this.prevModificacionReporte.Coordenadas}}" target="_blank" class="twitter"><i class="ri-user-location-line"></i></a>
                     </div>
                     <div class="col-12">
                         <hr>
