@@ -92,4 +92,34 @@ class UsuarioController extends Controller
             );
         }
     }
+    
+    public function consultarDatosUsuarioPerfil( Request $request ){
+        try{
+            return $this->usuarioService->consultarDatosUsuarioPerfil($request->all());
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+    
+    public function modificarInformacionPerfil( Request $request ){
+        try{
+            return $this->usuarioService->modificarInformacionPerfil($request->all());
+        } catch(\Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

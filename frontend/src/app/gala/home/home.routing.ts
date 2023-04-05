@@ -12,6 +12,7 @@ import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblacione
 import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
 import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
 import { RolesComponent } from './modules/catalogos/roles/roles.component';
+import { UsuariosPerfilComponent } from './modules/usuarios/usuarios-perfil/usuarios-perfil.component';
 
 export const HomeRoutes: Routes = [
   {
@@ -36,6 +37,10 @@ export const HomeRoutes: Routes = [
         component: UsuariosModificacionComponent
       },
       {
+        path: 'usuarios/perfil',
+        component: UsuariosPerfilComponent
+      },
+      {
         path : 'clientes/registro',
         component: ClientesRegistroComponent
       },
@@ -57,7 +62,8 @@ export const HomeRoutes: Routes = [
       {
         path : 'catalogos/clasificacionInstalaciones',
         component: TipoInstalacionesComponent
-      },{
+      },
+      {
         path: 'catalogos/roles',
         component: RolesComponent
       }

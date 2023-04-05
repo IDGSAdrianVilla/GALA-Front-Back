@@ -124,13 +124,13 @@ class UsuarioRepository
 	public function modificarDatosEmpleado( $pkEmpleado, $datosEmpleados ){
 		TblEmpleados::where('PkTblEmpleado', '=', $pkEmpleado)
 					->update([
-						'Nombre' 		  => $datosEmpleados['nombreEmpleado'],
-						'ApellidoPaterno' => $datosEmpleados['apellidoPaternoEmpleado'],
-						'ApellidoMaterno' => $datosEmpleados['apellidoMaternoEmpleado'],
-						'Sexo' 			  => $datosEmpleados['sexoEmpleado'],
-						'Telefono' 		  => $datosEmpleados['telefonoEmpleado'],
-						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'],
-						'Observaciones'   => $datosEmpleados['observacionesEmpleado']
+						'Nombre' 		  => trim($datosEmpleados['nombreEmpleado'] 		 ?? $datosEmpleados['nombrePerfil']),
+						'ApellidoPaterno' => trim($datosEmpleados['apellidoPaternoEmpleado'] ?? $datosEmpleados['apellidoPaternoPerfil']),
+						'ApellidoMaterno' => trim($datosEmpleados['apellidoMaternoEmpleado'] ?? $datosEmpleados['apellidoMaternoPerfil']),
+						'Sexo' 			  => $datosEmpleados['sexoEmpleado'] 				 ?? $datosEmpleados['sexoPerfil'],
+						'Telefono' 		  => trim($datosEmpleados['telefonoEmpleado'] 		 ?? $datosEmpleados['telefonoPerfil']),
+						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'] 	 ?? $datosEmpleados['fechaNacimientoPerfil'],
+						'Observaciones'   => trim($datosEmpleados['observacionesEmpleado'] 	 ?? $datosEmpleados['observacionesPerfil'])
 					]);
 	} 
 
@@ -158,11 +158,37 @@ class UsuarioRepository
 	public function modificarDatosDireccion( $datosDireccion, $pkEmpleado ){
 		TblDirecciones::where('FkTblEmpleado', '=', $pkEmpleado)
 					  ->update([
-						'FkCatPoblacion' 		   => $datosDireccion['poblacionEmpleado'],
-						'Coordenadas' 			   => $datosDireccion['coordenadasEmpleado'],
-						'ReferenciasDomicilio' 	   => $datosDireccion['referenciasDomicilioEmpleado'],
-						'CaracteristicasDomicilio' => $datosDireccion['caracteristicasDomicilioEmpleado'],
-						'Calle' 				   => $datosDireccion['calleEmpleado']
+						'FkCatPoblacion' 		   => $datosDireccion['poblacionEmpleado'] ?? $datosDireccion['poblacionPerfil'],
+						'Coordenadas' 			   => trim($datosDireccion['coordenadasEmpleado'] ?? $datosDireccion['coordenadasPerfil']),
+						'ReferenciasDomicilio' 	   => trim($datosDireccion['referenciasDomicilioEmpleado'] ?? $datosDireccion['referenciasDomicilioPerfil']),
+						'CaracteristicasDomicilio' => trim($datosDireccion['caracteristicasDomicilioEmpleado'] ?? $datosDireccion['caracteristicasDomicilioPerfil']),
+						'Calle' 				   => trim($datosDireccion['calleEmpleado'] ?? $datosDireccion['callePerfil'])
 					  ]);
+	}
+
+	public function consultarDatosUsuarioModificacionPerfil( $pkperfil ){
+		$usuarioModificacionPerfil = DB::table('vistageneralusuarios')
+								       ->where('PkTblUsuario', $pkperfil);
+								 
+		return $usuarioModificacionPerfil->get();
+	}
+
+	public function validarUsuarioModificacionExistente( $telefono, $correo, $pk ){
+		$return = DB::table('vistageneralusuarios')
+								 ->where([
+									['Telefono', $telefono],
+									['Correo', $correo],
+									['PkTblUsuario','!=', $pk]
+								 ]);
+
+		return $return->count();
+	}
+
+	public function modificarDatosUsuarioPerfil($pkEmpleado, $datosUsuario){
+		TblUsuarios::where('FkTblEmpleado', $pkEmpleado)
+				   ->update([
+				  		'Correo' => trim($datosUsuario['correoPerfil']),
+				  		'Password' => bcrypt(trim($datosUsuario['contraseniaNueva']))
+				   ]);
 	}
 }

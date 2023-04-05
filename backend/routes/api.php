@@ -23,6 +23,8 @@ Route::post('/usuarios/crearUsuarioNuevo', 'App\Http\Controllers\Gala\UsuarioCon
 Route::post('/usuarios/consultaUsuariosPorRoles', 'App\Http\Controllers\Gala\UsuarioController@consultaUsuariosPorRoles');
 Route::post('/usuarios/consultarDatosUsuarioModificacion', 'App\Http\Controllers\Gala\UsuarioController@consultarDatosUsuarioModificacion');
 Route::post('/usuarios/modificarDatosUsuario', 'App\Http\Controllers\Gala\UsuarioController@modificarDatosUsuario');
+Route::post('/usuarios/consultarDatosUsuarioPerfil', 'App\Http\Controllers\Gala\UsuarioController@consultarDatosUsuarioPerfil');
+Route::post('/usuarios/modificarInformacionPerfil', 'App\Http\Controllers\Gala\UsuarioController@modificarInformacionPerfil');
 
 Route::post('/clientes/crearNuevoCliente', 'App\Http\Controllers\Gala\ClienteController@crearNuevoCliente');
 Route::get('/clientes/consultarClientes','App\Http\Controllers\Gala\ClienteController@consultarClientes');

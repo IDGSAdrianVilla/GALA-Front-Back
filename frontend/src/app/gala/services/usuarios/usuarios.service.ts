@@ -32,4 +32,8 @@ export class UsuariosService {
   public modificarDatosUsuario(datosModificacion : any) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/usuarios/modificarDatosUsuario', datosModificacion);
   }
+
+  public modificarInformacionPerfil(datosModificacionPerfil : any) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/modificarInformacionPerfil', datosModificacionPerfil);
+  }
 }
