@@ -183,4 +183,12 @@ class UsuarioRepository
 
 		return $return->count();
 	}
+
+	public function modificarDatosUsuarioPerfil($pkEmpleado, $datosUsuario){
+		TblUsuarios::where('FkTblEmpleado', $pkEmpleado)
+				   ->update([
+				  		'Correo' => trim($datosUsuario['correoPerfil']),
+				  		'Password' => bcrypt(trim($datosUsuario['contraseniaNueva']))
+				   ]);
+	}
 }

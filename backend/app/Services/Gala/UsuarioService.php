@@ -3,6 +3,7 @@
 namespace App\Services\Gala;
 
 use App\Repositories\Gala\UsuarioRepository;
+use App\Repositories\LoginRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -13,12 +14,15 @@ use Illuminate\Support\Facades\Log;
 class UsuarioService
 {
     protected $usuarioRepository;
+    protected $loginRepository;
 
     public function __construct(
-        UsuarioRepository $UsuarioRepository
+        UsuarioRepository $UsuarioRepository,
+        LoginRepository   $LoginRepository
     )
     {
         $this->usuarioRepository = $UsuarioRepository;   
+        $this->loginRepository = $LoginRepository;   
     } 
 
     public function obtenerInformacion( $token ){
@@ -141,10 +145,27 @@ class UsuarioService
             );
         }
 
+        $validarCredenciales = $this->loginRepository->validarExistenciaUsuario(
+            $datosUsuarioPerfil['informacionCredenciales']['correoOriginal'],
+            $datosUsuarioPerfil['informacionCredenciales']['contraseniaAntigua'] ?? null
+        );
+
+        if( $datosUsuarioPerfil['informacionCredenciales']['cambioContraseniaPerfil'] && is_null($validarCredenciales) ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la contraseña es incorrecta. Por favor valida la información',
+                    'status' => 204
+                ],
+                200
+            );
+        }
+
         DB::beginTransaction();
             $pkEmpleado = $this->usuarioRepository->obtenerPkEmpleado($sesion[0]->PkTblUsuario);
             $this->usuarioRepository->modificarDatosEmpleado($pkEmpleado, $datosUsuarioPerfil['informacionPerfil']);
-            //$this->usuarioRepository->modificarDatosUsuarioPerfil()
+            if( $datosUsuarioPerfil['informacionCredenciales']['cambioContraseniaPerfil'] && is_null($validarCredenciales) ){
+                $this->usuarioRepository->modificarDatosUsuarioPerfil($pkEmpleado, $datosUsuarioPerfil['informacionCredenciales']);
+            }
             $this->usuarioRepository->modificarDatosDireccion($datosUsuarioPerfil['informacionDireccion'], $pkEmpleado);
         DB::commit();
 

@@ -12,15 +12,17 @@ import { MensajesService } from '../../../../../services/mensajes/mensajes.servi
   styleUrls: ['./usuarios-perfil.component.css']
 })
 export class UsuariosPerfilComponent implements OnInit{
-  public formInformacionRegistro! : FormGroup;
-  public formDireccionRegistro! : FormGroup;
-  public formCredencialesRegistro! : FormGroup;
+  public formInformacionRegistro!   : FormGroup;
+  public formDireccionRegistro!     : FormGroup;
+  public formCredencialesRegistro!  : FormGroup;
   
   public poblaciones : any = [];
   public roles : any = [];
   public prevUsuarioNuevo : any = {};
   public datosUsuarioModificacionPerfil : any = [];
   public pkperfil : number = 0;
+
+  public inputContrasenia : boolean = false;
 
   constructor(
     private fb : FormBuilder,
@@ -74,10 +76,15 @@ export class UsuariosPerfilComponent implements OnInit{
 
   crearFormCredencialesRegistro() : void {
     this.formCredencialesRegistro = this.fb.group({
-      correoPerfil      : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*'), Validators.email]],
-      passwordPerfil    : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-      valPasswordPerfil : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+      correoPerfil            : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*'), Validators.email]],
+      contraseniaAntigua      : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      contraseniaNueva        : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      confContraseniaNueva    : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      cambioContraseniaPerfil : []
     });
+    this.formCredencialesRegistro.controls['contraseniaAntigua']?.disable();
+    this.formCredencialesRegistro.controls['contraseniaNueva']?.disable();
+    this.formCredencialesRegistro.controls['confContraseniaNueva']?.disable();
   }
   
   obtenerPoblaciones(): Promise<any> {
@@ -101,8 +108,6 @@ export class UsuariosPerfilComponent implements OnInit{
       }
     );
   }
-
-  
 
   consultarDatosUsuarioModificacionPerfil() : Promise<any> {
     const token = localStorage.getItem('token');
@@ -165,10 +170,29 @@ export class UsuariosPerfilComponent implements OnInit{
       return;
     }
 
+    if(
+      this.inputContrasenia == true &&
+      (
+        this.validaTextoVacio(this.formCredencialesRegistro.get('contraseniaAntigua')?.value) ||
+        this.validaTextoVacio(this.formCredencialesRegistro.get('contraseniaNueva')?.value) ||
+        this.validaTextoVacio(this.formCredencialesRegistro.get('confContraseniaNueva')?.value)
+      )
+    ){
+      this.mensajes.mensajeGenerico('Se seleccionó el campo de cambio de contraseña, los campos de contraseña no pueden ir vacíos.', 'info', 'Cambio de contraseña');
+      return;
+    }
+
+    if(this.formCredencialesRegistro.get('contraseniaNueva')?.value != this.formCredencialesRegistro.get('confContraseniaNueva')?.value){
+      this.mensajes.mensajeGenerico('Al paracer las contraseñas no coinciden.', 'info', 'Cambio de contraseña');
+      return;
+    }
+
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos','question','Modificar mi perfil').then(
       respuestaMensaje =>{
         if(respuestaMensaje.isConfirmed){
           this.mensajes.mensajeEsperar();
+
+          this.formCredencialesRegistro.value.correoOriginal = this.datosUsuarioModificacionPerfil.Correo;
 
           const datosModificacionPerfil : any = {
             informacionPerfil: this.formInformacionRegistro.value,
@@ -179,6 +203,13 @@ export class UsuariosPerfilComponent implements OnInit{
           
           this.usuariosService.modificarInformacionPerfil(datosModificacionPerfil).subscribe(
             respuesta =>{
+              if(respuesta.status == 204){
+                this.mensajes.mensajeGenerico(respuesta.message, 'error');
+                return;
+              }
+
+              this.formCredencialesRegistro.get('cambioContraseniaPerfil')?.setValue(false);
+              this.cambioContraseniaPerfil();
               this.mensajes.mensajeGenerico(respuesta.message, 'success');
             },
 
@@ -189,5 +220,25 @@ export class UsuariosPerfilComponent implements OnInit{
         }
       }
     )
-  }  
+  }
+
+  private validaTextoVacio ( valor : any ) : boolean {
+    return valor == null || ( typeof valor === 'string' && valor.trim() == '');
+  }
+
+  cambioContraseniaPerfil() : void {
+    this.inputContrasenia = this.formCredencialesRegistro.get('cambioContraseniaPerfil')?.value;
+    if(this.inputContrasenia == false){
+      this.formCredencialesRegistro.controls['contraseniaAntigua']?.disable();
+      this.formCredencialesRegistro.controls['contraseniaNueva']?.disable();
+      this.formCredencialesRegistro.controls['confContraseniaNueva']?.disable();
+      this.formCredencialesRegistro.get('contraseniaAntigua')?.setValue(null);
+      this.formCredencialesRegistro.get('contraseniaNueva')?.setValue(null);
+      this.formCredencialesRegistro.get('confContraseniaNueva')?.setValue(null);
+    } else {
+      this.formCredencialesRegistro.controls['contraseniaNueva']?.enable();
+      this.formCredencialesRegistro.controls['contraseniaAntigua']?.enable();
+      this.formCredencialesRegistro.controls['confContraseniaNueva']?.enable();
+    }
+  }
 }

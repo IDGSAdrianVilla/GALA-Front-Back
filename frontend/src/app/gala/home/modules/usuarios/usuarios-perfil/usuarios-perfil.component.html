@@ -136,13 +136,25 @@
                 </div>
 
                 <div class="col-md-6">
-                  <label for="passwordPerfil" class="form-label">Contraseña <b style="color: brown;">*</b>:</label>
-                  <input formControlName="passwordPerfil" type="password" class="form-control" id="passwordPerfil" placeholder="Contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                  <div class="form-check form-switch">
+                    <input formControlName="cambioContraseniaPerfil" class="form-check-input" type="checkbox" id="cambioContraseniaPerfil" (change)="cambioContraseniaPerfil()">
+                    <label class="form-check-label" for="cambioContraseniaPerfil">Cambio de contraseña</label>
+                  </div>
                 </div>
 
                 <div class="col-md-6">
-                  <label for="valPasswordPerfil" class="form-label">Confirmar contraseña <b style="color: brown;">*</b>:</label>
-                  <input formControlName="valPasswordPerfil" type="password" class="form-control" id="valPasswordPerfil" placeholder="Confirmar contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                  <label for="contraseniaAntigua" class="form-label">Contraseña Actual <b style="color: brown;">*</b>:</label>
+                  <input formControlName="contraseniaAntigua" type="password" class="form-control" id="contraseniaAntigua" placeholder="Contraseña Actual" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="contraseniaNueva" class="form-label">Contraseña Nueva <b style="color: brown;">*</b>:</label>
+                  <input formControlName="contraseniaNueva" type="password" class="form-control" id="contraseniaNueva" placeholder="Contraseña Nueva" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="confContraseniaNueva" class="form-label">Confirmar Contraseña Nueva<b style="color: brown;">*</b>:</label>
+                  <input formControlName="confContraseniaNueva" type="password" class="form-control" id="confContraseniaNueva" placeholder="Confirmar Contraseña Nueva" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                 </div>
 
                 <div class="col-md-12 col-lg-12">
