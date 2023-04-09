@@ -19,7 +19,7 @@ export class ReportesComponent implements OnInit{
   public formConsultaReportes! : FormGroup;
 
   public busqueda: string = '';
-  public datosReportes: string[] = [];
+  public datosReportes: any = [];
   public reportesFiltrados: any[] = [];
   public mostrarOpciones : boolean = false;
   public clientes : any = [];
@@ -370,5 +370,126 @@ export class ReportesComponent implements OnInit{
         this.mensajes.mensajeGenerico('error', 'error');
       }
     );
+  }
+
+  funcionalidadAtenderReporte ( reporte : any ) : void {
+    if (
+      this.validaTextoVacio(reporte.Diagnostico) &&
+      this.validaTextoVacio(reporte.Solucion)
+    ) {
+      this.mensajes.mensajeGenerico('Para poder atender el reporte se necesita registrar un diagnóstico o una solución.', 'info', 'Se necesita diagnóstico o solución');
+      return;
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de atender el reporte?', 'question', 'Atender Reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosAtenderReporte = {
+            'pkReporte'                    : reporte.PkTblReporte,
+            'token'                        : localStorage.getItem('token')
+          };
+      
+          this.reporteService.validarAtenderReporteCliente( datosAtenderReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.atenderReporteCliente( datosAtenderReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async atenderReporteCliente ( datosAtenderReporte : any ) : Promise<any> {
+    this.reporteService.atenderReporteCliente( datosAtenderReporte ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  funcionalidadRetomarReporte ( pkReporte : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de retomar el reporte?', 'question', 'Retomar reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosRetomarReporte = {
+            'pkReporte' : pkReporte,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.reporteService.validarRetomarReporteCliente( datosRetomarReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.retomarReporteCliente( datosRetomarReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async retomarReporteCliente ( datosAtenderReporte : any ) : Promise<any> {
+    this.reporteService.retomarReporteCliente( datosAtenderReporte ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  private async actualizarGridDespuesAccion () : Promise<void> {
+    const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
+
+    return this.reporteService.consultarReportesPorStatus( statusConsulta ).toPromise().then(
+      respuesta => {
+        this.datosReportes = respuesta.reportes;
+        this.reportesFiltrados= this.datosReportes;
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  private validaTextoVacio ( valor : any ) : boolean {
+    return valor == null || ( typeof valor === 'string' && valor.trim() == '');
   }
 }

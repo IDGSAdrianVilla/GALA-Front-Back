@@ -263,7 +263,9 @@ class ReporteService
     public function atenderReporteCliente ( $datosAtenderReporte ) {
         DB::beginTransaction();
             $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosAtenderReporte['token'] );
-            $this->reporteRepository->modificarDetalleReporteCliente($datosAtenderReporte['informacionReporteModificado']);
+            if ( isset($datosAtenderReporte['informacionReporteModificado']) ) {
+                $this->reporteRepository->modificarDetalleReporteCliente($datosAtenderReporte['informacionReporteModificado']);
+            }
             $this->reporteRepository->atenderReporteCliente( $datosAtenderReporte['pkReporte'], $usuario[0]->PkTblUsuario );
         DB::commit();
 

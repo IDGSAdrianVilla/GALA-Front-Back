@@ -51,6 +51,8 @@ class ReporteRepository
                                     'tblclientes.ApellidoPaterno',
                                     'catpoblaciones.NombrePoblacion',
                                     'catproblemasgenericos.TituloProblema',
+                                    'tbldetallereporte.Diagnostico',
+                                    'tbldetallereporte.Solucion',
                                     'tbldetallereporte.FkTblUsuarioAtendiendo',
                                     'tbldetallereporte.FkTblUsuarioAtencion',
                                     'catstatus.NombreStatus',
