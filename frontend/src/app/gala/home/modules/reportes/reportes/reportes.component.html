@@ -76,7 +76,7 @@
                                 <td>{{reporte.TituloProblema}}</td>
                                 <td>{{reporte.FechaAlta}}</td>
                                 <td style="text-align: center;">
-                                    <span class="badge" style="color:white; background: orange;">
+                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': reporte.ColorStatus}">
                                         {{reporte.NombreStatus}}
                                     </span>
                                 </td>

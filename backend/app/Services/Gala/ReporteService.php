@@ -180,7 +180,7 @@ class ReporteService
 
     public function validarDejarReporteCliente ( $datosDejarReporte ) {
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
-        $validaReportePorUsuario = $this->reporteRepository->validarDejarReportePorUsuario( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+        $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
 
         if ( $validaReportePorUsuario > 0 ) {
             return response()->json(
@@ -215,12 +215,95 @@ class ReporteService
     public function dejarReporteCliente ( $datosDejarReporte ) {
         DB::beginTransaction();
             $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
-            $this->reporteRepository->validarDejarReporteEnCurso( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+            $this->reporteRepository->dejarReporteEnCurso( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
         DB::commit();
 
         return response()->json(
             [
                 'message' => 'Se dejó de atender el reporte con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validarAtenderReporteCliente ( $datosAtenderReporte ) {
+        $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosAtenderReporte['token'] );
+        $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosAtenderReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+
+        if ( $validaReportePorUsuario > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Al parecer este reporte está siendo atendido por alguien más, no podemos continuar',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaReporteAtendido = $this->reporteRepository->validarReporteAtendidoPorUsuario( $datosAtenderReporte['pkReporte'] );
+
+        if ( $validaReporteAtendido > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Al parecer el reporte ya fue atendido',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'El reporte se puede atender con éxito'
+            ],
+            200
+        );
+    }
+
+    public function atenderReporteCliente ( $datosAtenderReporte ) {
+        DB::beginTransaction();
+            $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosAtenderReporte['token'] );
+            $this->reporteRepository->modificarDetalleReporteCliente($datosAtenderReporte['informacionReporteModificado']);
+            $this->reporteRepository->atenderReporteCliente( $datosAtenderReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se atendió el reporte con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validarRetomarReporteCliente ( $datosRetomarReporte ) {
+        $validaReporte = $this->reporteRepository->validarReporteSinAtender( $datosRetomarReporte['pkReporte'] );
+
+        if ( $validaReporte > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Al parecer este reporte no ha sido atendido',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'El reporte se retomar con éxito'
+            ],
+            200
+        );
+    }
+
+    public function retomarReporteCliente ( $datosRetomarReporte ) {
+        DB::beginTransaction();
+            $this->reporteRepository->retomarReporteCliente( $datosRetomarReporte['pkReporte'] );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se retomó el reporte con éxito'
             ],
             200
         );

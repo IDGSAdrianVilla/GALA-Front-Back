@@ -23,6 +23,8 @@ Route::post('/usuarios/crearUsuarioNuevo', 'App\Http\Controllers\Gala\UsuarioCon
 Route::post('/usuarios/consultaUsuariosPorRoles', 'App\Http\Controllers\Gala\UsuarioController@consultaUsuariosPorRoles');
 Route::post('/usuarios/consultarDatosUsuarioModificacion', 'App\Http\Controllers\Gala\UsuarioController@consultarDatosUsuarioModificacion');
 Route::post('/usuarios/modificarDatosUsuario', 'App\Http\Controllers\Gala\UsuarioController@modificarDatosUsuario');
+Route::post('/usuarios/consultarDatosUsuarioPerfil', 'App\Http\Controllers\Gala\UsuarioController@consultarDatosUsuarioPerfil');
+Route::post('/usuarios/modificarInformacionPerfil', 'App\Http\Controllers\Gala\UsuarioController@modificarInformacionPerfil');
 
 Route::post('/clientes/crearNuevoCliente', 'App\Http\Controllers\Gala\ClienteController@crearNuevoCliente');
 Route::get('/clientes/consultarClientes','App\Http\Controllers\Gala\ClienteController@consultarClientes');
@@ -61,3 +63,7 @@ Route::get('/reportes/validarComenzarReporteCliente/{pkReporte}','App\Http\Contr
 Route::post('/reportes/comenzarReporteCliente','App\Http\Controllers\Gala\ReporteController@comenzarReporteCliente');
 Route::post('/reportes/validarDejarReporteCliente','App\Http\Controllers\Gala\ReporteController@validarDejarReporteCliente');
 Route::post('/reportes/dejarReporteCliente','App\Http\Controllers\Gala\ReporteController@dejarReporteCliente');
+Route::post('/reportes/validarAtenderReporteCliente','App\Http\Controllers\Gala\ReporteController@validarAtenderReporteCliente');
+Route::post('/reportes/atenderReporteCliente','App\Http\Controllers\Gala\ReporteController@atenderReporteCliente');
+Route::post('/reportes/validarRetomarReporteCliente','App\Http\Controllers\Gala\ReporteController@validarRetomarReporteCliente');
+Route::post('/reportes/retomarReporteCliente','App\Http\Controllers\Gala\ReporteController@retomarReporteCliente');

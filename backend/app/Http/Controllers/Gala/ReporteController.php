@@ -166,4 +166,64 @@ class ReporteController extends Controller
             );
         }
     }
+
+    public function validarAtenderReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->validarAtenderReporteCliente( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function atenderReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->atenderReporteCliente( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarRetomarReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->validarRetomarReporteCliente( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function retomarReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->retomarReporteCliente( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

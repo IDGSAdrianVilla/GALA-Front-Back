@@ -160,7 +160,7 @@ class ReporteRepository
                          ]);
     }
 
-    public function validarDejarReportePorUsuario ( $pkReporte, $pkUsuario ) {
+    public function validarReporteStatusPorUsuario ( $pkReporte, $pkUsuario ) {
         $return = TblDetalleReporte::where([
                                         ['FkTblReporte', $pkReporte],
                                         ['FkTblUsuarioAtendiendo', '!=', $pkUsuario]
@@ -179,7 +179,7 @@ class ReporteRepository
         return $return->count();
     }
 
-    public function validarDejarReporteEnCurso ( $pkReporte, $pkUsuario ) {
+    public function dejarReporteEnCurso ( $pkReporte, $pkUsuario ) {
         TblDetalleReporte::where([
                              ['FkTblReporte', $pkReporte],
                              ['FkTblUsuarioAtendiendo', $pkUsuario]
@@ -187,6 +187,56 @@ class ReporteRepository
                          ->update([
                              'FkTblUsuarioAtendiendo' => null,
                              'FechaAtendiendo'        => null
+                           ]);
+    }
+
+    public function validarReporteAtendidoPorUsuario ( $pkReporte ) {
+        $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                                   ->where(function ($query) {
+                                       $query->whereNotNull('FkTblUsuarioAtencion')
+                                           ->orWhereNotNull('FechaAtencion');
+                                   });
+    
+        return $return->count();
+    }
+
+    public function atenderReporteCliente ( $pkReporte, $pkUsuario ) {
+        TblReportes::where('PkTblReporte', $pkReporte)
+                   ->update([
+                      'FkCatStatus' => 2
+                   ]);
+
+        TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                         ->update([
+                            'FkTblUsuarioAtendiendo' => null,
+                            'FechaAtendiendo'        => null,
+                            'FkTblUsuarioAtencion'   => $pkUsuario,
+                            'FechaAtencion'          => Carbon::now()
+                         ]);
+    }
+
+    public function validarReporteSinAtender ( $pkReporte ) {
+        $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                                   ->where(function ($query) {
+                                       $query->whereNull('FkTblUsuarioAtencion')
+                                           ->orWhereNull('FechaAtencion');
+                                   });
+    
+        return $return->count();
+    }
+
+    public function retomarReporteCliente ( $pkReporte ) {
+        TblReportes::where('PkTblReporte', $pkReporte)
+                   ->update([
+                      'FkCatStatus' => 1
+                   ]);
+
+        TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                         ->update([
+                             'FkTblUsuarioAtendiendo' => null,
+                             'FechaAtendiendo'        => null,
+                             'FkTblUsuarioAtencion' => null,
+                             'FechaAtencion'        => null
                            ]);
     }
 }

@@ -280,9 +280,124 @@ export class ReportesModificacionComponent implements OnInit {
     );
   }
 
+  funcionalidadAtenderReporte ( pkReporte : number ) : void {
+    if ( this.formModificacionReporte.invalid ) {
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if (
+      this.validaTextoVacio(this.formModificacionReporte.get('diagnosticoReporte')?.value) &&
+      this.validaTextoVacio(this.formModificacionReporte.get('solucionReporte')?.value)
+    ) {
+      this.mensajes.mensajeGenerico('Para poder atender el reporte se necesita registrar un diagnóstico o una solución.', 'info', 'Se necesita diagnóstico o solución');
+      return;
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de atender el reporte?', 'question', 'Atender Reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          this.formModificacionReporte.value.pkCliente = this.dataReporte.datosCliente[0].PkTblCliente;
+          this.formModificacionReporte.value.pkReporte = this.pkReporte;
+
+          const datosAtenderReporte = {
+            'informacionReporteModificado' : this.formModificacionReporte.value,
+            'pkReporte'                    : pkReporte,
+            'token'                        : localStorage.getItem('token')
+          };
+      
+          this.reporteService.validarAtenderReporteCliente( datosAtenderReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.atenderReporteCliente( datosAtenderReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async atenderReporteCliente ( datosAtenderReporte : any ) : Promise<any> {
+    this.reporteService.atenderReporteCliente( datosAtenderReporte ).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  funcionalidadRetomarReporte ( pkReporte : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de retomar el reporte?', 'question', 'Retomar reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosRetomarReporte = {
+            'pkReporte' : pkReporte,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.reporteService.validarRetomarReporteCliente( datosRetomarReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.retomarReporteCliente( datosRetomarReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async retomarReporteCliente ( datosAtenderReporte : any ) : Promise<any> {
+    this.reporteService.retomarReporteCliente( datosAtenderReporte ).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   async recargarDatosGrid () : Promise<void> {
     this.mensajes.mensajeEsperar();
     await this.cargaComponenteModificacionReporte();
     this.mensajes.mensajeGenericoToast('Se actualizó la información con éxito', 'success');
+  }
+
+  private validaTextoVacio ( valor : any ) : boolean {
+    return valor == null || ( typeof valor === 'string' && valor.trim() == '');
   }
 }
