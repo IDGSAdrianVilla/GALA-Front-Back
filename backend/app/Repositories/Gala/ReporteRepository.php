@@ -120,6 +120,12 @@ class ReporteRepository
         return $cliente->get();
     }
 
+    public function validarReporteExistente ( $pkReporte ) {
+        $return = TblReportes::where('PkTblReporte', $pkReporte);
+
+        return $return->get();
+    }
+
     public function validarReporteProblemaPendientePorPK ( $pkReporte, $pkCliente, $pkProblema ) {
         $reportes = TblReportes::join('tbldetallereporte', 'tbldetallereporte.FkTblReporte', '=', 'tblreportes.PkTblReporte')
                                 ->join('catstatus', 'catstatus.PkCatStatus', 'tblreportes.FkCatStatus')
@@ -240,5 +246,15 @@ class ReporteRepository
                              'FkTblUsuarioAtencion' => null,
                              'FechaAtencion'        => null
                            ]);
+    }
+
+    public function eliminarReporteCliente ( $pkReporte ) {
+        TblReportes::where('PkTblReporte', $pkReporte)
+                   ->delete();
+    }
+
+    public function eliminarDetalleReporteCliente ( $pkReporte ) {
+        TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                         ->delete();
     }
 }

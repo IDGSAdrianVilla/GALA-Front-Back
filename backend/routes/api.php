@@ -67,3 +67,5 @@ Route::post('/reportes/validarAtenderReporteCliente','App\Http\Controllers\Gala\
 Route::post('/reportes/atenderReporteCliente','App\Http\Controllers\Gala\ReporteController@atenderReporteCliente');
 Route::post('/reportes/validarRetomarReporteCliente','App\Http\Controllers\Gala\ReporteController@validarRetomarReporteCliente');
 Route::post('/reportes/retomarReporteCliente','App\Http\Controllers\Gala\ReporteController@retomarReporteCliente');
+Route::post('/reportes/validarEliminarReporteCliente','App\Http\Controllers\Gala\ReporteController@validarEliminarReporteCliente');
+Route::post('/reportes/eliminarReporteCliente','App\Http\Controllers\Gala\ReporteController@eliminarReporteCliente');

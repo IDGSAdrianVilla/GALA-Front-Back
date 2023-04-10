@@ -144,12 +144,24 @@ class ReporteService
     }
 
     public function validarComenzarReporteCliente ( $pkReporte ) {
+        $reporteExistente = $this->reporteRepository->validarReporteExistente($pkReporte);
+
+        if ( count($reporteExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer el reporte ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
         $validaReporte = $this->reporteRepository->validarReporteComenzado($pkReporte);
 
         if ( $validaReporte > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer este reporte ya está siendo atendido por alguien más, no podemos continuar',
+                    'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
                     'status' => 304
                 ],
                 200
@@ -179,13 +191,25 @@ class ReporteService
     }
 
     public function validarDejarReporteCliente ( $datosDejarReporte ) {
+        $reporteExistente = $this->reporteRepository->validarReporteExistente($datosDejarReporte['pkReporte']);
+
+        if ( count($reporteExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer el reporte ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
         $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
 
         if ( $validaReportePorUsuario > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer este reporte está siendo atendido por alguien más, no podemos continuar',
+                    'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
                     'status' => 304
                 ],
                 200
@@ -227,13 +251,25 @@ class ReporteService
     }
 
     public function validarAtenderReporteCliente ( $datosAtenderReporte ) {
+        $reporteExistente = $this->reporteRepository->validarReporteExistente($datosAtenderReporte['pkReporte']);
+
+        if ( count($reporteExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer el reporte ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosAtenderReporte['token'] );
         $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosAtenderReporte['pkReporte'], $usuario[0]->PkTblUsuario );
 
         if ( $validaReportePorUsuario > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer este reporte está siendo atendido por alguien más, no podemos continuar',
+                    'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
                     'status' => 304
                 ],
                 200
@@ -278,6 +314,18 @@ class ReporteService
     }
 
     public function validarRetomarReporteCliente ( $datosRetomarReporte ) {
+        $reporteExistente = $this->reporteRepository->validarReporteExistente($datosRetomarReporte['pkReporte']);
+
+        if ( count($reporteExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer el reporte ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
         $validaReporte = $this->reporteRepository->validarReporteSinAtender( $datosRetomarReporte['pkReporte'] );
 
         if ( $validaReporte > 0 ) {
@@ -306,6 +354,54 @@ class ReporteService
         return response()->json(
             [
                 'message' => 'Se retomó el reporte con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validarEliminarReporteCliente ( $datosEliminarReporte ) {
+        $reporteExistente = $this->reporteRepository->validarReporteExistente($datosEliminarReporte['pkReporte']);
+
+        if ( count($reporteExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer el reporte ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosEliminarReporte['token'] );
+        $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosEliminarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
+
+        if ( $validaReportePorUsuario > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'El reporte se eliminar con éxito'
+            ],
+            200
+        );
+    }
+
+    public function eliminarReporteCliente ( $datosEliminarReporte ) {
+        DB::beginTransaction();
+            $this->reporteRepository->eliminarReporteCliente( $datosEliminarReporte['pkReporte'] );
+            $this->reporteRepository->eliminarDetalleReporteCliente( $datosEliminarReporte['pkReporte'] );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se eliminó el reporte con éxito'
             ],
             200
         );

@@ -68,4 +68,12 @@ export class ReportesService {
   public retomarReporteCliente ( datosRetomarReporte : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/reportes/retomarReporteCliente', datosRetomarReporte);
   }
+
+  public validarEliminarReporteCliente ( datosEliminarReporte : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/validarEliminarReporteCliente', datosEliminarReporte);
+  }
+
+  public eliminarReporteCliente ( datosEliminarReporte : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/reportes/eliminarReporteCliente', datosEliminarReporte);
+  }
 }

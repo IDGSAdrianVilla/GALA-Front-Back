@@ -95,9 +95,6 @@
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
                                                 </li>
                                                 <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                    <button class="dropdown-item" type="button">Eliminar</button>
-                                                </li>
-                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadAtenderReporte(reporte)">Atender</button>
                                                 </li>
                                             </section>
@@ -109,6 +106,9 @@
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadRetomarReporte(reporte.PkTblReporte)">Retomar</button>
                                                 </li>
                                             </section>
+                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button" (click)="funcionalidadEliminarReporte(reporte.PkTblReporte)">Eliminar</button>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>

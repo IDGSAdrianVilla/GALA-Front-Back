@@ -459,8 +459,55 @@ export class ReportesComponent implements OnInit{
     );
   }
 
-  private async retomarReporteCliente ( datosAtenderReporte : any ) : Promise<any> {
-    this.reporteService.retomarReporteCliente( datosAtenderReporte ).subscribe(
+  private async retomarReporteCliente ( datosRetomarReporte : any ) : Promise<any> {
+    this.reporteService.retomarReporteCliente( datosRetomarReporte ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  funcionalidadEliminarReporte ( pkReporte : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de eliminar el reporte?, toma en cuenta que no hay como revertir esta acción', 'question', 'Eliminar reporte').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosEliminarReporte = {
+            'pkReporte' : pkReporte,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.reporteService.validarEliminarReporteCliente( datosEliminarReporte ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                return;
+              }
+
+              this.eliminarReporteCliente( datosEliminarReporte );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async eliminarReporteCliente ( datosEliminarReporte : any ) : Promise<any> {
+    this.reporteService.eliminarReporteCliente( datosEliminarReporte ).subscribe(
       respuesta => {
         this.actualizarGridDespuesAccion().then(() => {
           this.mensajes.mensajeGenericoToast(respuesta.message, 'success');

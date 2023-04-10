@@ -226,4 +226,32 @@ class ReporteController extends Controller
             );
         }
     }
+    public function validarEliminarReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->validarEliminarReporteCliente( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+    public function eliminarReporteCliente( Request $request ){
+        try{
+            return $this->reporteService->eliminarReporteCliente( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }
