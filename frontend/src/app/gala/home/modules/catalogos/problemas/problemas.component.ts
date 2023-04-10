@@ -29,21 +29,21 @@ export class ProblemasComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  ngOnInit () : void {
     this.crearFormularioProblemas();
     this.consultaProblemas();
   }
 
-  crearFormularioProblemas() : void {
+  crearFormularioProblemas () : void {
     this.formNuevoProblema = this.fb.group({
       pkCatProblema         : [],
-      tituloProblema        : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      tituloProblema        : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       descripcionProblema   : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       observacionesProblema : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
 
-  consultaProblemas() : void {
+  consultaProblemas () : void {
     this.mensajes.mensajeEsperar();
     this.catalogoService.obtenerProblemas().subscribe(
       respuesta => {
@@ -58,7 +58,7 @@ export class ProblemasComponent implements OnInit {
     );
   }
 
-  crearRegistroProblema() : void {
+  crearRegistroProblema () : void {
     if ( this.formNuevoProblema.invalid ) {
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta.', 'info', 'Los campos requeridos están marcados con un *');
       return;
@@ -98,7 +98,7 @@ export class ProblemasComponent implements OnInit {
     );
   }
 
-  consultaDatosProblemaModificacion( PkCatProblema : number ) : void {
+  consultaDatosProblemaModificacion ( PkCatProblema : number ) : void {
     this.mensajes.mensajeEsperar();
     this.modificacionProblema = true;
 
@@ -115,7 +115,7 @@ export class ProblemasComponent implements OnInit {
     );
   }
 
-  modificarProblema() : void {
+  modificarProblema () : void {
     if ( this.formNuevoProblema.invalid ) {
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta.', 'info', 'Los campos requeridos están marcados con un *');
       return;
@@ -160,12 +160,12 @@ export class ProblemasComponent implements OnInit {
     this.formNuevoProblema.get('observacionesProblema')?.setValue(this.datosProblemaModificacion.Observaciones);
   }
 
-  limpiarFormulario() : void {
+  limpiarFormulario () : void {
     this.modificacionProblema = false;
     this.formNuevoProblema.reset();
   }
 
-  filtrarProblemas() {
+  filtrarProblemas () : void {
     if (!this.busqueda) {
       this.problemasFiltrados = this.datosProblemas;
     } else {
@@ -181,11 +181,11 @@ export class ProblemasComponent implements OnInit {
     return this.datosProblemas.length == 0;
   }
 
-  activarBotonLimpiar() : boolean {
+  activarBotonLimpiar () : boolean {
     return this.datosProblemas.length == 0;
   }
 
-  limpiarTabla() : void {
+  limpiarTabla () : void {
     this.busqueda = '';
     this.datosProblemas = [];
     this.problemasFiltrados = this.datosProblemas;

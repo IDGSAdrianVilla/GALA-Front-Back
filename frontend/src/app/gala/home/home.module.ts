@@ -13,6 +13,8 @@ import { PoblacionesComponent } from './modules/catalogos/poblaciones/poblacione
 import { ProblemasComponent } from './modules/catalogos/problemas/problemas.component';
 import { TipoInstalacionesComponent } from './modules/catalogos/tipo-instalaciones/tipo-instalaciones.component';
 import { RolesComponent } from './modules/catalogos/roles/roles.component';
+import { ReportesComponent } from './modules/reportes/reportes/reportes.component';
+import { ReportesModificacionComponent } from './modules/reportes/reportes-modificacion/reportes-modificacion.component';
 import { UsuariosPerfilComponent } from './modules/usuarios/usuarios-perfil/usuarios-perfil.component';
 
 @NgModule({
@@ -33,6 +35,8 @@ import { UsuariosPerfilComponent } from './modules/usuarios/usuarios-perfil/usua
     ProblemasComponent,
     TipoInstalacionesComponent,
     RolesComponent,
+    ReportesComponent,
+    ReportesModificacionComponent,
     UsuariosPerfilComponent
   ]
 })

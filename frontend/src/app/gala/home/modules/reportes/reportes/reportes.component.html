@@ -1,0 +1,220 @@
+<div class="pagetitle">
+    <h1>Reportes de clientes</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Reportes de clientes</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <form autocomplete="off" class="col-12" [formGroup]="formConsultaReportes">
+                        <div class="col-md-3" style="margin-top: 10px;">
+                            <label for="statusReportes" class="form-label">Status <b style="color: brown;">*</b>:</label>
+                            <select formControlName="statusReportes" type="text" class="form-control" id="statusReportes">
+                                <option value="" style="display: none; visibility: hidden;">Seleccione un Status</option>
+                                <option value="0">Todos</option>
+                                <option value="1">Pendiente</option>
+                                <option value="2">Atendido</option>
+                            </select>
+                        </div>
+                        <div class="botonera">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            <button class="btn btn-primary" (click)="consultarReportes()">Consultar</button>
+                            <button class="btn btn-primary" disabled="true">Excel</button>
+                            <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card recent-sales overflow-auto" style="max-height: 570px;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Reportes
+                    </h5>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="floatingName"
+                                placeholder="Buscar reporte"
+                                [(ngModel)]="busqueda"
+                                (input)="filtrarReportes()"
+                                [disabled]="activarFiltroBusqueda()"
+                                autocomplete="off"
+                            >
+                            <label for="floatingName">Buscar reporte</label>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Población</th>
+                                <th scope="col">Problema</th>
+                                <th scope="col">Registro</th>
+                                <th scope="col" style="text-align: center;">Status</th>
+                                <th scope="col" style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let reporte of this.reportesFiltrados">
+                                <th scope="row"><a>#{{reporte.PkTblReporte}}</a></th>
+                                <td>{{reporte.Nombre+' '+reporte.ApellidoPaterno}}</td>
+                                <td>{{reporte.NombrePoblacion}}</td>
+                                <td>{{reporte.TituloProblema}}</td>
+                                <td>{{reporte.FechaAlta}}</td>
+                                <td style="text-align: center;">
+                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': reporte.ColorStatus}">
+                                        {{reporte.NombreStatus}}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                          Opciones
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <section *ngIf="reporte.FkTblUsuarioAtencion === null">
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadDejarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadComenzarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                </li>
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadAtenderReporte(reporte)">Atender</button>
+                                                </li>
+                                            </section>
+                                            <section *ngIf="reporte.FkTblUsuarioAtencion !== null">
+                                                <li>
+                                                    <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadRetomarReporte(reporte.PkTblReporte)">Retomar</button>
+                                                </li>
+                                            </section>
+                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button" (click)="funcionalidadEliminarReporte(reporte.PkTblReporte)">Eliminar</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade section profile" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title" style="text-align: center !important; margin-bottom: 45px;"><b>Nuevo Reporte</b></h5>
+
+                <section class="row cards">
+                    <div class="col-lg-8">
+    
+                        <section class="card">
+                            <div class="card-body">
+                                <br>
+                                <div class="d-flex align-items-center">
+                                    <form class="row g-3 col-12" autocomplete="off" [formGroup]="formNuevoReporte">
+        
+                                        <div class="col-lg-7">
+                                            <label for="clienteReporte" class="form-label">Cliente <b style="color: brown;">*</b>:</label>
+                                            <input
+                                                list="browsers"
+                                                class="form-control"
+                                                id="clienteReporte"
+                                                formControlName="clienteReporte"
+                                                placeholder="Cliente"
+                                                (keypress)="this.funcionGenerica.soloLetras($event)"
+                                                (input)="mostrarOpcionesCliente()"
+                                                maxlength="255"
+                                            >
+        
+                                            <datalist id="browsers" *ngIf="this.mostrarOpciones">
+                                                <option *ngFor="let cliente of this.clientes" value="{{cliente.Nombre}} {{cliente.ApellidoPaterno}} {{cliente.ApellidoMaterno ?? ''}}">
+                                            </datalist>
+                                        </div>
+    
+                                        <div class="col-lg-5">
+                                            <label for="problemaReporte" class="form-label">Problema <b style="color: brown;">*</b>:</label>
+                                            <select formControlName="problemaReporte" id="problemaReporte" class="form-control">
+                                                <option value="" style="display: none; visibility: hidden;">Seleccione un Problema</option>
+                                                <option *ngFor="let problema of this.problemas" value="{{problema.PkCatProblema}}">{{problema.TituloProblema}}</option>
+                                            </select>
+                                        </div>
+    
+                                        <div class="col-lg-6">
+                                            <label for="descripcionProblema" class="form-label">Descripción del problema:</label>
+                                            <textarea formControlName="descripcionProblema" class="form-control" id="descripcionProblema" style="height: 65px" placeholder="Descripción del problema" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                        </div>
+    
+                                        <div class="col-lg-6">
+                                            <label for="observacionesReporte" class="form-label">Observaciones:</label>
+                                            <textarea formControlName="observacionesReporte" class="form-control" id="observacionesReporte" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                        </div>
+    
+                                        <div class="col-lg-6">
+                                            <label for="diagnosticoReporte" class="form-label">Diagnóstico:</label>
+                                            <textarea formControlName="diagnosticoReporte" class="form-control" id="diagnosticoReporte" style="height: 65px" placeholder="Diagnóstico" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                        </div>
+    
+                                        <div class="col-lg-6">
+                                            <label for="solucionReporte" class="form-label">Solución:</label>
+                                            <textarea formControlName="solucionReporte" class="form-control" id="solucionReporte" style="height: 65px" placeholder="Solución" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                        </div>
+        
+                                    </form>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+    
+                    <div class="col-lg-4">
+                        <section class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                <img src="assets/img/{{this.prevClienteReporte.Sexo != undefined && this.prevClienteReporte.Sexo != '' ? this.prevClienteReporte.Sexo : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+                                <hr>
+                                <h2 *ngIf="this.prevClienteReporte.Nombre != undefined || this.prevClienteReporte.ApellidoPaterno != undefined">
+                                  {{ this.prevClienteReporte.Nombre+ ' ' +this.prevClienteReporte.ApellidoPaterno }}
+                                </h2>
+                                <h3 *ngIf="this.prevClienteReporte.NombrePoblacion != ''">{{this.prevClienteReporte.NombrePoblacion}}</h3>
+                                <h3 *ngIf="this.prevClienteReporte.Telefono != ''">{{this.prevClienteReporte.Telefono}}</h3>
+                                <hr>
+                                <div class="social-links mt-2">
+                                    <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                                    <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                                    <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                                    <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+
+            <div class="modal-footer" style="text-align: center;">
+                <button type="button" class="btn btn-primary" (click)="crearRegistroReporte()"><b>Generar nuevo reporte</b></button>
+                <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
+            </div>
+        </div>
+    </div>
+</div>

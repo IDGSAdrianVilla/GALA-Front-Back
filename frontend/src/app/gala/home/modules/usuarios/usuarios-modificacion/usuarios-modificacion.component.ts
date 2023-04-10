@@ -35,16 +35,19 @@ export class UsuariosModificacionComponent implements OnInit{
 
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit() : Promise<void> {
     this.mensajes.mensajeEsperar();
   
     this.crearFormInformacionRegistro();
     this.crearFormDireccionRegistro();
     this.crearFormRolesRegistro();
   
-    await Promise.all([this.obtenerPoblaciones(), this.obtenerRoles(), this.consultarDatosUsuarioModificacion()]);
+    await Promise.all([
+      this.obtenerPoblaciones(),
+      this.obtenerRoles(),
+      this.consultarDatosUsuarioModificacion()
+    ]);
   }
-  
 
   crearFormInformacionRegistro() : void {
     this.formInformacionRegistro = this.fb.group({

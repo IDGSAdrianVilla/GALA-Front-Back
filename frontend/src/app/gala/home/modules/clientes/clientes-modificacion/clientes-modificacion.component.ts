@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { ClientesService } from '../../../../services/clientes/clientes.service';
@@ -11,7 +11,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './clientes-modificacion.component.html',
   styleUrls: ['./clientes-modificacion.component.css']
 })
-export class ClientesModificacionComponent implements OnInit{
+export class ClientesModificacionComponent implements OnInit, OnDestroy{
+  @Input() parametro?: number = 0;
+
   public formInformacionRegistro! : FormGroup;
   public formDireccionRegistro! : FormGroup;
 
@@ -37,7 +39,10 @@ export class ClientesModificacionComponent implements OnInit{
   
     this.crearFormInformacionRegistro();
     this.crearFormDireccionRegistro();
-    await Promise.all([this.obtenerPoblaciones(), this.consultarDatosClienteModificacion()]);
+    await Promise.all([
+      this.obtenerPoblaciones(),
+      this.consultarDatosClienteModificacion()
+    ]);
   }
 
   crearFormInformacionRegistro() : void {
@@ -67,7 +72,7 @@ export class ClientesModificacionComponent implements OnInit{
     this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionRegistro.get('apellidoMaternoCliente')?.value;
     this.prevClienteNuevo.sexoCliente            = this.formInformacionRegistro.get('sexoCliente')?.value;
     this.prevClienteNuevo.telefonoCliente        = this.formInformacionRegistro.get('telefonoCliente')?.value;
-    const poblacionSelect                         = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
+    const poblacionSelect                        = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
     this.prevClienteNuevo.poblacionCliente       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
 
@@ -83,7 +88,7 @@ export class ClientesModificacionComponent implements OnInit{
   }
 
   consultarDatosClienteModificacion() : Promise<any> {
-    this.pkcliente = this.rutaActiva.snapshot.params['pkcliente'];
+    this.pkcliente = this.rutaActiva.snapshot.params['pkcliente'] ?? this.parametro;
 
     return this.clientesService.consultarDatosClienteModificacion(this.pkcliente).toPromise().then(
       clienteModificacion =>{
@@ -128,7 +133,6 @@ export class ClientesModificacionComponent implements OnInit{
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
     }
-    this.mensajes.mensajeGenerico('Se creó con éxito','success');
 
     this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Modificar Cliente').then(
       confirm =>{
@@ -166,6 +170,9 @@ export class ClientesModificacionComponent implements OnInit{
     this.formDireccionRegistro.reset();
     this.formDireccionRegistro.get('poblacionCliente')?.setValue('');
   }
-  
 
+  ngOnDestroy(): void {
+    this.parametro = 0;
+    this.pkcliente = 0;
+  }
 }

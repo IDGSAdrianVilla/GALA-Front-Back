@@ -41,6 +41,19 @@ button {
   font-weight: bold !important;
 }
 
+.botonera {
+  margin-top: 20px;
+  width: 100%;
+  height: auto;
+}
+
+.botonera .btn {
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
   background-color: transparent;
@@ -1285,6 +1298,14 @@ button {
   align-content: center !important;
 }
 
-.modal .modal-dialog .modal-content .modal-body div.card {
+.modal .modal-dialog .modal-content .modal-body div.card,
+.modal .modal-dialog .modal-content .modal-body section.cards {
   margin-top: -30px !important;
+}
+
+.modal-body-special {
+  position: relative;
+  flex: 1 1 auto;
+  padding: var(--bs-modal-padding);
+  overflow-y: auto;
 }

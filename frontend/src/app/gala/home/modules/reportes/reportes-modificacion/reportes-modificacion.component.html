@@ -1,0 +1,125 @@
+<div class="pagetitle">
+    <h1>Modificación de Reporte</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Reportes de clientes</li>
+            <li class="breadcrumb-item active">Modificación de Reporte</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section profile">
+    <div class="row">
+        <div class="col-xl-12" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo != null">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align: center;">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                Atendiendo: <b>{{this.dataReporte.datosUsuarioAtendiendo[0].Nombre+' '+this.dataReporte.datosUsuarioAtendiendo[0].ApellidoPaterno}}</b>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body pt-3">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert" style="text-align: center;">
+                        <i class="bi bi-exclamation-octagon me-1"></i>
+                        Registro: <b>{{this.dataReporte.datosReporte[0].FechaAlta}}</b>. Por: <b>{{this.dataReporte.datosUsuarioRecibio[0].Nombre+' '+this.dataReporte.datosUsuarioRecibio[0].ApellidoPaterno}}</b>
+                    </div>
+
+                    <hr>
+                    
+                    <form class="row g-3 col-12" autocomplete="off" [formGroup]="formModificacionReporte">
+        
+                        <div class="col-lg-7">
+                            <label for="clienteReporte" class="form-label">Cliente <b style="color: brown;">*</b>:</label>
+                            <input class="form-control" id="clienteReporte" formControlName="clienteReporte" placeholder="Cliente" [disabled]="true">
+                        </div>
+
+                        <div class="col-lg-5">
+                            <label for="problemaReporte" class="form-label">Problema <b style="color: brown;">*</b>:</label>
+                            <select formControlName="problemaReporte" id="problemaReporte" class="form-control">
+                                <option value="" style="display: none; visibility: hidden;">Seleccione un Problema</option>
+                                <option *ngFor="let problema of this.problemas" value="{{problema.PkCatProblema}}">{{problema.TituloProblema}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="descripcionProblema" class="form-label">Descripción del problema:</label>
+                            <textarea formControlName="descripcionProblema" class="form-control" id="descripcionProblema" style="height: 65px" placeholder="Descripción del problema" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="observacionesReporte" class="form-label">Observaciones:</label>
+                            <textarea formControlName="observacionesReporte" class="form-control" id="observacionesReporte" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="diagnosticoReporte" class="form-label">Diagnóstico:</label>
+                            <textarea formControlName="diagnosticoReporte" class="form-control" id="diagnosticoReporte" style="height: 65px" placeholder="Diagnóstico" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="solucionReporte" class="form-label">Solución:</label>
+                            <textarea formControlName="solucionReporte" class="form-control" id="solucionReporte" style="height: 65px" placeholder="Solución" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                        </div>
+
+                        <div class="col-12 botonera d-flex justify-content-center">
+                            <section *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion === null">
+                                <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
+                                <button type="button" class="btn btn-success" (click)="funcionalidadComenzarReporteCliente(this.dataReporte.datosReporte[0].PkTblReporte)" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo === null"><b>Comenzar</b></button>
+                                <button type="button" class="btn btn-danger" (click)="funcionalidadDejarReporteCliente(this.dataReporte.datosReporte[0].PkTblReporte)" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Dejar</b></button>
+                                <button type="button" class="btn btn-info" (click)="funcionalidadAtenderReporte(this.dataReporte.datosReporte[0].PkTblReporte)" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo === null || this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Atender</b></button>
+                            </section>
+                            <section *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion !== null">
+                                <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
+                                <button type="button" class="btn btn-warning" (click)="funcionalidadRetomarReporte(this.dataReporte.datosReporte[0].PkTblReporte)"><b>Retomar</b></button>
+                            </section>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <section class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="assets/img/{{this.prevModificacionReporte.Sexo ?? 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+                    <h2>{{ (this.prevModificacionReporte.Nombre ?? '') + ' ' + (this.prevModificacionReporte.ApellidoPaterno ?? '') }}</h2>
+                    <h3>{{ (this.prevModificacionReporte.NombrePoblacion ?? '') }} <b>-</b> {{ (this.prevModificacionReporte.CodigoPostal ?? '') }}</h3>
+                    <h3>{{this.prevModificacionReporte.Telefono ?? ''}}</h3>
+                    <h3>{{this.prevModificacionReporte.Calle ?? ''}}</h3>
+                    <div class="social-links mt-2" *ngIf="this.prevModificacionReporte.Coordenadas != null && this.prevModificacionReporte.Coordenadas != '' && this.prevModificacionReporte.Coordenadas != undefined">
+                        <a href="https://www.google.com/maps/place/{{this.prevModificacionReporte.Coordenadas}}" target="_blank" class="twitter"><i class="ri-user-location-line"></i></a>
+                    </div>
+                    <div class="col-12 row">
+                        <hr>
+                        <div class="col-9">
+                            <button class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#verDetalleCliente">Ver más</button>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-warning form-control" (click)="recargarDatosGrid()"><b><i class="bi bi-arrow-repeat"></i></b></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade section profile" id="verDetalleCliente" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body-special">
+                <app-clientes-modificacion [parametro]="this.prevModificacionReporte.PkTblCliente"></app-clientes-modificacion>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><b>Cerrar</b></button>
+            </div>
+        </div>
+    </div>
+</div>

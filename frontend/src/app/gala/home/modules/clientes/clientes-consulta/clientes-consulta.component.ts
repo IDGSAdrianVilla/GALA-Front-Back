@@ -30,7 +30,7 @@ export class ClientesConsultaComponent implements OnInit{
       respuestaClientes =>{
         this.datosClientes = respuestaClientes.data;
         this.clientesFiltrados = this.datosClientes;
-        this.mensajes.mensajeGenerico(respuestaClientes.message,'success');
+        this.mensajes.mensajeGenericoToast(respuestaClientes.message,'success');
       },
 
       error =>{
@@ -39,7 +39,7 @@ export class ClientesConsultaComponent implements OnInit{
     );
   }
 
-  filtrarClientes() {
+  filtrarClientes () : void {
     if (!this.busqueda) {
       this.clientesFiltrados = this.datosClientes;
     } else {

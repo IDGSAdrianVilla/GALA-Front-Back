@@ -8,15 +8,18 @@ export class MensajesService {
   
   private mensajeError500 : string = 'Al parecer ocurrió un error interno, por favor contactarse con el DTIC de Emenet Sistemas';
   
-  mensajeEsperar():void{
+  mensajeEsperar(): void {
     Swal.fire({
       allowOutsideClick: false,
       text: 'Espere un momento...',
       icon: 'info',
-      confirmButtonText: 'Cool'
-    });
+      confirmButtonText: 'Cool',
+      keyboard: false,
+      allowEscapeKey: false
+    } as any);
     Swal.showLoading();
   }
+
 
   cerrarMensajes():void{
     Swal.close()
@@ -33,7 +36,9 @@ export class MensajesService {
       buttonsStyling: false,
       customClass: {
         confirmButton: 'btn btn-primary'
-      }
+      },
+      keyboard: false,
+      allowEscapeKey: false
     };
     if (html){
       data['html'] = html;
@@ -78,6 +83,7 @@ export class MensajesService {
         denyButton: 'order-3',
         confirmButton: 'order-1 btn btn-primary'
       },
+      allowEscapeKey: false
     });
   }
 }

@@ -297,7 +297,7 @@ class CatalogoService
         return response()->json(
             [
                 'roles' => $this->catalogoRepository->obtenerRoles(),
-                'message'   => 'Se registró con éxito el nuevo problema'
+                'message'   => 'Se registró con éxito el nuevo rol'
             ],
             200
         );
