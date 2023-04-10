@@ -186,9 +186,12 @@ export class ReportesComponent implements OnInit{
   private crearNuevoReporte ( datosNuevoReporte : any ) : void {
     this.reporteService.crearNuevoReporte( datosNuevoReporte ).subscribe(
       respuesta => {
-        this.limpiarFormulario();
-        this.cerrarModal?.nativeElement.click();
-        this.mensajes.mensajeGenerico(respuesta.message, 'success');
+        this.actualizarGridDespuesAccion().then(() => {
+          this.limpiarFormulario();
+          this.cerrarModal?.nativeElement.click();
+          this.mensajes.mensajeGenerico(respuesta.message, 'success');
+          return;
+        });
       },
 
       error => {
@@ -514,8 +517,8 @@ export class ReportesComponent implements OnInit{
     );
   }
 
-  private async actualizarGridDespuesAccion () : Promise<void> {
-    const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
+  private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
+    const statusConsulta = isNaN(this.formConsultaReportes.get('statusReportes')?.value) ? defaultStatus : this.formConsultaReportes.get('statusReportes')?.value;
 
     return this.reporteService.consultarReportesPorStatus( statusConsulta ).toPromise().then(
       respuesta => {

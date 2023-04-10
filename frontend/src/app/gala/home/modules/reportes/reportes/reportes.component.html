@@ -76,7 +76,10 @@
                                 <td>{{reporte.TituloProblema}}</td>
                                 <td>{{reporte.FechaAlta}}</td>
                                 <td style="text-align: center;">
-                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': reporte.ColorStatus}">
+                                    <span class="badge" style="color: white; background: #B7B7B7;" *ngIf="reporte.FkTblUsuarioAtendiendo !== null">
+                                        Atendiendo
+                                    </span>
+                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': reporte.ColorStatus}" *ngIf="reporte.FkTblUsuarioAtendiendo === null">
                                         {{reporte.NombreStatus}}
                                     </span>
                                 </td>
