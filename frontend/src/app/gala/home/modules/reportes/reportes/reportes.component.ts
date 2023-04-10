@@ -265,11 +265,19 @@ export class ReportesComponent implements OnInit{
           this.reporteService.validarComenzarReporteCliente( pkReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
-              this.comenzarReporteCliente( pkReporte );
+              const datosComenzarReporte = {
+                'pkReporte' : pkReporte,
+                'token'     : localStorage.getItem('token')
+              };
+
+              this.comenzarReporteCliente( datosComenzarReporte );
             },
 
             error => {
@@ -283,29 +291,13 @@ export class ReportesComponent implements OnInit{
     );
   }
 
-  private comenzarReporteCliente ( pkReporte : number ) : void {
-    const datosComenzarReporte = {
-      'pkReporte' : pkReporte,
-      'token'     : localStorage.getItem('token')
-    };
-
+  private comenzarReporteCliente ( datosComenzarReporte : any ) : void {
     this.reporteService.comenzarReporteCliente( datosComenzarReporte ).subscribe(
       respuesta => {
-        const mensajeComenzar = respuesta.message;
-        const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
-
-        this.reporteService.consultarReportesPorStatus( statusConsulta ).subscribe(
-          respuesta => {
-            this.datosReportes = respuesta.reportes;
-            this.reportesFiltrados= this.datosReportes;
-            this.mensajes.mensajeGenericoToast(mensajeComenzar, 'success');
-          },
-
-          error => {
-            this.mensajes.mensajeGenerico('error', 'error');
-          }
-        );
-        return;
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
       },
 
       error => {
@@ -328,7 +320,10 @@ export class ReportesComponent implements OnInit{
           this.reporteService.validarDejarReporteCliente( datosDejarReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
@@ -349,21 +344,10 @@ export class ReportesComponent implements OnInit{
   private dejarReporteCliente ( datosDejarReporte : any ) : void {
     this.reporteService.dejarReporteCliente( datosDejarReporte ).subscribe(
       respuesta => {
-        const mensajeComenzar = respuesta.message;
-        const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
-
-        this.reporteService.consultarReportesPorStatus( statusConsulta ).subscribe(
-          respuesta => {
-            this.datosReportes = respuesta.reportes;
-            this.reportesFiltrados= this.datosReportes;
-            this.mensajes.mensajeGenericoToast(mensajeComenzar, 'success');
-          },
-
-          error => {
-            this.mensajes.mensajeGenerico('error', 'error');
-          }
-        );
-        return;
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
       },
 
       error => {
@@ -394,7 +378,10 @@ export class ReportesComponent implements OnInit{
           this.reporteService.validarAtenderReporteCliente( datosAtenderReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
@@ -441,7 +428,10 @@ export class ReportesComponent implements OnInit{
           this.reporteService.validarRetomarReporteCliente( datosRetomarReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
@@ -488,7 +478,10 @@ export class ReportesComponent implements OnInit{
           this.reporteService.validarEliminarReporteCliente( datosEliminarReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 

@@ -195,7 +195,10 @@ export class ReportesModificacionComponent implements OnInit {
           this.reporteService.validarComenzarReporteCliente( pkReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
@@ -247,7 +250,10 @@ export class ReportesModificacionComponent implements OnInit {
           this.reporteService.validarDejarReporteCliente( datosDejarReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
@@ -311,7 +317,10 @@ export class ReportesModificacionComponent implements OnInit {
           this.reporteService.validarAtenderReporteCliente( datosAtenderReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
@@ -358,7 +367,10 @@ export class ReportesModificacionComponent implements OnInit {
           this.reporteService.validarRetomarReporteCliente( datosRetomarReporte ).subscribe(
             respuesta => {
               if ( respuesta.status == 304 ) {
-                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
                 return;
               }
 
