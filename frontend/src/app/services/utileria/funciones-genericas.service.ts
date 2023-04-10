@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FuncionesGenericasService {
 
-  constructor() { }
+  constructor(
+    private router : Router
+  ) {
+
+  }
 
   public soloLetras(event: KeyboardEvent) {
     const pattern = /[a-zA-Zá-úÁ-Ú ]/;
@@ -109,5 +114,9 @@ export class FuncionesGenericasService {
 
   obtenerObjetoPermisosDesdeCadena ( cadenaObjeto : string ) : any {
     return JSON.parse( cadenaObjeto.replace(/'/g, '"') );
+  }
+
+  redireccionPorRuta ( ruta : string ) : void {
+    this.router.navigate(['/gala/'+ruta]);
   }
 }
