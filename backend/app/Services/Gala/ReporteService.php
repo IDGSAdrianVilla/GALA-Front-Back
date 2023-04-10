@@ -76,7 +76,6 @@ class ReporteService
 
     public function cargaComponenteModificacionReporte ( $pkReporte ) {
         $dataReporte = [];
-
         $dataReporte['datosReporte'] = $this->reporteRepository->consultarDatosReporteModificacionPorPK( $pkReporte );
 
         if ( count($dataReporte['datosReporte']) == 0 ) {

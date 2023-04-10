@@ -10,10 +10,17 @@
 
 <section class="section profile">
     <div class="row">
+        <div class="col-xl-12" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion != null">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">
+                <i class="bi bi-check-circle me-1"></i>
+                Atendido <b>{{this.dataReporte.datosReporte[0].FechaAtencion}}</b> por <b>{{this.dataReporte.datosUsuarioAtencion[0].Nombre+' '+this.dataReporte.datosUsuarioAtencion[0].ApellidoPaterno}}</b>
+            </div>
+        </div>
+
         <div class="col-xl-12" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo != null">
             <div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align: center;">
                 <i class="bi bi-exclamation-triangle me-1"></i>
-                Atendiendo: <b>{{this.dataReporte.datosUsuarioAtendiendo[0].Nombre+' '+this.dataReporte.datosUsuarioAtendiendo[0].ApellidoPaterno}}</b>
+                Atendiendo <b>{{this.dataReporte.datosReporte[0].FechaAtendiendo}}</b> por <b>{{this.dataReporte.datosUsuarioAtendiendo[0].Nombre+' '+this.dataReporte.datosUsuarioAtendiendo[0].ApellidoPaterno}}</b>
             </div>
         </div>
 
@@ -21,8 +28,8 @@
             <div class="card">
                 <div class="card-body pt-3">
                     <div class="alert alert-info alert-dismissible fade show" role="alert" style="text-align: center;">
-                        <i class="bi bi-exclamation-octagon me-1"></i>
-                        Registro: <b>{{this.dataReporte.datosReporte[0].FechaAlta}}</b>. Por: <b>{{this.dataReporte.datosUsuarioRecibio[0].Nombre+' '+this.dataReporte.datosUsuarioRecibio[0].ApellidoPaterno}}</b>
+                        <i class="bi bi-info-circle me-1"></i>
+                        Registro <b>{{this.dataReporte.datosReporte[0].FechaAlta}}</b> por <b>{{this.dataReporte.datosUsuarioRecibio[0].Nombre+' '+this.dataReporte.datosUsuarioRecibio[0].ApellidoPaterno}}</b>
                     </div>
 
                     <hr>

@@ -82,6 +82,9 @@ class ReporteRepository
                                     'FkCatStatus'
                                 )
                               ->selectRaw('DATE_FORMAT(FechaAlta, \'%d-%m-%Y | %I:%i %p\') as FechaAlta')
+                              ->selectRaw('COALESCE(DATE_FORMAT(tbldetallereporte.FechaAtendiendo, \'%d-%m-%Y | %I:%i %p\'), NULL) as FechaAtendiendo')
+                              ->selectRaw('COALESCE(DATE_FORMAT(tbldetallereporte.FechaAtencion, \'%d-%m-%Y | %I:%i %p\'), NULL) as FechaAtencion')
+                              ->join('tbldetallereporte', 'tbldetallereporte.FkTblReporte', 'tblreportes.PkTblReporte')
                               ->where('PkTblReporte', $pkReporte);
 
         return $reporte->get();
