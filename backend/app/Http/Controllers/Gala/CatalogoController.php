@@ -272,4 +272,19 @@ class CatalogoController extends Controller
             );
         }
     }
+
+    public function obtenerPaquetes () {
+        try{
+            return $this->catalogoService->obtenerPaquetes();
+        } catch(\Exception $error){
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }
