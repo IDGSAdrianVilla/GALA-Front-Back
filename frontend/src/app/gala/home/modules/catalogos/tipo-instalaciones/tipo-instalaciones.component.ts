@@ -67,7 +67,7 @@ export class TipoInstalacionesComponent implements OnInit{
       return;
     }
 
-    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nuevo Problema').then(
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Crear Nueva Clasificación').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
@@ -138,7 +138,7 @@ export class TipoInstalacionesComponent implements OnInit{
       return;
     }
 
-    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Modificar Problema').then(
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Modificar Clasificación').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();

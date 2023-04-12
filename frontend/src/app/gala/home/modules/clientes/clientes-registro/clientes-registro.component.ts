@@ -11,7 +11,7 @@ import { ClientesService } from '../../../../services/clientes/clientes.service'
   styleUrls: ['./clientes-registro.component.css']
 })
 export class ClientesRegistroComponent implements OnInit {
-  public formInformacionRegistro! : FormGroup;
+  public formInformacionCliente! : FormGroup;
   public formDireccionRegistro! : FormGroup;
 
   public prevClienteNuevo : any = {};
@@ -28,15 +28,18 @@ export class ClientesRegistroComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.mensajes.mensajeEsperar();
   
-    this.crearFormInformacionRegistro();
+    this.crearFormInformacionCliente();
     this.crearFormDireccionRegistro();
-    await Promise.all([this.obtenerPoblaciones()]);
+
+    await Promise.all([
+      this.obtenerPoblaciones()
+    ]);
   
     this.mensajes.cerrarMensajes();
   }
 
-  crearFormInformacionRegistro() : void {
-    this.formInformacionRegistro = this.fb.group({
+  crearFormInformacionCliente() : void {
+    this.formInformacionCliente = this.fb.group({
       nombreCliente           : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       apellidoPaternoCliente  : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
       apellidoMaternoCliente  : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
@@ -57,11 +60,11 @@ export class ClientesRegistroComponent implements OnInit {
   }
 
   prevNuevoCliente () : void {
-    this.prevClienteNuevo.nombreCliente          = this.formInformacionRegistro.get('nombreCliente')?.value;
-    this.prevClienteNuevo.apellidoPaternoCliente = this.formInformacionRegistro.get('apellidoPaternoCliente')?.value;
-    this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionRegistro.get('apellidoMaternoCliente')?.value;
-    this.prevClienteNuevo.sexoCliente            = this.formInformacionRegistro.get('sexoCliente')?.value;
-    this.prevClienteNuevo.telefonoCliente        = this.formInformacionRegistro.get('telefonoCliente')?.value;
+    this.prevClienteNuevo.nombreCliente          = this.formInformacionCliente.get('nombreCliente')?.value;
+    this.prevClienteNuevo.apellidoPaternoCliente = this.formInformacionCliente.get('apellidoPaternoCliente')?.value;
+    this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionCliente.get('apellidoMaternoCliente')?.value;
+    this.prevClienteNuevo.sexoCliente            = this.formInformacionCliente.get('sexoCliente')?.value;
+    this.prevClienteNuevo.telefonoCliente        = this.formInformacionCliente.get('telefonoCliente')?.value;
     const poblacionSelect                         = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
     this.prevClienteNuevo.poblacionCliente       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
@@ -78,7 +81,7 @@ export class ClientesRegistroComponent implements OnInit {
   }
 
   crearNuevoCliente() : void {
-    if(this.formInformacionRegistro.invalid){
+    if(this.formInformacionCliente.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
     }
@@ -94,20 +97,20 @@ export class ClientesRegistroComponent implements OnInit {
           this.mensajes.mensajeEsperar();
 
           let datosNuevoCliente = {
-            'informacionPersonal' : this.formInformacionRegistro.value,
+            'informacionPersonal' : this.formInformacionCliente.value,
             'direccion'           : this.formDireccionRegistro.value,
             'token'               : localStorage.getItem('token')
           };
 
           this.clientesService.crearNuevoCliente(datosNuevoCliente).subscribe(
             respuesta =>{
-              if ( respuesta.status != 409 ) {
-                this.limpiarFormularios();
-                this.mensajes.mensajeGenerico(respuesta.message, 'success');
+              if ( respuesta.status == 409 ) {
+                this.mensajes.mensajeGenerico(respuesta.message, 'warning');
                 return;
               }
 
-              this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+              this.limpiarFormularios();
+              this.mensajes.mensajeGenerico(respuesta.message, 'success');
               return;
             },
 
@@ -121,9 +124,9 @@ export class ClientesRegistroComponent implements OnInit {
   }
 
   limpiarFormularios() : void {
-    this.formInformacionRegistro.reset();
+    this.formInformacionCliente.reset();
     this.formDireccionRegistro.reset();
     this.formDireccionRegistro.get('poblacionCliente')?.setValue('');
+    this.prevClienteNuevo = {};
   }
-  
 }

@@ -23,7 +23,7 @@
                             </select>
                         </div>
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoReporte">Nuevo</button>
                             <button class="btn btn-primary" (click)="consultarReportes()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -124,7 +124,7 @@
     </div>
 </section>
 
-<div class="modal fade section profile" id="disablebackdrop" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+<div class="modal fade section profile" id="nuevoReporte" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
@@ -132,7 +132,6 @@
 
                 <section class="row cards">
                     <div class="col-lg-8">
-    
                         <section class="card">
                             <div class="card-body">
                                 <br>

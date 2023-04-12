@@ -18,9 +18,9 @@ export class ReportesComponent implements OnInit{
   public formNuevoReporte! : FormGroup;
   public formConsultaReportes! : FormGroup;
 
-  public busqueda: string = '';
-  public datosReportes: any = [];
-  public reportesFiltrados: any[] = [];
+  public busqueda : string = '';
+  private datosReportes : any = [];
+  public reportesFiltrados : any[] = [];
   public mostrarOpciones : boolean = false;
   public clientes : any = [];
   public prevClienteReporte : any = {};
@@ -42,8 +42,8 @@ export class ReportesComponent implements OnInit{
   async ngOnInit () : Promise<void> {
     this.mensajes.mensajeEsperar();
 
-    this.crearFormularioReporte();
     this.crearFormularioConsultaReportes();
+    this.crearFormularioReporte();
 
     await Promise.all([
       this.obtenerClientes(),
@@ -54,6 +54,12 @@ export class ReportesComponent implements OnInit{
     this.mensajes.cerrarMensajes();
   }
 
+  private crearFormularioConsultaReportes () : void {
+    this.formConsultaReportes = this.fb.group({
+      statusReportes  : ['', [Validators.required]]
+    });
+  }
+
   private crearFormularioReporte () : void {
     this.formNuevoReporte = this.fb.group({
       clienteReporte        : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
@@ -62,12 +68,6 @@ export class ReportesComponent implements OnInit{
       observacionesReporte  : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       diagnosticoReporte    : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       solucionReporte       : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
-    });
-  }
-
-  private crearFormularioConsultaReportes () : void {
-    this.formConsultaReportes = this.fb.group({
-      statusReportes  : ['', [Validators.required]]
     });
   }
 
