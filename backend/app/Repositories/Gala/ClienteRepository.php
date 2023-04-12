@@ -7,41 +7,46 @@ use App\Models\TblDirecciones;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-//use Your Model
 
-/**
- * Class ClienteRepository.
- */
 class ClienteRepository 
 {
-    /**
-     * @return string
-     *  Return the model
-     */
-    public function validarClienteExistente($data, $pkCliente = 0) {
-		$clienteNombre = TblClientes::whereRaw('Nombre SOUNDS LIKE ? ', ['%' . $data['nombreCliente'] . '%'])
-									->whereRaw('ApellidoPaterno SOUNDS LIKE ? ', ['%' . $data['apellidoPaternoCliente'] . '%'])
-									->whereRaw('ApellidoMaterno SOUNDS LIKE ? ', ['%' . $data['apellidoMaternoCliente'] . '%'])
-									->where('PkTblCliente', '!=', $pkCliente)
-									->count();
-									
-		$clienteTelefono = TblClientes::where('Telefono', $data['telefonoCliente'])
-									  ->where('PkTblCliente', '!=', $pkCliente)
-									  ->count();
+    public function validarClienteExistentePorNombre($tipo, $pkPoblacion, $data, $pkCliente = 0) {
+		$nombreCompleto = $data['nombreCliente'].' '.$data['apellidoPaternoCliente'].' '.($data['apellidoMaternoCliente'] ?? '');
+
+		$clienteNombre = TblClientes::join('tbldirecciones', 'tbldirecciones.FkTblCliente', 'tblclientes.PkTblCliente')
+									->whereRaw("TRIM(CONCAT(tblclientes.Nombre, ' ', COALESCE(tblclientes.ApellidoPaterno, ''), ' ', COALESCE(tblclientes.ApellidoMaterno, ''))) SOUNDS LIKE ?", ['%'. trim($nombreCompleto) .'%'])
+									->where([
+										['tblclientes.PkTblCliente', '!=', $pkCliente],
+										['tbldirecciones.FkCatPoblacion', $pkPoblacion]
+									]);
+
+		$clienteNombre = $tipo == 'instalacion' ? $clienteNombre->whereNull('Validado') : $clienteNombre->where('Validado', 1);
 									  
-		return $clienteTelefono + $clienteNombre;
+		return $clienteNombre->count();
 	}
 
-    public function crearNuevoCliente( $informacionCliente, $pkUsuario ){
+	public function validarClienteExistentePorTelefono ($tipo, $telefono, $pkCliente = 0 ) {
+		$clienteTelefono = TblClientes::where('Telefono', $telefono)
+									  ->where('PkTblCliente', '!=', $pkCliente);
+
+		if ( $tipo == 'instalacion' ) {
+			$clienteTelefono = $clienteTelefono->whereNull('Validado');
+		}
+
+		return $clienteTelefono->count();
+	}
+
+    public function crearNuevoCliente( $informacionCliente, $pkUsuario, $validado = null ){
         $registro = new TblClientes();
-		$registro->Nombre 			= trim($informacionCliente['nombreCliente']);
-		$registro->ApellidoPaterno 	= trim($informacionCliente['apellidoPaternoCliente']);
-		$registro->ApellidoMaterno 	= trim($informacionCliente['apellidoMaternoCliente']);
+		$registro->Nombre 			= $this->trimValidator($informacionCliente['nombreCliente']);
+		$registro->ApellidoPaterno 	= $this->trimValidator($informacionCliente['apellidoPaternoCliente']);
+		$registro->ApellidoMaterno 	= $this->trimValidator($informacionCliente['apellidoMaternoCliente']);
 		$registro->Sexo 			= $informacionCliente['sexoCliente'];
-		$registro->Telefono 		= trim($informacionCliente['telefonoCliente']);
-		$registro->TelefonoOpcional = trim($informacionCliente['telefonoOpcionalCliente']);
+		$registro->Telefono 		= $this->trimValidator($informacionCliente['telefonoCliente']);
+		$registro->TelefonoOpcional = $this->trimValidator($informacionCliente['telefonoOpcionalCliente']);
 		$registro->FkTblUsuarioAlta = $pkUsuario;
 		$registro->FechaAlta		= Carbon::now();
+		$registro->Validado			= $validado;
 		$registro->Activo 			= 1;
 		$registro->save();
 
@@ -50,12 +55,12 @@ class ClienteRepository
 
     public function crearDireccionCliente( $direccion, $pkCliente ){
 		$registro = new TblDirecciones();
-		$registro->FkCatPoblacion           = $direccion	['poblacionCliente'];
-		$registro->FkTblCliente             = 				 $pkCliente;
-		$registro->Coordenadas              = trim($direccion['coordenadasCliente']);
-		$registro->ReferenciasDomicilio     = trim($direccion['referenciasDomicilioCliente']);
-		$registro->CaracteristicasDomicilio = trim($direccion['caracteristicasDomicilioCliente']);
-		$registro->Calle                    = trim($direccion['calleCliente']);
+		$registro->FkCatPoblacion           = $direccion['poblacionCliente'];
+		$registro->FkTblCliente             = $pkCliente;
+		$registro->Coordenadas              = $this->trimValidator($direccion['coordenadasCliente']);
+		$registro->ReferenciasDomicilio     = $this->trimValidator($direccion['referenciasDomicilioCliente']);
+		$registro->CaracteristicasDomicilio = $this->trimValidator($direccion['caracteristicasDomicilioCliente']);
+		$registro->Calle                    = $this->trimValidator($direccion['calleCliente']);
 		$registro->save();
 	}
 
@@ -93,5 +98,9 @@ class ClienteRepository
 							'CaracteristicasDomicilio'  => $datosDireccion['caracteristicasDomicilioCliente'],
 							'Calle' 					=> $datosDireccion['calleCliente']
 					  ]);
+	}
+
+	public function trimValidator ( $value ) {
+		return $value != null && trim($value) != '' ? trim($value) : null;
 	}
 }
