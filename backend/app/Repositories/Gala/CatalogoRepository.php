@@ -3,6 +3,7 @@
 namespace App\Repositories\Gala;
 
 use App\Models\CatClasificacionInstalaciones;
+use App\Models\CatPaquetes;
 use App\Models\CatPoblaciones;
 use App\Models\CatProblemasGenericos;
 use App\Models\CatRoles;
@@ -49,9 +50,9 @@ class CatalogoRepository
 
     public function crearNuevaPoblacion ( $datosPoblacion, $pkUsuario ) {
         $registro = new CatPoblaciones();
-        $registro->NombrePoblacion  = trim($datosPoblacion['nombrePoblacion']);
-        $registro->CodigoPostal     = trim($datosPoblacion['cpPoblacion']);
-        $registro->Observaciones    = trim($datosPoblacion['observacionesPoblacion']);
+        $registro->NombrePoblacion  = $this->trimValidator($datosPoblacion['nombrePoblacion']);
+        $registro->CodigoPostal     = $this->trimValidator($datosPoblacion['cpPoblacion']);
+        $registro->Observaciones    = $this->trimValidator($datosPoblacion['observacionesPoblacion']);
         $registro->FkTblUsuarioAlta = $pkUsuario;
         $registro->FechaAlta        = Carbon::now();
         $registro->Activo           = 1;
@@ -67,9 +68,9 @@ class CatalogoRepository
     public function modificarPoblacion ( $datosModificacion ) {
         CatPoblaciones::where('PkCatPoblacion', $datosModificacion['pkCatPoblacion'])
                       ->update([
-                        'NombrePoblacion' => trim($datosModificacion['nombrePoblacion']),
-                        'CodigoPostal'    => trim($datosModificacion['cpPoblacion']),
-                        'Observaciones'   => trim($datosModificacion['observacionesPoblacion'])
+                        'NombrePoblacion' => $this->trimValidator($datosModificacion['nombrePoblacion']),
+                        'CodigoPostal'    => $this->trimValidator($datosModificacion['cpPoblacion']),
+                        'Observaciones'   => $this->trimValidator($datosModificacion['observacionesPoblacion'])
                       ]);
     }
 
@@ -82,9 +83,9 @@ class CatalogoRepository
 
     public function crearNuevoProblema ( $datosProblema, $pkUsuario ) {
         $registro = new CatProblemasGenericos();
-        $registro->TituloProblema      = trim($datosProblema['tituloProblema']);
-        $registro->DescripcionProblema = trim($datosProblema['descripcionProblema']);
-        $registro->Observaciones       = trim($datosProblema['observacionesProblema']);
+        $registro->TituloProblema      = $this->trimValidator($datosProblema['tituloProblema']);
+        $registro->DescripcionProblema = $this->trimValidator($datosProblema['descripcionProblema']);
+        $registro->Observaciones       = $this->trimValidator($datosProblema['observacionesProblema']);
         $registro->FkTblUsuarioAlta    = $pkUsuario;
         $registro->FechaAlta           = Carbon::now();
         $registro->Activo              = 1;
@@ -100,9 +101,9 @@ class CatalogoRepository
     public function modificarProblema ( $datosModificacion ) {
         CatProblemasGenericos::where('PkCatProblema', $datosModificacion['pkCatProblema'])
                              ->update([
-                                'TituloProblema'      => trim($datosModificacion['tituloProblema']),
-                                'DescripcionProblema' => trim($datosModificacion['descripcionProblema']),
-                                'Observaciones'       => trim($datosModificacion['observacionesProblema'])
+                                'TituloProblema'      => $this->trimValidator($datosModificacion['tituloProblema']),
+                                'DescripcionProblema' => $this->trimValidator($datosModificacion['descripcionProblema']),
+                                'Observaciones'       => $this->trimValidator($datosModificacion['observacionesProblema'])
                              ]);
     }
 
@@ -121,9 +122,9 @@ class CatalogoRepository
 
     public function crearNuevoTipoInstalacion( $datosTipoInstalacion, $pkUsuario){
         $registro = new CatClasificacionInstalaciones();
-        $registro->NombreClasificacion      = trim($datosTipoInstalacion['nombreClasificacion']);
-        $registro->Descripcion              = trim($datosTipoInstalacion['descripcionClasificacion']);
-        $registro->Observaciones            = trim($datosTipoInstalacion['observacionesClasificacion']);
+        $registro->NombreClasificacion      = $this->trimValidator($datosTipoInstalacion['nombreClasificacion']);
+        $registro->Descripcion              = $this->trimValidator($datosTipoInstalacion['descripcionClasificacion']);
+        $registro->Observaciones            = $this->trimValidator($datosTipoInstalacion['observacionesClasificacion']);
         $registro->FkTblUsuario             = $pkUsuario;
         $registro->FechaAlta                = Carbon::now();
         $registro->Activo                   = 1;
@@ -139,9 +140,9 @@ class CatalogoRepository
     public function modificarTipoInstalacion( $datosModificacion ){
         CatClasificacionInstalaciones::where('PkCatClasificacionInstalacion', $datosModificacion['pkCatClasificacionInstalacion'])
                                      ->update([
-                                        'NombreClasificacion' => trim($datosModificacion['nombreClasificacion']),  
-                                        'Descripcion'         => trim($datosModificacion['descripcionClasificacion']),
-                                        'Observaciones'       => trim($datosModificacion['observacionesClasificacion'])
+                                        'NombreClasificacion' => $this->trimValidator($datosModificacion['nombreClasificacion']),  
+                                        'Descripcion'         => $this->trimValidator($datosModificacion['descripcionClasificacion']),
+                                        'Observaciones'       => $this->trimValidator($datosModificacion['observacionesClasificacion'])
                                     ]);
     }
 
@@ -173,9 +174,9 @@ class CatalogoRepository
 
     public function crearNuevoRol ( $informacionRol, $pkUsuario ) {
         $registro = new CatRoles();
-		$registro->NombreRol 	     = trim($informacionRol['nombreRol']);
-		$registro->DescripcionRol 	 = trim($informacionRol['descripcionRol']);
-        $registro->Observaciones 	 = trim($informacionRol['observacionesRol']);
+		$registro->NombreRol 	     = $this->trimValidator($informacionRol['nombreRol']);
+		$registro->DescripcionRol 	 = $this->trimValidator($informacionRol['descripcionRol']);
+        $registro->Observaciones 	 = $this->trimValidator($informacionRol['observacionesRol']);
 		$registro->FkTblUsuariosAlta = $pkUsuario;
 		$registro->FechaAlta 	     = Carbon::now();
 		$registro->Activo 		     = 1;
@@ -240,4 +241,14 @@ class CatalogoRepository
                         'ObjetoPermisos' => $objetoPermisos
                    ]);
     }
+
+    public function obtenerPaquetes () {
+        $return = CatPaquetes::orderBy('Cantidad', 'asc');
+
+        return $return->get();
+    }
+
+    public function trimValidator ( $value ) {
+		return $value != null && trim($value) != '' ? trim($value) : null;
+	}
 }

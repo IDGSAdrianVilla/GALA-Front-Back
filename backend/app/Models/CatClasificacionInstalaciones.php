@@ -21,5 +21,4 @@ class CatClasificacionInstalaciones extends Model
         'FechaAlta',
         'Activo'
     ];
-    
 }

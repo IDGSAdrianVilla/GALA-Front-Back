@@ -13,8 +13,7 @@ class ClienteController extends Controller
 
     public function __construct(
         ClienteService $ClienteService
-    )
-    {
+    ) {
         $this->clienteService = $ClienteService;
     }
 
@@ -31,7 +30,6 @@ class ClienteController extends Controller
                 500
             );
         }
-
     }
 
     public function consultarClientes(){

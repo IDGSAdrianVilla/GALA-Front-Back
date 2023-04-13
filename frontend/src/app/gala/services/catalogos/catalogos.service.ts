@@ -80,4 +80,8 @@ export class CatalogosService {
   public modificarRol( dataModificacion : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/catalogos/roles/modificarRol', dataModificacion);
   }
+
+  public obtenerPaquetes() : Observable<any> {
+    return this.http.get<any>(this.urlHost+'/catalogos/obtenerPaquetes');
+  }
 }

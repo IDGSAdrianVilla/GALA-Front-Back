@@ -227,7 +227,7 @@ class CatalogoService
         return response()->json(
             [
                 'tipoInstalacion' => $this->catalogoRepository->obtenerTipoInstalaciones(),
-                'message' => 'Se registró con éxito el nuevo problema'
+                'message' => 'Se registró la nueva clasificación con éxito'
             ],
             200
         );
@@ -280,7 +280,7 @@ class CatalogoService
         return response()->json(
             [
                 'tipoInstalaciones' => $this->catalogoRepository->obtenerTipoInstalaciones(),
-                'message'   => 'Se modificó con éxito el tipo de instalación'
+                'message'   => 'Se modificó la clasificación con éxito'
             ],
             200
         );
@@ -365,6 +365,18 @@ class CatalogoService
             [
                 'problemas' => $this->catalogoRepository->obtenerRoles(),
                 'message'   => 'Se modificó con éxito el rol'
+            ],
+            200
+        );
+    }
+
+    public function obtenerPaquetes () {
+        $planesInstalacion = $this->catalogoRepository->obtenerPaquetes();
+        
+        return response()->json(
+            [
+                'data'      => $planesInstalacion,
+                'mensaje'   => 'Se consultaron los planes con éxito'
             ],
             200
         );

@@ -16,6 +16,7 @@ import { RolesComponent } from './modules/catalogos/roles/roles.component';
 import { ReportesComponent } from './modules/reportes/reportes/reportes.component';
 import { ReportesModificacionComponent } from './modules/reportes/reportes-modificacion/reportes-modificacion.component';
 import { UsuariosPerfilComponent } from './modules/usuarios/usuarios-perfil/usuarios-perfil.component';
+import { InstalacionesComponent } from './modules/instalaciones/instalaciones/instalaciones.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { UsuariosPerfilComponent } from './modules/usuarios/usuarios-perfil/usua
     RolesComponent,
     ReportesComponent,
     ReportesModificacionComponent,
-    UsuariosPerfilComponent
+    UsuariosPerfilComponent,
+    InstalacionesComponent
   ]
 })
 export class HomeModule { }

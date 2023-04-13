@@ -37,10 +37,10 @@ class ReporteRepository
         $registro                        = new TblDetalleReporte();
         $registro->FkTblReporte          = $pkReporte;
         $registro->FkCatProblemaGenerico = $datosDetalleReporte['problemaReporte'];
-        $registro->DescripcionProblema   = trim($datosDetalleReporte['descripcionProblema']);
-        $registro->Observaciones         = trim($datosDetalleReporte['observacionesReporte']);
-        $registro->Diagnostico           = trim($datosDetalleReporte['diagnosticoReporte']);
-        $registro->Solucion              = trim($datosDetalleReporte['solucionReporte']);
+        $registro->DescripcionProblema   = $this->trimValidator($datosDetalleReporte['descripcionProblema']);
+        $registro->Observaciones         = $this->trimValidator($datosDetalleReporte['observacionesReporte']);
+        $registro->Diagnostico           = $this->trimValidator($datosDetalleReporte['diagnosticoReporte']);
+        $registro->Solucion              = $this->trimValidator($datosDetalleReporte['solucionReporte']);
         $registro->save();
     }
 
@@ -68,7 +68,7 @@ class ReporteRepository
                                ->orderBy('tblreportes.FechaAlta', 'desc');
         
         if ( $status != 0 ) {
-            $reportes->where('catstatus.PkCatStatus', $status);
+            $reportes = $reportes->where('catstatus.PkCatStatus', $status);
         }
 
         return $reportes->get();
@@ -260,4 +260,8 @@ class ReporteRepository
         TblDetalleReporte::where('FkTblReporte', $pkReporte)
                          ->delete();
     }
+
+    public function trimValidator ( $value ) {
+		return $value != null && trim($value) != '' ? trim($value) : null;
+	}
 }

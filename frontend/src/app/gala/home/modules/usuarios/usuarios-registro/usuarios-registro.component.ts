@@ -208,6 +208,7 @@ export class UsuariosRegistroComponent implements OnInit {
     this.formCredencialesRegistro.get('valPassword')?.setValue('emenetSistemas2021');
     this.formDireccionRegistro.get('poblacionEmpleado')?.setValue('');
     this.formPermisosRegistro.get('rolEmpleado')?.setValue('');
+    this.prevUsuarioNuevo = {};
   }
 
   validarPermisosEspeciales () : any {

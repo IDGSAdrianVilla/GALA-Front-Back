@@ -39,13 +39,13 @@ class UsuarioRepository
 
 	public function crearEmpleadoNuevo( $informacionUsuario ){
 		$registro = new TblEmpleados();
-		$registro->Nombre 			= trim($informacionUsuario['nombreEmpleado']);
-		$registro->ApellidoPaterno 	= trim($informacionUsuario['apellidoPaternoEmpleado']);
-		$registro->ApellidoMaterno 	= trim($informacionUsuario['apellidoMaternoEmpleado']);
+		$registro->Nombre 			= $this->trimValidator($informacionUsuario['nombreEmpleado']);
+		$registro->ApellidoPaterno 	= $this->trimValidator($informacionUsuario['apellidoPaternoEmpleado']);
+		$registro->ApellidoMaterno 	= $this->trimValidator($informacionUsuario['apellidoMaternoEmpleado']);
 		$registro->Sexo 			= $informacionUsuario['sexoEmpleado'];
-		$registro->Telefono 		= trim($informacionUsuario['telefonoEmpleado']);
+		$registro->Telefono 		= $this->trimValidator($informacionUsuario['telefonoEmpleado']);
 		$registro->FechaNacimiento 	= $informacionUsuario['fechaNacimientoEmpleado'];
-		$registro->Observaciones 	= trim($informacionUsuario['observacionesEmpleado']);
+		$registro->Observaciones 	= $this->trimValidator($informacionUsuario['observacionesEmpleado']);
 		$registro->Activo 			= 1;
 		$registro->save();
 
@@ -70,8 +70,8 @@ class UsuarioRepository
 		$registro = new TblUsuarios();
 		$registro->FkTblEmpleado 			= $fkEmpleado; 
 		$registro->FkCatRol 				= $rolPermisos['rolEmpleado'];
-		$registro->Correo 					= trim($credenciales['correoEmpleado']);
-		$registro->Password 				= bcrypt(trim($credenciales['passwordEmpleado']));
+		$registro->Correo 					= $this->trimValidator($credenciales['correoEmpleado']);
+		$registro->Password 				= bcrypt($this->trimValidator($credenciales['passwordEmpleado']));
 		$registro->ObjetoPermisosEspeciales = $rolPermisos['objetoPermisos'];
 		$registro->FkTblUsuarioAlta 		= $pkUsuario;
 		$registro->FechaAlta 				= Carbon::now();
@@ -83,10 +83,10 @@ class UsuarioRepository
 		$registro = new TblDirecciones();
 		$registro->FkCatPoblacion           = $direccion['poblacionEmpleado'];
 		$registro->FkTblEmpleado            = $pkEmpleado;
-		$registro->Coordenadas              = trim($direccion['coordenadasEmpleado']);
-		$registro->ReferenciasDomicilio     = trim($direccion['referenciasDomicilioEmpleado']);
-		$registro->CaracteristicasDomicilio = trim($direccion['caracteristicasDomicilioEmpleado']);
-		$registro->Calle                    = trim($direccion['calleEmpleado']);
+		$registro->Coordenadas              = $this->trimValidator($direccion['coordenadasEmpleado']);
+		$registro->ReferenciasDomicilio     = $this->trimValidator($direccion['referenciasDomicilioEmpleado']);
+		$registro->CaracteristicasDomicilio = $this->trimValidator($direccion['caracteristicasDomicilioEmpleado']);
+		$registro->Calle                    = $this->trimValidator($direccion['calleEmpleado']);
 		$registro->save();
 	}
 
@@ -124,13 +124,13 @@ class UsuarioRepository
 	public function modificarDatosEmpleado( $pkEmpleado, $datosEmpleados ){
 		TblEmpleados::where('PkTblEmpleado', '=', $pkEmpleado)
 					->update([
-						'Nombre' 		  => trim($datosEmpleados['nombreEmpleado'] 		 ?? $datosEmpleados['nombrePerfil']),
-						'ApellidoPaterno' => trim($datosEmpleados['apellidoPaternoEmpleado'] ?? $datosEmpleados['apellidoPaternoPerfil']),
-						'ApellidoMaterno' => trim($datosEmpleados['apellidoMaternoEmpleado'] ?? $datosEmpleados['apellidoMaternoPerfil']),
+						'Nombre' 		  => $this->trimValidator($datosEmpleados['nombreEmpleado'] 		 ?? $datosEmpleados['nombrePerfil']),
+						'ApellidoPaterno' => $this->trimValidator($datosEmpleados['apellidoPaternoEmpleado'] ?? $datosEmpleados['apellidoPaternoPerfil']),
+						'ApellidoMaterno' => $this->trimValidator($datosEmpleados['apellidoMaternoEmpleado'] ?? $datosEmpleados['apellidoMaternoPerfil']),
 						'Sexo' 			  => $datosEmpleados['sexoEmpleado'] 				 ?? $datosEmpleados['sexoPerfil'],
-						'Telefono' 		  => trim($datosEmpleados['telefonoEmpleado'] 		 ?? $datosEmpleados['telefonoPerfil']),
+						'Telefono' 		  => $this->trimValidator($datosEmpleados['telefonoEmpleado'] 		 ?? $datosEmpleados['telefonoPerfil']),
 						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'] 	 ?? $datosEmpleados['fechaNacimientoPerfil'],
-						'Observaciones'   => trim($datosEmpleados['observacionesEmpleado'] 	 ?? $datosEmpleados['observacionesPerfil'])
+						'Observaciones'   => $this->trimValidator($datosEmpleados['observacionesEmpleado'] 	 ?? $datosEmpleados['observacionesPerfil'])
 					]);
 	} 
 
@@ -159,10 +159,10 @@ class UsuarioRepository
 		TblDirecciones::where('FkTblEmpleado', '=', $pkEmpleado)
 					  ->update([
 						'FkCatPoblacion' 		   => $datosDireccion['poblacionEmpleado'] ?? $datosDireccion['poblacionPerfil'],
-						'Coordenadas' 			   => trim($datosDireccion['coordenadasEmpleado'] ?? $datosDireccion['coordenadasPerfil']),
-						'ReferenciasDomicilio' 	   => trim($datosDireccion['referenciasDomicilioEmpleado'] ?? $datosDireccion['referenciasDomicilioPerfil']),
-						'CaracteristicasDomicilio' => trim($datosDireccion['caracteristicasDomicilioEmpleado'] ?? $datosDireccion['caracteristicasDomicilioPerfil']),
-						'Calle' 				   => trim($datosDireccion['calleEmpleado'] ?? $datosDireccion['callePerfil'])
+						'Coordenadas' 			   => $this->trimValidator($datosDireccion['coordenadasEmpleado'] ?? $datosDireccion['coordenadasPerfil']),
+						'ReferenciasDomicilio' 	   => $this->trimValidator($datosDireccion['referenciasDomicilioEmpleado'] ?? $datosDireccion['referenciasDomicilioPerfil']),
+						'CaracteristicasDomicilio' => $this->trimValidator($datosDireccion['caracteristicasDomicilioEmpleado'] ?? $datosDireccion['caracteristicasDomicilioPerfil']),
+						'Calle' 				   => $this->trimValidator($datosDireccion['calleEmpleado'] ?? $datosDireccion['callePerfil'])
 					  ]);
 	}
 
@@ -187,8 +187,12 @@ class UsuarioRepository
 	public function modificarDatosUsuarioPerfil($pkEmpleado, $datosUsuario){
 		TblUsuarios::where('FkTblEmpleado', $pkEmpleado)
 				   ->update([
-				  		'Correo' => trim($datosUsuario['correoPerfil']),
-				  		'Password' => bcrypt(trim($datosUsuario['contraseniaNueva']))
+				  		'Correo' => $this->trimValidator($datosUsuario['correoPerfil']),
+				  		'Password' => bcrypt($this->trimValidator($datosUsuario['contraseniaNueva']))
 				   ]);
+	}
+
+	public function trimValidator ( $value ) {
+		return $value != null && trim($value) != '' ? trim($value) : null;
 	}
 }
