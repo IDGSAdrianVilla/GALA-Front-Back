@@ -14,9 +14,11 @@ class CatRoles extends Model
     protected $fillable = 
     [
         'PkCatRol',
+        'NombreRol',
         'FkTblPermisos',
         'DescripcionProblema',
-        'FkUsuariosAlta',
+        'Observaciones',
+        'FkTblUsuarioAlta',
         'FechaAlta',
         'Activo'
     ];

@@ -18,8 +18,8 @@ class TblDirecciones extends Model
         'FkTblCliente',
         'FkTblEmpleado',
         'Coordenadas',
-        'Referencias',
-        'Caracteristicas',
+        'ReferenciasDomicilio',
+        'CaracteristicasDomicilio',
         'Calle'
     ];
 }

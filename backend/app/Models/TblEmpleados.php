@@ -14,13 +14,13 @@ class TblEmpleados extends Model
     protected $fillable = 
     [
         'PkTblEmpleado',
-        'NombreEmpleado',
+        'Nombre',
         'ApellidoPaterno',
         'ApellidoMaterno',
         'Sexo',
         'Telefono',
-        'FkTblUsuarioAlta',
-        'FechaAlta',
+        'FechaNacimiento',
+        'Observaciones',
         'Activo'
     ];
 }

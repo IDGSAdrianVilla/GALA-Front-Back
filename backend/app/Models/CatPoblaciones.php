@@ -14,8 +14,9 @@ class CatPoblaciones extends Model
     protected $fillable = 
     [
         'PkCatPoblacion',
+        'CodigoPostal',
         'NombrePoblacion',
-        'FkTblUusuaio',
+        'FkTblUsuarioAlta',
         'FechaAlta',
         'Activo'
     ];
