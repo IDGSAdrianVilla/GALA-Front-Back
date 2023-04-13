@@ -31,4 +31,19 @@ class InstalacionController extends Controller
             );
         }
     }
+    
+    public function consultarInstalacionesPorStatus ( $status ) {
+        try{
+            return $this->instalacionService->consultarInstalacionesPorStatus( $status );
+        } catch( \Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

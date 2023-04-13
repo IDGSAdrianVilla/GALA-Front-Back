@@ -72,3 +72,4 @@ Route::post('/reportes/validarEliminarReporteCliente', 'App\Http\Controllers\Gal
 Route::post('/reportes/eliminarReporteCliente', 'App\Http\Controllers\Gala\ReporteController@eliminarReporteCliente');
 
 Route::post('/instalaciones/registrarNuevaInstalacion', 'App\Http\Controllers\Gala\InstalacionController@registrarNuevaInstalacion');
+Route::get('/instalaciones/consultarInstalacionesPorStatus/{status}', 'App\Http\Controllers\Gala\InstalacionController@consultarInstalacionesPorStatus');

@@ -32,6 +32,93 @@
                     </form>
                 </div>
             </div>
+
+            <div class="card recent-sales overflow-auto" style="max-height: 570px;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Instalaciones
+                    </h5>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="floatingName"
+                                placeholder="Buscar reporte"
+                                [(ngModel)]="busqueda"
+                                (input)="filtrarReportes()"
+                                [disabled]="activarFiltroBusqueda()"
+                                autocomplete="off"
+                            >
+                            <label for="floatingName">Buscar instalación</label>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Población</th>
+                                <th scope="col">Registro</th>
+                                <th scope="col" style="text-align: center;">Status</th>
+                                <th scope="col" style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let reporte of this.instalacionesFiltras">
+                                <th scope="row"><a>#{{reporte.PkTblInstalacion}}</a></th>
+                                <td>{{reporte.Nombre+' '+reporte.ApellidoPaterno}}</td>
+                                <td>{{reporte.NombrePoblacion}}</td>
+                                <td>{{reporte.FechaAlta}}</td>
+                                <td style="text-align: center;">
+                                    <span class="badge" style="color: white; background: #B7B7B7;" *ngIf="reporte.FkTblUsuarioAtendiendo !== null">
+                                        Atendiendo
+                                    </span>
+                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': reporte.ColorStatus}" *ngIf="reporte.FkTblUsuarioAtendiendo === null">
+                                        {{reporte.NombreStatus}}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                          Opciones
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <section *ngIf="reporte.FkTblUsuarioAtencion === null">
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" ngClass="this.funcionalidadDejarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
+                                                    <button class="dropdown-item" type="button" ngClass="this.funcionalidadComenzarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button" ngClass="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                </li>
+                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadAtenderReporte(reporte)">Atender</button>
+                                                </li>
+                                            </section>
+                                            <section *ngIf="reporte.FkTblUsuarioAtencion !== null">
+                                                <li>
+                                                    <button class="dropdown-item" type="button" ngClass="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadRetomarReporte(reporte.PkTblReporte)">Retomar</button>
+                                                </li>
+                                            </section>
+                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button" ngClass="funcionalidadEliminarReporte(reporte.PkTblReporte)">Eliminar</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -207,7 +294,6 @@
                     </div>
                 </section>
             </div>
-
 
             <div class="modal-footer" style="text-align: center;">
                 <button type="button" class="btn btn-primary" (click)="registrarNuevaInstalacion()"><b>Registrar nueva instalación</b></button>

@@ -64,4 +64,16 @@ class InstalacionService
             200
         );
     }
+
+    public function consultarInstalacionesPorStatus ( $status ) {
+        $instalaciones = $this->instalacionRepository->consultarInstalacionesPorStatus( $status );
+
+        return response()->json(
+            [
+                'instalaciones'  => $instalaciones,
+                'message'   => 'Se consultarón los reportes con éxito'
+            ],
+            200
+        );
+    }
 }

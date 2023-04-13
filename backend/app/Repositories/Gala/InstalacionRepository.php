@@ -29,6 +29,32 @@ class InstalacionRepository
         $registro->save();
     }
 
+    public function consultarInstalacionesPorStatus ( $status ) {
+        $instalaciones = TblInstalaciones::select(
+                                            'tblinstalaciones.PkTblInstalacion',
+                                            'tblclientes.Nombre',
+                                            'tblclientes.ApellidoPaterno',
+                                            'catpoblaciones.NombrePoblacion',
+                                            'tbldetalleinstalaciones.FkTblUsuarioAtendiendo',
+                                            'tbldetalleinstalaciones.FkTblUsuarioAtencion',
+                                            'catstatus.NombreStatus',
+                                            'catstatus.ColorStatus'
+                                         )
+                                         ->selectRaw('DATE_FORMAT(tblinstalaciones.FechaAlta, \'%d %b %Y\') as FechaAlta')
+                                         ->join('tblclientes', 'tblclientes.PkTblCliente', 'tblinstalaciones.FkTblCliente')
+                                         ->join('tbldirecciones', 'tbldirecciones.FkTblCliente', 'tblinstalaciones.FkTblCliente')
+                                         ->join('tbldetalleinstalaciones', 'tbldetalleinstalaciones.FkTblInstalacion', 'tblinstalaciones.PkTblInstalacion')
+                                         ->join('catpoblaciones', 'catpoblaciones.PkCatPoblacion', 'tbldirecciones.FkCatPoblacion')
+                                         ->join('catstatus', 'catstatus.PkCatStatus', 'tblinstalaciones.FkCatStatus')
+                                         ->orderBy('tblinstalaciones.FechaAlta', 'desc');
+
+        if ( $status != 0 ) {
+            $instalaciones->where('catstatus.PkCatStatus', $status);
+        }
+
+        return $instalaciones->get();
+    }
+
     public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;
 	}

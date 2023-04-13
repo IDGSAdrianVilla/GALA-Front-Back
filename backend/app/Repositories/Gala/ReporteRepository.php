@@ -68,7 +68,7 @@ class ReporteRepository
                                ->orderBy('tblreportes.FechaAlta', 'desc');
         
         if ( $status != 0 ) {
-            $reportes->where('catstatus.PkCatStatus', $status);
+            $reportes = $reportes->where('catstatus.PkCatStatus', $status);
         }
 
         return $reportes->get();

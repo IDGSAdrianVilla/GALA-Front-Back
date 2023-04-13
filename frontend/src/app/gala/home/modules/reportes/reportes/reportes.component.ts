@@ -120,7 +120,7 @@ export class ReportesComponent implements OnInit{
     this.reporteService.consultarReportesPorStatus( statusConsulta ).subscribe(
       respuesta => {
         this.datosReportes = respuesta.reportes;
-        this.reportesFiltrados= this.datosReportes;
+        this.reportesFiltrados = this.datosReportes;
         this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
       },
 
@@ -518,7 +518,7 @@ export class ReportesComponent implements OnInit{
   }
 
   private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
-    const statusConsulta = isNaN(this.formConsultaReportes.get('statusReportes')?.value) ? defaultStatus : this.formConsultaReportes.get('statusReportes')?.value;
+    const statusConsulta = (typeof this.formConsultaReportes.get('statusReportes')?.value !== 'undefined' && isNaN(this.formConsultaReportes.get('statusReportes')?.value)) ? defaultStatus : this.formConsultaReportes.get('statusReportes')?.value;
 
     return this.reporteService.consultarReportesPorStatus( statusConsulta ).toPromise().then(
       respuesta => {

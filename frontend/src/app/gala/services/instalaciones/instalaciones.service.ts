@@ -16,4 +16,8 @@ export class InstalacionesService {
   public registrarNuevaInstalacion( datosNuevaInstalacion : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/instalaciones/registrarNuevaInstalacion', datosNuevaInstalacion);
   }
+
+  public consultarInstalacionesPorStatus( status : any ) : Observable<any>{
+    return this.http.get<any>(this.urlHost+`/instalaciones/consultarInstalacionesPorStatus/${status}`);
+  }
 }

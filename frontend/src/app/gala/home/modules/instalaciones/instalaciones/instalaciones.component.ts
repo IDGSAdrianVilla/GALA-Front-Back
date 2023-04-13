@@ -4,6 +4,7 @@ import { MensajesService } from '../../../../../services/mensajes/mensajes.servi
 import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 import { InstalacionesService } from '../../../../services/instalaciones/instalaciones.service';
+import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-instalaciones',
@@ -27,13 +28,15 @@ export class InstalacionesComponent implements OnInit{
   public paquetesInstalacion : any = [];
   public paquetesInstalacionSelect : any = [];
   public detallePlan : any = [];
+  protected usuarioCurso : any;
 
   constructor (
     private fb : FormBuilder,
     private mensajes : MensajesService,
     public funcionGenerica : FuncionesGenericasService,
     private catalogosService : CatalogosService,
-    private instalacionesService : InstalacionesService
+    private instalacionesService : InstalacionesService,
+    private usuarioService : UsuariosService
   ) {
 
   }
@@ -126,6 +129,19 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
+  obtenerDatosUsuario () : Promise<void> {
+    const token = localStorage.getItem('token');
+    return this.usuarioService.obtenerInformacion(token).toPromise().then(
+      respuesta => {
+        this.usuarioCurso = respuesta[0];
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   obtenerPlanes () : void {
     this.formInstalacion.get('paqueteInstalacion')?.setValue('');
     this.detallePlan = [];
@@ -192,8 +208,13 @@ export class InstalacionesComponent implements OnInit{
                 return;
               }
 
-              this.limpiarFormularios();
-              this.mensajes.mensajeGenerico(respuesta.message, 'success');
+              this.actualizarGridDespuesAccion().then(() => {
+                this.limpiarFormularios();
+                this.cerrarModal?.nativeElement.click();
+                this.mensajes.mensajeGenerico(respuesta.message, 'success');
+                return;
+              });
+
               return;
             },
 
@@ -207,7 +228,25 @@ export class InstalacionesComponent implements OnInit{
   }
 
   consultarInstalaciones () : void {
+    if ( this.formConsultaInstalaciones.invalid ) {
+      this.mensajes.mensajeGenerico('Para continuar antes debes seleccionar un status.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
 
+    this.mensajes.mensajeEsperar();
+    const statusConsulta = this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
+
+    this.instalacionesService.consultarInstalacionesPorStatus( statusConsulta ).subscribe(
+      respuesta => {
+        this.datosInstalaciones = respuesta.instalaciones;
+        this.instalacionesFiltras = this.datosInstalaciones;
+        this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
   }
 
   limpiarFormularios () : void {
@@ -219,6 +258,21 @@ export class InstalacionesComponent implements OnInit{
     this.formInstalacion.get('paqueteInstalacion')?.setValue('');
     this.detallePlan = [];
     this.prevClienteNuevo = {};
+  }
+
+  filtrarReportes () : void {
+    if (!this.busqueda) {
+      this.instalacionesFiltras = this.datosInstalaciones;
+    } else {
+      const textoBusqueda = this.busqueda.toLowerCase();
+      this.instalacionesFiltras = this.datosInstalaciones.filter((reporte : any) => {
+        return reporte.PkTblReporte == textoBusqueda ||
+                reporte.Nombre?.toLowerCase().includes(textoBusqueda) ||
+                reporte.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
+                reporte.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
+                reporte.FechaAlta?.toLowerCase().includes(textoBusqueda);
+      });
+    }
   }
 
   activarFiltroBusqueda () : boolean {
@@ -233,5 +287,22 @@ export class InstalacionesComponent implements OnInit{
     this.busqueda = '';
     this.datosInstalaciones = [];
     this.instalacionesFiltras = this.datosInstalaciones;
+    
+  }
+
+  private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
+    const statusConsulta = (typeof this.formConsultaInstalaciones.get('statusInstalaciones')?.value !== 'undefined' && isNaN(Number(this.formConsultaInstalaciones.get('statusInstalaciones')?.value))) ? defaultStatus : this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
+
+    return this.instalacionesService.consultarInstalacionesPorStatus( statusConsulta ).toPromise().then(
+      respuesta => {
+        this.datosInstalaciones = respuesta.instalaciones;
+        this.instalacionesFiltras = this.datosInstalaciones;
+        this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
   }
 }
