@@ -21,7 +21,8 @@ class TblDetalleReporte extends Model
         'Diagnostico ',
         'Solucion',
         'FkTblUsuariosAtendiendo',
-        'FechaAtendio',
+        'FechaAtencion',
+        'FkTblUsuariosAtencion',
         'FechaAtendiendo'
     ];
 }

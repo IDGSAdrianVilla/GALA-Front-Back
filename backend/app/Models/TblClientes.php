@@ -14,14 +14,15 @@ class TblClientes extends Model
     protected $fillable = 
     [
         'PkTblCliente',
-        'NombreCliente',
+        'Nombre',
         'ApellidoPaterno',
         'ApellidoMaterno',
         'Sexo',
         'Telefono',
         'TelefonoOpcional',
         'FkTblUsuarioAlta',
-        'FechaActivo',
-        'Alta'
+        'FechaAlta',
+        'Validado',
+        'Activo'
     ];
 }

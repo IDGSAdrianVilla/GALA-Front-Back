@@ -14,10 +14,13 @@ class TblUsuarios extends Model
     protected $fillable = 
     [
         'PkTblUsuario', 
-        'FkTblEmpleados', 
+        'FkTblEmpleado', 
         'FkCatRol', 
         'Correo', 
         'Password', 
-        'ObjetoPermisosEspeciales'
+        'ObjetoPermisosEspeciales',
+        'FkTblUsuarioAlta',
+        'FechaAlta',
+        'Activo'
     ];
 }

@@ -15,14 +15,14 @@ class TblDetalleInstalaciones extends Model
     [
         'PkTblDetalleInstalacion',
         'FkTblInstalacion',
-        'FkCatClasificacion',
+        'FkCatClasificacionInstalacion',
+        'FkCatPlanInternet',
         'Disponibilidad ',
         'Observaciones',
         'FkTblUsuariosAtendiendo',
         'FechaAtendiendo',
-        'FkTblUsuariosAtendio',
-        'FechaAtendi'
+        'FkTblUsuariosAtencion',
+        'FechaAtencion'
     ];
-    
 
 }

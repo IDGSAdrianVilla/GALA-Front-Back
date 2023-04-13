@@ -13,9 +13,10 @@ class CatProblemasGenericos extends Model
     protected $primaryKey = 'PkCatProblema';
     protected $fillable = 
     [
-        'PkCatProblemaGenerico',
+        'PkCatProblema',
         'TituloProblema',
         'DescripcionProblema',
+        'Observaciones',
         'FkTblUsuariosAlta',
         'FechaAlta',
         'Activo'

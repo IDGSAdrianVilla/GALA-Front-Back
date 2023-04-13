@@ -15,6 +15,7 @@ class CatStatus extends Model
     [
         'PkCatStatus',
         'NombreStatus',
+        'ColorStatus',
         'DescripcionStatus',
         'FkTblUsuariosAlta',
         'FechaAlta',
