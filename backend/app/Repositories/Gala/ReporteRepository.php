@@ -68,7 +68,7 @@ class ReporteRepository
                                ->orderBy('tblreportes.FechaAlta', 'desc');
         
         if ( $status != 0 ) {
-            $reportes = $reportes->where('catstatus.PkCatStatus', $status);
+            $reportes->where('catstatus.PkCatStatus', $status);
         }
 
         return $reportes->get();
@@ -76,51 +76,35 @@ class ReporteRepository
 
     public function consultarDatosReporteModificacionPorPK ( $pkReporte ) {
         $reporte = TblReportes::select(
-                                    'PkTblReporte',
-                                    'FkTblCliente',
-                                    'FkTblUsuarioRecibio',
-                                    'FkCatStatus'
+                                    'tblreportes.PkTblReporte',
+                                    'tblreportes.FkTblCliente',
+                                    'tblreportes.FkTblUsuarioRecibio',
+                                    'tblreportes.FkCatStatus'
                                 )
-                              ->selectRaw('DATE_FORMAT(FechaAlta, \'%d-%m-%Y | %I:%i %p\') as FechaAlta')
+                              ->selectRaw('DATE_FORMAT(tblreportes.FechaAlta, \'%d-%m-%Y | %I:%i %p\') as FechaAlta')
                               ->selectRaw('COALESCE(DATE_FORMAT(tbldetallereporte.FechaAtendiendo, \'%d-%m-%Y | %I:%i %p\'), NULL) as FechaAtendiendo')
                               ->selectRaw('COALESCE(DATE_FORMAT(tbldetallereporte.FechaAtencion, \'%d-%m-%Y | %I:%i %p\'), NULL) as FechaAtencion')
                               ->join('tbldetallereporte', 'tbldetallereporte.FkTblReporte', 'tblreportes.PkTblReporte')
-                              ->where('PkTblReporte', $pkReporte);
+                              ->where('tblreportes.PkTblReporte', $pkReporte);
 
         return $reporte->get();
     }
 
     public function obtenerDetalleReportePorPK ( $pkReporte ) {
         $detalleReporte = TblDetalleReporte::select(
-                                                'catproblemasgenericos.PkCatProblema',
-                                                'catproblemasgenericos.TituloProblema',
-                                                'tbldetallereporte.DescripcionProblema',
-                                                'tbldetallereporte.Observaciones',
-                                                'tbldetallereporte.Diagnostico',
-                                                'tbldetallereporte.Solucion',
-                                                'tbldetallereporte.FechaAtencion',
-                                                'tbldetallereporte.FkTblUsuarioAtencion',
-                                                'tbldetallereporte.FechaAtendiendo',
-                                                'tbldetallereporte.FkTblUsuarioAtendiendo'
+                                                'FkCatProblemaGenerico',
+                                                'DescripcionProblema',
+                                                'Observaciones',
+                                                'Diagnostico',
+                                                'Solucion',
+                                                'FechaAtencion',
+                                                'FkTblUsuarioAtencion',
+                                                'FechaAtendiendo',
+                                                'FkTblUsuarioAtendiendo'
                                              )
-                                           ->join('catproblemasgenericos', 'catproblemasgenericos.PkCatProblema', 'tbldetallereporte.FkCatProblemaGenerico')
-                                           ->where('tbldetallereporte.FkTblReporte', $pkReporte);
+                                           ->where('FkTblReporte', $pkReporte);
 
         return $detalleReporte->get();
-    }
-
-    public function obternerUsuarioPorPK ( $pkUsuario ) {
-        $usuario = DB::table('vistageneralusuarios')
-                     ->where('PkTblUsuario', $pkUsuario);
-
-        return $usuario->get();
-    }
-
-    public function obtenerClientePorPK ( $pkCliente ) {
-        $cliente = DB::table('vistageneralclientes')
-                     ->where('PkTblCliente', $pkCliente);
-        
-        return $cliente->get();
     }
 
     public function validarReporteExistente ( $pkReporte ) {

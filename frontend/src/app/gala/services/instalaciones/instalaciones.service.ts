@@ -20,4 +20,12 @@ export class InstalacionesService {
   public consultarInstalacionesPorStatus( status : any ) : Observable<any>{
     return this.http.get<any>(this.urlHost+`/instalaciones/consultarInstalacionesPorStatus/${status}`);
   }
+
+  public cargaComponenteModificacionInstalacion( pkInstalacion : any ) : Observable<any>{
+    return this.http.get<any>(this.urlHost+`/instalaciones/cargaComponenteModificacionInstalacion/${pkInstalacion}`);
+  }
+
+  public validarInstalacionExistente ( datosInstalacionModificada : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/validarInstalacionExistente', datosInstalacionModificada);
+  }
 }

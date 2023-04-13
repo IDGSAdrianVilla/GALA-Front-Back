@@ -100,6 +100,13 @@ class ClienteRepository
 					  ]);
 	}
 
+	public function obtenerClientePorPK ( $pkCliente ) {
+        $cliente = DB::table('vistageneralclientes')
+                     ->where('PkTblCliente', $pkCliente);
+        
+        return $cliente->get();
+    }
+
 	public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;
 	}

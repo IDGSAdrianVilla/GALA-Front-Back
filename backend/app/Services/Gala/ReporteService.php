@@ -2,6 +2,7 @@
 
 namespace App\Services\Gala;
 
+use App\Repositories\gala\ClienteRepository;
 use App\Repositories\Gala\ReporteRepository;
 use App\Repositories\Gala\UsuarioRepository;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +16,17 @@ class ReporteService
 {
     protected $reporteRepository;
     protected $usuarioRepository;
+    protected $clienteRepository;
 
     public function __construct(
         ReporteRepository $ReporteRepository,
-        UsuarioRepository $UsuarioRepository
+        UsuarioRepository $UsuarioRepository,
+        ClienteRepository $ClienteRepository,
     )
     {
         $this->reporteRepository = $ReporteRepository;
         $this->usuarioRepository = $UsuarioRepository;
+        $this->clienteRepository = $ClienteRepository;
     }
 
     public function validarReportePendienteExistente ( $datosReporte ) {
@@ -89,10 +93,10 @@ class ReporteService
         }
 
         $dataReporte['datosDetalleReporte']    = $this->reporteRepository->obtenerDetalleReportePorPK( $dataReporte['datosReporte'][0]->PkTblReporte );
-        $dataReporte['datosUsuarioAtencion']   = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtencion );
-        $dataReporte['datosUsuarioAtendiendo'] = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtendiendo );
-        $dataReporte['datosCliente']           = $this->reporteRepository->obtenerClientePorPK( $dataReporte['datosReporte'][0]->FkTblCliente );
-        $dataReporte['datosUsuarioRecibio']    = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosReporte'][0]->FkTblUsuarioRecibio );
+        $dataReporte['datosUsuarioAtencion']   = $this->usuarioRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtencion );
+        $dataReporte['datosUsuarioAtendiendo'] = $this->usuarioRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtendiendo );
+        $dataReporte['datosCliente']           = $this->clienteRepository->obtenerClientePorPK( $dataReporte['datosReporte'][0]->FkTblCliente );
+        $dataReporte['datosUsuarioRecibio']    = $this->usuarioRepository->obternerUsuarioPorPK( $dataReporte['datosReporte'][0]->FkTblUsuarioRecibio );
 
         return response()->json(
             [

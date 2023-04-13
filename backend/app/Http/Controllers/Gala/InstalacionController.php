@@ -46,4 +46,34 @@ class InstalacionController extends Controller
             );
         }
     }
+
+    public function cargaComponenteModificacionInstalacion ( $pkInstalacion ) {
+        try{
+            return $this->instalacionService->cargaComponenteModificacionInstalacion( $pkInstalacion );
+        } catch( \Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarInstalacionExistente ( Request $request ) {
+        try{
+            return $this->instalacionService->validarInstalacionExistente( $request->all() );
+        } catch( \Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

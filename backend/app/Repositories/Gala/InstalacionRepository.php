@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Gala;
 
-use App\Models\TblDetalleInstalaciones;
+use App\Models\TblDetalleInstalacion;
 use App\Models\TblInstalaciones;
 use Carbon\Carbon;
 
@@ -20,7 +20,7 @@ class InstalacionRepository
     }
 
     public function registroDetalleNuevaInstalacion ( $datosInstalacion, $pkInstalacion ) {
-        $registro = new TblDetalleInstalaciones();
+        $registro = new TblDetalleInstalacion();
         $registro->FkTblInstalacion              = $pkInstalacion;
         $registro->FkCatClasificacionInstalacion = $datosInstalacion['clasificacionInstalacion'];
         $registro->FkCatPlanInternet             = $datosInstalacion['paqueteInstalacion'];
@@ -35,17 +35,19 @@ class InstalacionRepository
                                             'tblclientes.Nombre',
                                             'tblclientes.ApellidoPaterno',
                                             'catpoblaciones.NombrePoblacion',
-                                            'tbldetalleinstalaciones.FkTblUsuarioAtendiendo',
-                                            'tbldetalleinstalaciones.FkTblUsuarioAtencion',
+                                            'catclasificacioninstalaciones.NombreClasificacion',
+                                            'tbldetalleinstalacion.FkTblUsuarioAtendiendo',
+                                            'tbldetalleinstalacion.FkTblUsuarioAtencion',
                                             'catstatus.NombreStatus',
                                             'catstatus.ColorStatus'
                                          )
                                          ->selectRaw('DATE_FORMAT(tblinstalaciones.FechaAlta, \'%d %b %Y\') as FechaAlta')
                                          ->join('tblclientes', 'tblclientes.PkTblCliente', 'tblinstalaciones.FkTblCliente')
                                          ->join('tbldirecciones', 'tbldirecciones.FkTblCliente', 'tblinstalaciones.FkTblCliente')
-                                         ->join('tbldetalleinstalaciones', 'tbldetalleinstalaciones.FkTblInstalacion', 'tblinstalaciones.PkTblInstalacion')
+                                         ->join('tbldetalleinstalacion', 'tbldetalleinstalacion.FkTblInstalacion', 'tblinstalaciones.PkTblInstalacion')
                                          ->join('catpoblaciones', 'catpoblaciones.PkCatPoblacion', 'tbldirecciones.FkCatPoblacion')
                                          ->join('catstatus', 'catstatus.PkCatStatus', 'tblinstalaciones.FkCatStatus')
+                                         ->join('catclasificacioninstalaciones', 'catclasificacioninstalaciones.PkCatClasificacionInstalacion', 'tbldetalleinstalacion.FkCatClasificacionInstalacion')
                                          ->orderBy('tblinstalaciones.FechaAlta', 'desc');
 
         if ( $status != 0 ) {
@@ -53,6 +55,48 @@ class InstalacionRepository
         }
 
         return $instalaciones->get();
+    }
+
+    public function consultarDatosInstalacionModificacionPorPK ( $pkInstalacion ) {
+        $instalacion = TblInstalaciones::select(
+                                            'tblinstalaciones.PkTblInstalacion',
+                                            'tblinstalaciones.FkTblCliente',
+                                            'tblinstalaciones.FkTblUsuarioRecibio',
+                                            'tblinstalaciones.FkCatStatus'
+                                       )
+                                       ->selectRaw('DATE_FORMAT(tblinstalaciones.FechaAlta, \'%d-%m-%Y | %I:%i %p\') as FechaAlta')
+                                       ->selectRaw('COALESCE(DATE_FORMAT(tbldetalleinstalacion.FechaAtendiendo, \'%d-%m-%Y | %I:%i %p\'), NULL) as FechaAtendiendo')
+                                       ->selectRaw('COALESCE(DATE_FORMAT(tbldetalleinstalacion.FechaAtencion, \'%d-%m-%Y | %I:%i %p\'), NULL) as FechaAtencion')
+                                       ->join('tbldetalleinstalacion', 'tbldetalleinstalacion.FkTblInstalacion', 'tblinstalaciones.PkTblInstalacion')
+                                       ->where('tblinstalaciones.PkTblInstalacion', $pkInstalacion);
+
+        return $instalacion->get();
+    }
+
+    public function obtenerDetalleInstalacionPorPK ( $pkInstalacion ) {
+        $detalleInstalacion = TblDetalleInstalacion::select(
+                                                       'FkCatClasificacionInstalacion',
+                                                       'FkCatPlanInternet',
+                                                       'Disponibilidad',
+                                                       'Observaciones',
+                                                       'FkTblUsuarioAtendiendo',
+                                                       'FechaAtendiendo',
+                                                       'FkTblUsuarioAtencion',
+                                                       'FechaAtencion'
+                                                   )
+                                                   ->where('FkTblInstalacion', $pkInstalacion);
+
+        return $detalleInstalacion->get();
+    }
+
+    public function modificacionDetalleInstalacion ( $pkInstalacion, $datosInstalacion ) {
+        TblDetalleInstalacion::where('PkTblDetalleInstalacion', $pkInstalacion)
+                             ->update([
+                                'FkCatClasificacionInstalacion' => $datosInstalacion['clasificacionInstalacion'],
+                                'FkCatPlanInternet'             => $datosInstalacion['paqueteInstalacion'],
+                                'Disponibilidad'                => $this->trimValidator($datosInstalacion['disponibilidadInstalacion']),
+                                'Observaciones'                 => $this->trimValidator($datosInstalacion['observacionesInstalacion'])
+                             ]);
     }
 
     public function trimValidator ( $value ) {

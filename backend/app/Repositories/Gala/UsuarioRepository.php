@@ -192,6 +192,13 @@ class UsuarioRepository
 				   ]);
 	}
 
+	public function obternerUsuarioPorPK ( $pkUsuario ) {
+        $usuario = DB::table('vistageneralusuarios')
+                     ->where('PkTblUsuario', $pkUsuario);
+
+        return $usuario->get();
+    }
+
 	public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;
 	}

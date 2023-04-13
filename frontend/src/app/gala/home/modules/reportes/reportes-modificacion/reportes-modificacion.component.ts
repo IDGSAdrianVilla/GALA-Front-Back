@@ -15,7 +15,6 @@ import { UsuariosService } from '../../../../services/usuarios/usuarios.service'
 export class ReportesModificacionComponent implements OnInit {
   public formModificacionReporte! : FormGroup;
 
-  public mostrarOpciones : boolean = false;
   public prevModificacionReporte : any = {};
   public clientes : any = [];
   public problemas : any = [];
@@ -101,7 +100,7 @@ export class ReportesModificacionComponent implements OnInit {
 
         this.dataReporte = respuesta.data;
         this.cargarFormulario();
-        this.cargaTarjetaPresentacionUsuario();
+        this.cargaTarjetaPresentacionCliente();
         return;
       },
 
@@ -111,19 +110,19 @@ export class ReportesModificacionComponent implements OnInit {
     );
   }
 
-  cargarFormulario () : void {
+  private cargarFormulario () : void {
     const datosCliente = this.dataReporte.datosCliente[0];
     const nombreCliente = datosCliente.Nombre+' '+datosCliente.ApellidoPaterno+' '+(datosCliente.ApellidoMaterno ?? '');
     const detalleReporte = this.dataReporte.datosDetalleReporte[0];
     this.formModificacionReporte.get('clienteReporte')?.setValue(nombreCliente.trim());
-    this.formModificacionReporte.get('problemaReporte')?.setValue(detalleReporte.PkCatProblema);
+    this.formModificacionReporte.get('problemaReporte')?.setValue(detalleReporte.FkCatProblemaGenerico);
     this.formModificacionReporte.get('descripcionProblema')?.setValue(detalleReporte.DescripcionProblema);
     this.formModificacionReporte.get('observacionesReporte')?.setValue(detalleReporte.Observaciones);
     this.formModificacionReporte.get('diagnosticoReporte')?.setValue(detalleReporte.Diagnostico);
     this.formModificacionReporte.get('solucionReporte')?.setValue(detalleReporte.Solucion);
   }
 
-  cargaTarjetaPresentacionUsuario () : void {
+  private cargaTarjetaPresentacionCliente () : void {
     this.prevModificacionReporte = this.dataReporte.datosCliente[0];
   }
 
@@ -411,5 +410,9 @@ export class ReportesModificacionComponent implements OnInit {
 
   private validaTextoVacio ( valor : any ) : boolean {
     return valor == null || ( typeof valor === 'string' && valor.trim() == '');
+  }
+
+  esNumero(valor: any): boolean {
+    return !isNaN(valor);
   }
 }

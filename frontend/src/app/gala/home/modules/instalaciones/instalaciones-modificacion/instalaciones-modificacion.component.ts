@@ -1,42 +1,43 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
+import { Component, OnInit } from '@angular/core';
 import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
+import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
-import { InstalacionesService } from '../../../../services/instalaciones/instalaciones.service';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { InstalacionesService } from '../../../../services/instalaciones/instalaciones.service';
 
 @Component({
-  selector: 'app-instalaciones',
-  templateUrl: './instalaciones.component.html',
-  styleUrls: ['./instalaciones.component.css']
+  selector: 'app-instalaciones-modificacion',
+  templateUrl: './instalaciones-modificacion.component.html',
+  styleUrls: ['./instalaciones-modificacion.component.css']
 })
-export class InstalacionesComponent implements OnInit{
-  @ViewChild('cerrarModal') cerrarModal? : ElementRef;
-
-  public formConsultaInstalaciones! : FormGroup;
+export class InstalacionesModificacionComponent implements OnInit{
   public formInformacionCliente! : FormGroup;
   public formDireccionRegistro! : FormGroup;
   public formInstalacion! : FormGroup;
-
-  public busqueda : string = '';
-  private datosInstalaciones : any = [];
-  public instalacionesFiltras : any[] = [];
-  public prevClienteNuevo : any = {};
+  
+  public prevModificacionReporte : any = {};
+  public clientes : any = [];
+  public problemas : any = [];
+  public pkInstalacion : number = 0;
+  protected dataInstalacion : any = {};
+  protected usuarioCurso : any;
   public poblaciones : any = [];
   public clasificacionesInstalaciones : any = [];
   public paquetesInstalacion : any = [];
   public paquetesInstalacionSelect : any = [];
   public detallePlan : any = [];
-  protected usuarioCurso : any;
 
   constructor (
     private fb : FormBuilder,
-    private mensajes : MensajesService,
     public funcionGenerica : FuncionesGenericasService,
+    private mensajes : MensajesService,
     private catalogosService : CatalogosService,
-    private instalacionesService : InstalacionesService,
-    private usuarioService : UsuariosService
+    private usuarioService : UsuariosService,
+    private rutaActiva : ActivatedRoute,
+    private instalacionService : InstalacionesService,
+    private router : Router
   ) {
 
   }
@@ -44,25 +45,19 @@ export class InstalacionesComponent implements OnInit{
   async ngOnInit () : Promise<void> {
     this.mensajes.mensajeEsperar();
 
-    this.crearFormConsultaInstalaciones();
     this.crearFormInformacionCliente();
     this.crearFormDireccionRegistro();
     this.crearFormInstalacion();
     
     await Promise.all([
+      this.obtenerDatosUsuario(),
       this.obtenerPoblaciones(),
       this.obtenerClasificacionesInstalaciones(),
       this.obtenerPaquetes(),
-      this.obtenerDatosUsuario()
+      this.cargaComponenteModificacionInstalacion()
     ]);
 
     this.mensajes.mensajeGenericoToast('Se consultarón los datos con éxito', 'success');
-  }
-
-  private crearFormConsultaInstalaciones () : void {
-    this.formConsultaInstalaciones = this.fb.group({
-      statusInstalaciones  : ['', [Validators.required]]
-    });
   }
 
   private crearFormInformacionCliente() : void {
@@ -143,8 +138,72 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
-  obtenerPlanes () : void {
-    this.formInstalacion.get('paqueteInstalacion')?.setValue('');
+  private cargaComponenteModificacionInstalacion () : Promise<any> {
+    this.pkInstalacion = this.rutaActiva.snapshot.params['pkinstalacion'];
+
+    return this.instalacionService.cargaComponenteModificacionInstalacion(this.pkInstalacion).toPromise().then(
+      respuesta => {
+        if (respuesta.status == 204) {
+          this.router.navigate(['/gala/instalaciones']);
+          return;
+        }
+
+        this.dataInstalacion = respuesta.data;
+        this.cargarFormularios();
+        this.cargaTarjetaPresentacionCliente();
+        return;
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  private cargarFormularios () : void {
+    this.cargarFormularioInformacionCliente();
+    this.cargarFormularioDireccionCliente();
+    this.cargarFormularioInstalacion();
+  }
+
+  private cargarFormularioInformacionCliente() : void {
+    const datosCliente = this.dataInstalacion.datosCliente[0];
+    this.formInformacionCliente.get('nombreCliente')?.setValue(datosCliente.Nombre);
+    this.formInformacionCliente.get('apellidoPaternoCliente')?.setValue(datosCliente.ApellidoPaterno);
+    this.formInformacionCliente.get('apellidoMaternoCliente')?.setValue(datosCliente.ApellidoMaterno);
+    this.formInformacionCliente.get('sexoCliente')?.setValue(datosCliente.Sexo);
+    this.formInformacionCliente.get('telefonoCliente')?.setValue(datosCliente.Telefono);
+    this.formInformacionCliente.get('telefonoOpcionalCliente')?.setValue(datosCliente.TelefonoOpcional);
+  }
+
+  private cargarFormularioDireccionCliente() : void {
+    const datosCliente = this.dataInstalacion.datosCliente[0];
+    this.formDireccionRegistro.get('poblacionCliente')?.setValue(datosCliente.PkCatPoblacion);
+    this.formDireccionRegistro.get('coordenadasCliente')?.setValue(datosCliente.Coordenadas);
+    this.formDireccionRegistro.get('calleCliente')?.setValue(datosCliente.Calle);
+    this.formDireccionRegistro.get('referenciasDomicilioCliente')?.setValue(datosCliente.ReferenciasDomicilio);
+    this.formDireccionRegistro.get('caracteristicasDomicilioCliente')?.setValue(datosCliente.CaracteristicasDomicilio);
+  }
+
+  private cargarFormularioInstalacion () : void {
+    const datosInstalacion = this.dataInstalacion.datosDetalleInstalacion[0];
+    this.formInstalacion.get('clasificacionInstalacion')?.setValue(datosInstalacion.FkCatClasificacionInstalacion);
+    this.formInstalacion.get('paqueteInstalacion')?.setValue(datosInstalacion.FkCatPlanInternet);
+    this.formInstalacion.get('disponibilidadInstalacion')?.setValue(datosInstalacion.Disponibilidad);
+    this.formInstalacion.get('observacionesInstalacion')?.setValue(datosInstalacion.Observaciones);
+    this.obtenerPlanes( 'special' );
+    this.obtenerDetallePlan();
+  }
+
+  private cargaTarjetaPresentacionCliente () : void {
+    this.prevModificacionReporte = this.dataInstalacion.datosCliente[0];
+  }
+
+  obtenerPlanes ( tipo : string = 'normal' ) : void {
+    if ( tipo != 'special' ) {
+      this.formInstalacion.get('paqueteInstalacion')?.setValue('');
+    }
+
     this.detallePlan = [];
 
     const pkClasificacion = this.formInstalacion.get('clasificacionInstalacion')?.value;
@@ -165,16 +224,16 @@ export class InstalacionesComponent implements OnInit{
   }
 
   prevNuevoCliente () : void {
-    this.prevClienteNuevo.nombreCliente          = this.formInformacionCliente.get('nombreCliente')?.value;
-    this.prevClienteNuevo.apellidoPaternoCliente = this.formInformacionCliente.get('apellidoPaternoCliente')?.value;
-    this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionCliente.get('apellidoMaternoCliente')?.value;
-    this.prevClienteNuevo.sexoCliente            = this.formInformacionCliente.get('sexoCliente')?.value;
-    this.prevClienteNuevo.telefonoCliente        = this.formInformacionCliente.get('telefonoCliente')?.value;
+    this.prevModificacionReporte.Nombre          = this.formInformacionCliente.get('nombreCliente')?.value;
+    this.prevModificacionReporte.ApellidoPaterno = this.formInformacionCliente.get('apellidoPaternoCliente')?.value;
+    this.prevModificacionReporte.ApellidoMaterno = this.formInformacionCliente.get('apellidoMaternoCliente')?.value;
+    this.prevModificacionReporte.Sexo            = this.formInformacionCliente.get('sexoCliente')?.value;
+    this.prevModificacionReporte.Telefono        = this.formInformacionCliente.get('telefonoCliente')?.value;
     const poblacionSelect                        = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
-    this.prevClienteNuevo.poblacionCliente       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
+    this.prevModificacionReporte.NombrePoblacion = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
 
-  registrarNuevaInstalacion () : void {
+  validarModificarInstalacion () : void {
     if(this.formInformacionCliente.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
       return;
@@ -190,32 +249,29 @@ export class InstalacionesComponent implements OnInit{
       return;
     }
 
-    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Registrar Nueva Instalación').then(
+    this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'question', 'Modificar Instalación').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
 
-          let datosNuevaInstalacion = {
+          this.formInformacionCliente.value.pkCliente = this.dataInstalacion.datosCliente[0].PkTblCliente;
+          this.formInstalacion.value.pkInstalacion = this.pkInstalacion;
+          
+          let datosModificacionInstalacion = {
             'informacionPersonal' : this.formInformacionCliente.value,
             'direccionPersonal'   : this.formDireccionRegistro.value,
-            'instalacion'         : this.formInstalacion.value,
+            'datosInstalacion'    : this.formInstalacion.value,
             'token'               : localStorage.getItem('token')
           };
 
-          this.instalacionesService.registrarNuevaInstalacion( datosNuevaInstalacion ).subscribe(
+          this.instalacionService.validarInstalacionExistente( datosModificacionInstalacion ).subscribe(
             respuesta => {
               if ( respuesta.status == 409 ) {
                 this.mensajes.mensajeGenerico(respuesta.message, 'warning');
                 return;
               }
 
-              this.actualizarGridDespuesAccion().then(() => {
-                this.limpiarFormularios();
-                this.cerrarModal?.nativeElement.click();
-                this.mensajes.mensajeGenerico(respuesta.message, 'success');
-                return;
-              });
-
+              this.mensajes.mensajeGenerico(respuesta.message, 'success');
               return;
             },
 
@@ -228,82 +284,7 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
-  consultarInstalaciones () : void {
-    if ( this.formConsultaInstalaciones.invalid ) {
-      this.mensajes.mensajeGenerico('Para continuar antes debes seleccionar un status.', 'info', 'Los campos requeridos están marcados con un *');
-      return;
-    }
-
-    this.mensajes.mensajeEsperar();
-    const statusConsulta = this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
-
-    this.instalacionesService.consultarInstalacionesPorStatus( statusConsulta ).subscribe(
-      respuesta => {
-        this.datosInstalaciones = respuesta.instalaciones;
-        this.instalacionesFiltras = this.datosInstalaciones;
-        this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
-      },
-
-      error => {
-        this.mensajes.mensajeGenerico('error', 'error');
-      }
-    );
-  }
-
-  limpiarFormularios () : void {
-    this.formInformacionCliente.reset();
-    this.formDireccionRegistro.reset();
-    this.formInstalacion.reset();
-    this.formDireccionRegistro.get('poblacionCliente')?.setValue('');
-    this.formInstalacion.get('clasificacionInstalacion')?.setValue('');
-    this.formInstalacion.get('paqueteInstalacion')?.setValue('');
-    this.detallePlan = [];
-    this.prevClienteNuevo = {};
-  }
-
-  filtrarReportes () : void {
-    if (!this.busqueda) {
-      this.instalacionesFiltras = this.datosInstalaciones;
-    } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
-      this.instalacionesFiltras = this.datosInstalaciones.filter((reporte : any) => {
-        return reporte.PkTblReporte == textoBusqueda ||
-                reporte.Nombre?.toLowerCase().includes(textoBusqueda) ||
-                reporte.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
-                reporte.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
-                reporte.FechaAlta?.toLowerCase().includes(textoBusqueda);
-      });
-    }
-  }
-
-  activarFiltroBusqueda () : boolean {
-    return this.datosInstalaciones.length == 0;
-  }
-
-  activarBotonLimpiar () : boolean {
-    return this.datosInstalaciones.length == 0;
-  }
-
-  limpiarTabla () : void {
-    this.busqueda = '';
-    this.datosInstalaciones = [];
-    this.instalacionesFiltras = this.datosInstalaciones;
-    
-  }
-
-  private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
-    const statusConsulta = (typeof this.formConsultaInstalaciones.get('statusInstalaciones')?.value !== 'undefined' && isNaN(Number(this.formConsultaInstalaciones.get('statusInstalaciones')?.value))) ? defaultStatus : this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
-
-    return this.instalacionesService.consultarInstalacionesPorStatus( statusConsulta ).toPromise().then(
-      respuesta => {
-        this.datosInstalaciones = respuesta.instalaciones;
-        this.instalacionesFiltras = this.datosInstalaciones;
-        this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
-      },
-
-      error => {
-        this.mensajes.mensajeGenerico('error', 'error');
-      }
-    );
+  esNumero(valor: any): boolean {
+    return !isNaN(valor);
   }
 }
