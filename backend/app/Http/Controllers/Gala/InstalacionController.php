@@ -166,4 +166,34 @@ class InstalacionController extends Controller
             );
         }
     }
+
+    public function validarRetomarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->validarRetomarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function retomarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->retomarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

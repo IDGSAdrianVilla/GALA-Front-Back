@@ -342,4 +342,80 @@ class InstalacionService
             200
         );
     }
+
+    public function validarRetomarInstalacion ( $datosInstalacionModificada ) {
+        $instalacionExistente = $this->instalacionRepository->validarInstalacionExistente($datosInstalacionModificada['datosInstalacion']['pkInstalacion']);
+
+        if ( count($instalacionExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaInstalacion = $this->instalacionRepository->validarInstalacionSinAtender( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
+
+        if ( $validaInstalacion > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación no ha sido concluida',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validarCliente = $this->clienteRepository->validarClienteExistentePorNombre('instalacion', $datosInstalacionModificada['direccionPersonal']['poblacionCliente'], $datosInstalacionModificada['informacionPersonal'], $datosInstalacionModificada['informacionPersonal']['pkCliente'] );
+
+        if( $validarCliente > 0 ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe una Instalación para un Cliente el mismo nombre y población. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        $validarTelefono = $this->clienteRepository->validarClienteExistentePorTelefono('instalacion', $datosInstalacionModificada['informacionPersonal']['telefonoCliente'], $datosInstalacionModificada['informacionPersonal']['pkCliente']);
+
+        if( $validarTelefono > 0 ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe una Instalación para un Cliente con el mismo número de teléfono. Por favor valida la información',
+                    'status' => 409
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'La instalación se puede retomar con éxito'
+            ],
+            200
+        );
+    }
+
+    public function retomarInstalacion ( $datosInstalacionModificada ) {
+        DB::beginTransaction();
+            $pkCliente = $datosInstalacionModificada['informacionPersonal']['pkCliente'];
+            if ( !isset($datosInstalacionModificada['grid']) ) {
+                $this->clienteRepository->modificarDatosCliente( $pkCliente, $datosInstalacionModificada['informacionPersonal'], 1 );
+                $this->clienteRepository->modificarDatosDireccion( $pkCliente, $datosInstalacionModificada['direccionPersonal'] );
+                $this->instalacionRepository->modificacionDetalleInstalacion( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $datosInstalacionModificada['datosInstalacion'] );
+            }
+            $this->instalacionRepository->retomarInstalacion( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $pkCliente );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se retomó la instalación con éxito'
+            ],
+            200
+        );
+    }
 }

@@ -372,6 +372,21 @@ export class InstalacionesModificacionComponent implements OnInit{
     );
   }
 
+  private async dejarInstalacion ( datosDejarInstalacion : any ) : Promise<any> {
+    this.instalacionService.dejarInstalacion( datosDejarInstalacion ).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   funcionalidadConcluirInstalacion ( pkInstalacion : number ) : void {
     if(this.formInformacionCliente.invalid){
       this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
@@ -442,8 +457,63 @@ export class InstalacionesModificacionComponent implements OnInit{
     );
   }
 
-  private async dejarInstalacion ( datosDejarInstalacion : any ) : Promise<any> {
-    this.instalacionService.dejarInstalacion( datosDejarInstalacion ).subscribe(
+  funcionalidadRetomarInstalacion ( pkInstalacion : number ) : void {
+    if(this.formInformacionCliente.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formDireccionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formInstalacion.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Instalación.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de retomar la instalación?', 'question', 'Retomar Instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          this.formInformacionCliente.value.pkCliente = this.dataInstalacion.datosCliente[0].PkTblCliente;
+          this.formInstalacion.value.pkInstalacion = pkInstalacion;
+          
+          let datosRetomarInstalacion = {
+            'informacionPersonal' : this.formInformacionCliente.value,
+            'direccionPersonal'   : this.formDireccionRegistro.value,
+            'datosInstalacion'    : this.formInstalacion.value,
+            'token'               : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarRetomarInstalacion( datosRetomarInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.retomarInstalacion( datosRetomarInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async retomarInstalacion ( datosRetomarInstalacion : any ) : Promise<any> {
+    this.instalacionService.retomarInstalacion( datosRetomarInstalacion ).subscribe(
       respuesta => {
         this.inicilizarComponente().then(() => {
           this.mensajes.mensajeGenericoToast(respuesta.message, 'success');

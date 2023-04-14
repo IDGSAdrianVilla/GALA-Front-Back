@@ -188,6 +188,36 @@ class InstalacionRepository
         return $return->count();
     }
 
+    public function validarInstalacionSinAtender ( $pkInstalacion ) {
+        $return = TblDetalleInstalacion::where('FkTblInstalacion', $pkInstalacion)
+                                       ->where(function ($query) {
+                                           $query->whereNull('FkTblUsuarioAtencion')
+                                                 ->orWhereNull('FechaAtencion');
+                                       });
+    
+        return $return->count();
+    }
+
+    public function retomarInstalacion ( $pkInstalacion, $pkCliente ) {
+        TblInstalaciones::where('PkTblInstalacion', $pkInstalacion)
+                        ->update([
+                             'FkCatStatus' => 1
+                          ]);
+
+        TblDetalleInstalacion::where('FkTblInstalacion', $pkInstalacion)
+                             ->update([
+                                 'FkTblUsuarioAtendiendo' => null,
+                                 'FechaAtendiendo'        => null,
+                                 'FkTblUsuarioAtencion' => null,
+                                 'FechaAtencion'        => null
+                               ]);
+
+        TblClientes::where('PkTblCliente', $pkCliente)
+                   ->update([
+                        'Validado' => null
+                     ]);
+    }
+
     public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;
 	}

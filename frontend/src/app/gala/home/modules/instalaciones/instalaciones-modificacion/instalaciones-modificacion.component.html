@@ -165,7 +165,7 @@
                             <button type="button" class="btn btn-warning" ngClass="funcionalidadAtenderReporte(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null || this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>No exitosa</b></button>
                         </section>
                         <section *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion !== null">
-                            <button type="button" class="btn btn-warning" ngClass="funcionalidadRetomarReporte(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)"><b>Retomar</b></button>
+                            <button type="button" class="btn btn-warning" (click)="funcionalidadRetomarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)"><b>Retomar</b></button>
                         </section>
                     </div>
                 </div>
