@@ -15,7 +15,6 @@ class CatRoles extends Model
     [
         'PkCatRol',
         'NombreRol',
-        'FkTblPermisos',
         'DescripcionProblema',
         'Observaciones',
         'FkTblUsuarioAlta',

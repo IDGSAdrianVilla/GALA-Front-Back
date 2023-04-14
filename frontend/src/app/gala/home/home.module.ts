@@ -17,6 +17,7 @@ import { ReportesComponent } from './modules/reportes/reportes/reportes.componen
 import { ReportesModificacionComponent } from './modules/reportes/reportes-modificacion/reportes-modificacion.component';
 import { UsuariosPerfilComponent } from './modules/usuarios/usuarios-perfil/usuarios-perfil.component';
 import { InstalacionesComponent } from './modules/instalaciones/instalaciones/instalaciones.component';
+import { InstalacionesModificacionComponent } from './modules/instalaciones/instalaciones-modificacion/instalaciones-modificacion.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { InstalacionesComponent } from './modules/instalaciones/instalaciones/in
     ReportesComponent,
     ReportesModificacionComponent,
     UsuariosPerfilComponent,
-    InstalacionesComponent
+    InstalacionesComponent,
+    InstalacionesModificacionComponent
   ]
 })
 export class HomeModule { }

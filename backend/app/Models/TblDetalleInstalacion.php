@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TblDetalleInstalaciones extends Model
+class TblDetalleInstalacion extends Model
 {
     use HasFactory;
     public $timestamps = false;
     protected $primaryKey = 'PkTblDetalleInstalacion';
-    protected $table = 'tbldetalleinstalaciones';
+    protected $table = 'tbldetalleinstalacion';
     protected $fillable = 
     [
         'PkTblDetalleInstalacion',
@@ -24,5 +24,6 @@ class TblDetalleInstalaciones extends Model
         'FkTblUsuariosAtencion',
         'FechaAtencion'
     ];
+    
 
 }

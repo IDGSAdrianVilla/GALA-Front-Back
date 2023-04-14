@@ -46,4 +46,214 @@ class InstalacionController extends Controller
             );
         }
     }
+
+    public function cargaComponenteModificacionInstalacion ( $pkInstalacion ) {
+        try{
+            return $this->instalacionService->cargaComponenteModificacionInstalacion( $pkInstalacion );
+        } catch( \Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarModificarInstalacion ( Request $request ) {
+        try{
+            return $this->instalacionService->validarModificarInstalacion( $request->all() );
+        } catch( \Exception $error) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarComenzarInstalacion( $pkInstalacion ){
+        try{
+            return $this->instalacionService->validarComenzarInstalacion( $pkInstalacion );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+    
+    public function comenzarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->comenzarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarDejarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->validarDejarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function dejarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->dejarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarConcluirInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->validarConcluirInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function concluirInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->concluirInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarRetomarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->validarRetomarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function retomarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->retomarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarInstalacionNoExitosa( Request $request ){
+        try{
+            return $this->instalacionService->validarInstalacionNoExitosa( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function instalacionNoExitosa( Request $request ){
+        try{
+            return $this->instalacionService->instalacionNoExitosa( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function validarEliminarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->validarEliminarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function eliminarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->eliminarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

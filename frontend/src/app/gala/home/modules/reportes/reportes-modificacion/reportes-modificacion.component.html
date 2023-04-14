@@ -70,14 +70,13 @@
                         </div>
 
                         <div class="col-12 botonera d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
                             <section *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion === null">
-                                <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
                                 <button type="button" class="btn btn-success" (click)="funcionalidadComenzarReporteCliente(this.dataReporte.datosReporte[0].PkTblReporte)" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo === null"><b>Comenzar</b></button>
                                 <button type="button" class="btn btn-danger" (click)="funcionalidadDejarReporteCliente(this.dataReporte.datosReporte[0].PkTblReporte)" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Dejar</b></button>
                                 <button type="button" class="btn btn-info" (click)="funcionalidadAtenderReporte(this.dataReporte.datosReporte[0].PkTblReporte)" *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo === null || this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Atender</b></button>
                             </section>
                             <section *ngIf="this.dataReporte.datosDetalleReporte[0].FkTblUsuarioAtencion !== null">
-                                <button type="button" class="btn btn-primary" (click)="validarModificarReporteCliente()"><b>Modificar</b></button>
                                 <button type="button" class="btn btn-warning" (click)="funcionalidadRetomarReporte(this.dataReporte.datosReporte[0].PkTblReporte)"><b>Retomar</b></button>
                             </section>
                         </div>
@@ -121,7 +120,7 @@
 <div class="modal fade section profile" id="verDetalleCliente" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-body-special">
+            <div class="modal-body-special" *ngIf="esNumero(this.prevModificacionReporte.PkTblCliente)">
                 <app-clientes-modificacion [parametro]="this.prevModificacionReporte.PkTblCliente"></app-clientes-modificacion>
             </div>
             <div class="modal-footer">

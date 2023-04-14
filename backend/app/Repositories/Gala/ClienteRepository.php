@@ -65,7 +65,8 @@ class ClienteRepository
 	}
 
 	public function consultarClientes(){
-		$clienteConsulta = DB::table('vistageneralclientes');
+		$clienteConsulta = DB::table('vistageneralclientes')
+		                     ->where('vistageneralclientes.Validado', 1);
 		
 		return $clienteConsulta->get();
 	}
@@ -99,6 +100,13 @@ class ClienteRepository
 							'Calle' 					=> $datosDireccion['calleCliente']
 					  ]);
 	}
+
+	public function obtenerClientePorPK ( $pkCliente ) {
+        $cliente = DB::table('vistageneralclientes')
+                     ->where('PkTblCliente', $pkCliente);
+        
+        return $cliente->get();
+    }
 
 	public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;

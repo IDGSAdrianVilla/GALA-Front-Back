@@ -2,6 +2,7 @@
 
 namespace App\Services\Gala;
 
+use App\Repositories\gala\ClienteRepository;
 use App\Repositories\Gala\ReporteRepository;
 use App\Repositories\Gala\UsuarioRepository;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +16,17 @@ class ReporteService
 {
     protected $reporteRepository;
     protected $usuarioRepository;
+    protected $clienteRepository;
 
     public function __construct(
         ReporteRepository $ReporteRepository,
-        UsuarioRepository $UsuarioRepository
+        UsuarioRepository $UsuarioRepository,
+        ClienteRepository $ClienteRepository,
     )
     {
         $this->reporteRepository = $ReporteRepository;
         $this->usuarioRepository = $UsuarioRepository;
+        $this->clienteRepository = $ClienteRepository;
     }
 
     public function validarReportePendienteExistente ( $datosReporte ) {
@@ -89,10 +93,10 @@ class ReporteService
         }
 
         $dataReporte['datosDetalleReporte']    = $this->reporteRepository->obtenerDetalleReportePorPK( $dataReporte['datosReporte'][0]->PkTblReporte );
-        $dataReporte['datosUsuarioAtencion']   = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtencion );
-        $dataReporte['datosUsuarioAtendiendo'] = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtendiendo );
-        $dataReporte['datosCliente']           = $this->reporteRepository->obtenerClientePorPK( $dataReporte['datosReporte'][0]->FkTblCliente );
-        $dataReporte['datosUsuarioRecibio']    = $this->reporteRepository->obternerUsuarioPorPK( $dataReporte['datosReporte'][0]->FkTblUsuarioRecibio );
+        $dataReporte['datosUsuarioAtencion']   = $this->usuarioRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtencion );
+        $dataReporte['datosUsuarioAtendiendo'] = $this->usuarioRepository->obternerUsuarioPorPK( $dataReporte['datosDetalleReporte'][0]->FkTblUsuarioAtendiendo );
+        $dataReporte['datosCliente']           = $this->clienteRepository->obtenerClientePorPK( $dataReporte['datosReporte'][0]->FkTblCliente );
+        $dataReporte['datosUsuarioRecibio']    = $this->usuarioRepository->obternerUsuarioPorPK( $dataReporte['datosReporte'][0]->FkTblUsuarioRecibio );
 
         return response()->json(
             [
@@ -202,6 +206,18 @@ class ReporteService
             );
         }
 
+        $validaReporte = $this->reporteRepository->validarReporteSinComenzar( $datosDejarReporte['pkReporte'] );
+
+        if ( $validaReporte > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer este reporte no esta siendo atendido por nadie actualmente',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
         $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
 
@@ -209,18 +225,6 @@ class ReporteService
             return response()->json(
                 [
                     'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
-                    'status' => 304
-                ],
-                200
-            );
-        }
-
-        $validaReporte = $this->reporteRepository->validarReporteSinComenzar( $datosDejarReporte['pkReporte'] );
-
-        if ( $validaReporte > 0 ) {
-            return response()->json(
-                [
-                    'message' => 'Al parecer este reporte no esta siendo atendido por nadie actualmente',
                     'status' => 304
                 ],
                 200
@@ -268,7 +272,7 @@ class ReporteService
         if ( $validaReportePorUsuario > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
+                    'message' => 'Upss! Al parecer el reporte está siendo atendido por alguien más',
                     'status' => 304
                 ],
                 200
@@ -280,7 +284,7 @@ class ReporteService
         if ( $validaReporteAtendido > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer el reporte ya fue atendido',
+                    'message' => 'Upss! Al parecer el reporte ya fue atendido',
                     'status' => 304
                 ],
                 200
@@ -330,7 +334,7 @@ class ReporteService
         if ( $validaReporte > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer este reporte no ha sido atendido',
+                    'message' => 'Upss! Al parecer este reporte no ha sido atendido',
                     'status' => 304
                 ],
                 200

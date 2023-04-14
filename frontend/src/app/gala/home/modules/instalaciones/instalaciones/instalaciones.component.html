@@ -63,23 +63,25 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Cliente</th>
                                 <th scope="col">Población</th>
+                                <th scope="col">Instalación</th>
                                 <th scope="col">Registro</th>
                                 <th scope="col" style="text-align: center;">Status</th>
                                 <th scope="col" style="text-align: center;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let reporte of this.instalacionesFiltras">
-                                <th scope="row"><a>#{{reporte.PkTblInstalacion}}</a></th>
-                                <td>{{reporte.Nombre+' '+reporte.ApellidoPaterno}}</td>
-                                <td>{{reporte.NombrePoblacion}}</td>
-                                <td>{{reporte.FechaAlta}}</td>
+                            <tr *ngFor="let instalacion of this.instalacionesFiltras">
+                                <th scope="row"><a>#{{instalacion.PkTblInstalacion}}</a></th>
+                                <td>{{instalacion.Nombre+' '+instalacion.ApellidoPaterno}}</td>
+                                <td>{{instalacion.NombrePoblacion}}</td>
+                                <td>{{instalacion.NombreClasificacion}}</td>
+                                <td>{{instalacion.FechaAlta}}</td>
                                 <td style="text-align: center;">
-                                    <span class="badge" style="color: white; background: #B7B7B7;" *ngIf="reporte.FkTblUsuarioAtendiendo !== null">
+                                    <span class="badge" style="color: white; background: #B7B7B7;" *ngIf="instalacion.FkTblUsuarioAtendiendo !== null">
                                         Atendiendo
                                     </span>
-                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': reporte.ColorStatus}" *ngIf="reporte.FkTblUsuarioAtendiendo === null">
-                                        {{reporte.NombreStatus}}
+                                    <span class="badge" [ngStyle]="{'color': 'white', 'background': instalacion.ColorStatus}" *ngIf="instalacion.FkTblUsuarioAtendiendo === null">
+                                        {{instalacion.NombreStatus}}
                                     </span>
                                 </td>
                                 <td style="text-align: center;">
@@ -88,28 +90,31 @@
                                           Opciones
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <section *ngIf="reporte.FkTblUsuarioAtencion === null">
-                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                    <button class="dropdown-item" type="button" ngClass="this.funcionalidadDejarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
-                                                    <button class="dropdown-item" type="button" ngClass="this.funcionalidadComenzarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
+                                            <section *ngIf="instalacion.FkTblUsuarioAtencion === null">
+                                                <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadDejarInstalacion(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadComenzarInstalacion(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
                                                 </li>
                                                 <li>
-                                                    <button class="dropdown-item" type="button" ngClass="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                    <button class="dropdown-item" type="button" [routerLink]="['modificacion', instalacion.PkTblInstalacion]">Módificar</button>
                                                 </li>
-                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadAtenderReporte(reporte)">Atender</button>
+                                                <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadConcluirInstalacion(instalacion)">Concluir</button>
+                                                </li>
+                                                <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadInstalacionNoExitosa(instalacion)">No Exitosa</button>
                                                 </li>
                                             </section>
-                                            <section *ngIf="reporte.FkTblUsuarioAtencion !== null">
+                                            <section *ngIf="instalacion.FkTblUsuarioAtencion !== null">
                                                 <li>
-                                                    <button class="dropdown-item" type="button" ngClass="['modificacion', reporte.PkTblReporte]">Módificar</button>
+                                                    <button class="dropdown-item" type="button" [routerLink]="['modificacion', instalacion.PkTblInstalacion]">Módificar</button>
                                                 </li>
                                                 <li>
-                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadRetomarReporte(reporte.PkTblReporte)">Retomar</button>
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadRetomarInstalacion(instalacion)">Retomar</button>
                                                 </li>
                                             </section>
-                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                <button class="dropdown-item" type="button" ngClass="funcionalidadEliminarReporte(reporte.PkTblReporte)">Eliminar</button>
+                                            <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <button class="dropdown-item" type="button" (click)="funcionalidadEliminarInstalacion(instalacion.PkTblInstalacion)">Eliminar</button>
                                             </li>
                                         </ul>
                                     </div>
