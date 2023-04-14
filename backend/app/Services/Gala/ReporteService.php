@@ -272,7 +272,7 @@ class ReporteService
         if ( $validaReportePorUsuario > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
+                    'message' => 'Upss! Al parecer el reporte está siendo atendido por alguien más',
                     'status' => 304
                 ],
                 200

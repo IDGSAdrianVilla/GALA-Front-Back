@@ -74,8 +74,10 @@ Route::post('/reportes/eliminarReporteCliente', 'App\Http\Controllers\Gala\Repor
 Route::post('/instalaciones/registrarNuevaInstalacion', 'App\Http\Controllers\Gala\InstalacionController@registrarNuevaInstalacion');
 Route::get('/instalaciones/consultarInstalacionesPorStatus/{status}', 'App\Http\Controllers\Gala\InstalacionController@consultarInstalacionesPorStatus');
 Route::get('/instalaciones/cargaComponenteModificacionInstalacion/{pkinstalacion}', 'App\Http\Controllers\Gala\InstalacionController@cargaComponenteModificacionInstalacion');
-Route::post('/instalaciones/validarInstalacionExistente', 'App\Http\Controllers\Gala\InstalacionController@validarInstalacionExistente');
+Route::post('/instalaciones/validarModificarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@validarModificarInstalacion');
 Route::get('/instalaciones/validarComenzarInstalacion/{pkinstalacion}', 'App\Http\Controllers\Gala\InstalacionController@validarComenzarInstalacion');
 Route::post('/instalaciones/comenzarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@comenzarInstalacion');
 Route::post('/instalaciones/validarDejarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@validarDejarInstalacion');
 Route::post('/instalaciones/dejarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@dejarInstalacion');
+Route::post('/instalaciones/validarConcluirInstalacion', 'App\Http\Controllers\Gala\InstalacionController@validarConcluirInstalacion');
+Route::post('/instalaciones/concluirInstalacion', 'App\Http\Controllers\Gala\InstalacionController@concluirInstalacion');

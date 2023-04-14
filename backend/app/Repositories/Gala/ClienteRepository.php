@@ -65,7 +65,8 @@ class ClienteRepository
 	}
 
 	public function consultarClientes(){
-		$clienteConsulta = DB::table('vistageneralclientes');
+		$clienteConsulta = DB::table('vistageneralclientes')
+		                     ->where('vistageneralclientes.Validado', 1);
 		
 		return $clienteConsulta->get();
 	}
@@ -77,7 +78,7 @@ class ClienteRepository
 		return $clienteModificacion->get();								 
 	}
 
-	public function modificarDatosCliente( $pkClienteModificacion, $datosModificacion ){
+	public function modificarDatosCliente( $pkClienteModificacion, $datosModificacion, $validado = null ){
 		TblClientes::where('PkTblCliente','=', $pkClienteModificacion)
 				   ->update([
 						'Nombre' 		   => $datosModificacion['nombreCliente'],
@@ -85,7 +86,8 @@ class ClienteRepository
 						'ApellidoMaterno'  => $datosModificacion['apellidoMaternoCliente'],
 						'Sexo' 			   => $datosModificacion['sexoCliente'],
 						'Telefono' 		   => $datosModificacion['telefonoCliente'],
-						'TelefonoOpcional' => $datosModificacion['telefonoOpcionalCliente']
+						'TelefonoOpcional' => $datosModificacion['telefonoOpcionalCliente'],
+						'Validado' 		   => $validado
 				   ]);
 	}
 

@@ -268,7 +268,7 @@ export class InstalacionesModificacionComponent implements OnInit{
             'token'               : localStorage.getItem('token')
           };
 
-          this.instalacionService.validarInstalacionExistente( datosModificacionInstalacion ).subscribe(
+          this.instalacionService.validarModificarInstalacion( datosModificacionInstalacion ).subscribe(
             respuesta => {
               if ( respuesta.status == 409 ) {
                 this.mensajes.mensajeGenerico(respuesta.message, 'warning');
@@ -368,6 +368,76 @@ export class InstalacionesModificacionComponent implements OnInit{
           return;
         }
         return;
+      }
+    );
+  }
+
+  funcionalidadConcluirInstalacion ( pkInstalacion : number ) : void {
+    if(this.formInformacionCliente.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formDireccionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formInstalacion.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Instalación.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de concluir la instalación?', 'question', 'Concluir Instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          this.formInformacionCliente.value.pkCliente = this.dataInstalacion.datosCliente[0].PkTblCliente;
+          this.formInstalacion.value.pkInstalacion = pkInstalacion;
+          
+          let datosConcluirInstalacion = {
+            'informacionPersonal' : this.formInformacionCliente.value,
+            'direccionPersonal'   : this.formDireccionRegistro.value,
+            'datosInstalacion'    : this.formInstalacion.value,
+            'token'               : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarConcluirInstalacion( datosConcluirInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.concluirInstalacion( datosConcluirInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async concluirInstalacion ( datosConcluirInstalacion : any ) : Promise<any> {
+    this.instalacionService.concluirInstalacion( datosConcluirInstalacion ).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
       }
     );
   }

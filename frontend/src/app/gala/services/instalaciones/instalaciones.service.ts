@@ -25,8 +25,8 @@ export class InstalacionesService {
     return this.http.get<any>(this.urlHost+`/instalaciones/cargaComponenteModificacionInstalacion/${pkInstalacion}`);
   }
 
-  public validarInstalacionExistente ( datosInstalacionModificada : any ) : Observable<any>{
-    return this.http.post<any>(this.urlHost+'/instalaciones/validarInstalacionExistente', datosInstalacionModificada);
+  public validarModificarInstalacion ( datosInstalacionModificada : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/validarModificarInstalacion', datosInstalacionModificada);
   }
 
   public validarComenzarInstalacion ( pkInstalacion : number ) : Observable<any>{
@@ -43,5 +43,13 @@ export class InstalacionesService {
 
   public dejarInstalacion ( datosDejarInstalacion : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/instalaciones/dejarInstalacion', datosDejarInstalacion);
+  }
+
+  public validarConcluirInstalacion ( datosConcluirInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/validarConcluirInstalacion', datosConcluirInstalacion);
+  }
+
+  public concluirInstalacion ( datosConcluirInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/concluirInstalacion', datosConcluirInstalacion);
   }
 }
