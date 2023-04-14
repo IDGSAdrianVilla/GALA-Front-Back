@@ -71,7 +71,7 @@ class InstalacionService
         return response()->json(
             [
                 'instalaciones'  => $instalaciones,
-                'message'   => 'Se consultarón los reportes con éxito'
+                'message'   => 'Se consultarón las instalaciones con éxito'
             ],
             200
         );

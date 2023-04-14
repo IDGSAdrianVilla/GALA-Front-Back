@@ -397,7 +397,7 @@ export class InstalacionesComponent implements OnInit{
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
           
-          let datosConcluirInstalacion = {
+          const datosConcluirInstalacion = {
             'informacionPersonal' : {
               telefonoCliente : datosInstalacion.Telefono,
               pkCliente : datosInstalacion.PkTblCliente,
@@ -441,6 +441,69 @@ export class InstalacionesComponent implements OnInit{
 
   private async concluirInstalacion ( datosConcluirInstalacion : any ) : Promise<any> {
     this.instalacionService.concluirInstalacion( datosConcluirInstalacion ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  funcionalidadRetomarInstalacion ( datosInstalacion : any ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de retomar la instalación?', 'question', 'Retomar Instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+          
+          const datosRetomarInstalacion = {
+            'informacionPersonal' : {
+              telefonoCliente : datosInstalacion.Telefono,
+              pkCliente : datosInstalacion.PkTblCliente,
+              nombreCliente : datosInstalacion.Nombre,
+              apellidoPaternoCliente : datosInstalacion.ApellidoPaterno,
+              apellidoMaternoCliente : datosInstalacion.ApellidoMaterno
+            },
+            'direccionPersonal'   : {
+              poblacionCliente : datosInstalacion.PkCatPoblacion
+            },
+            'datosInstalacion'    : {
+              pkInstalacion : datosInstalacion.PkTblInstalacion
+            },
+            'grid'                : true,
+            'token'               : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarRetomarInstalacion( datosRetomarInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.retomarInstalacion( datosRetomarInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async retomarInstalacion ( datosRetomarInstalacion : any ) : Promise<any> {
+    this.instalacionService.retomarInstalacion( datosRetomarInstalacion ).subscribe(
       respuesta => {
         this.actualizarGridDespuesAccion().then(() => {
           this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
