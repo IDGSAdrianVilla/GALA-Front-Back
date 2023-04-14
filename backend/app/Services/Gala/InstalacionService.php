@@ -445,24 +445,24 @@ class InstalacionService
             );
         }
 
-        $validaInstalacionAtendida = $this->instalacionRepository->validarInstalacionAtendidoPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
-
-        if ( $validaInstalacionAtendida > 0 ) {
-            return response()->json(
-                [
-                    'message' => 'Upss! Al parecer la instalación ya fue concluida',
-                    'status' => 304
-                ],
-                200
-            );
-        }
-
         $validaInstalacionNoExitosa = $this->instalacionRepository->validarInstalacionNoExitosa( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
 
         if ( $validaInstalacionNoExitosa > 0 ) {
             return response()->json(
                 [
                     'message' => 'Upss! Al parecer la instalación ya fue concluida como no exitosa',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaInstalacionAtendida = $this->instalacionRepository->validarInstalacionAtendidoPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
+
+        if ( $validaInstalacionAtendida > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya fue concluida',
                     'status' => 304
                 ],
                 200

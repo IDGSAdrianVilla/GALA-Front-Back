@@ -153,7 +153,6 @@ export class InstalacionesModificacionComponent implements OnInit{
         }
 
         this.dataInstalacion = respuesta.data;
-        console.log(this.dataInstalacion);
         this.cargarFormularios();
         this.cargaTarjetaPresentacionCliente();
         return;

@@ -517,6 +517,69 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
+  funcionalidadInstalacionNoExitosa ( datosInstalacion : any ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de concluir la instalación como no exitosa?', 'question', 'Instalación no exitosa').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+          
+          const datosInstalacionNoExitosa = {
+            'informacionPersonal' : {
+              telefonoCliente : datosInstalacion.Telefono,
+              pkCliente : datosInstalacion.PkTblCliente,
+              nombreCliente : datosInstalacion.Nombre,
+              apellidoPaternoCliente : datosInstalacion.ApellidoPaterno,
+              apellidoMaternoCliente : datosInstalacion.ApellidoMaterno
+            },
+            'direccionPersonal'   : {
+              poblacionCliente : datosInstalacion.PkCatPoblacion
+            },
+            'datosInstalacion'    : {
+              pkInstalacion : datosInstalacion.PkTblInstalacion
+            },
+            'grid'                : true,
+            'token'               : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarInstalacionNoExitosa( datosInstalacionNoExitosa ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.instalacionNoExitosa( datosInstalacionNoExitosa );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async instalacionNoExitosa ( datosInstalacionNoExitosa : any ) : Promise<any> {
+    this.instalacionService.instalacionNoExitosa( datosInstalacionNoExitosa ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
     const statusConsulta = (typeof this.formConsultaInstalaciones.get('statusInstalaciones')?.value !== 'undefined' && isNaN(Number(this.formConsultaInstalaciones.get('statusInstalaciones')?.value))) ? defaultStatus : this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
 
