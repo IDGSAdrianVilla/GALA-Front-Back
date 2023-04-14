@@ -337,6 +337,56 @@ export class InstalacionesModificacionComponent implements OnInit{
     );
   }
 
+  funcionalidadDejarInstalacion ( pkInstalacion : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro dejar de atender la instalación?', 'question', 'Dejar de atender instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosDejarInstalacion = {
+            'pkInstalacion' : pkInstalacion,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarDejarInstalacion( datosDejarInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.dejarInstalacion( datosDejarInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async dejarInstalacion ( datosDejarInstalacion : any ) : Promise<any> {
+    this.instalacionService.dejarInstalacion( datosDejarInstalacion ).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   esNumero(valor: any): boolean {
     return !isNaN(valor);
   }

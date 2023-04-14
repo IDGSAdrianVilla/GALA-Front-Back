@@ -77,3 +77,5 @@ Route::get('/instalaciones/cargaComponenteModificacionInstalacion/{pkinstalacion
 Route::post('/instalaciones/validarInstalacionExistente', 'App\Http\Controllers\Gala\InstalacionController@validarInstalacionExistente');
 Route::get('/instalaciones/validarComenzarInstalacion/{pkinstalacion}', 'App\Http\Controllers\Gala\InstalacionController@validarComenzarInstalacion');
 Route::post('/instalaciones/comenzarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@comenzarInstalacion');
+Route::post('/instalaciones/validarDejarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@validarDejarInstalacion');
+Route::post('/instalaciones/dejarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@dejarInstalacion');

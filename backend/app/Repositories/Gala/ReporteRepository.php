@@ -155,22 +155,22 @@ class ReporteRepository
                          ]);
     }
 
+    public function validarReporteSinComenzar ( $pkReporte ) {
+        $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
+                                   ->where(function ($query) {
+                                       $query->whereNull('FkTblUsuarioAtendiendo')
+                                             ->orWhereNull('FechaAtendiendo');
+                                   });
+    
+        return $return->count();
+    }
+
     public function validarReporteStatusPorUsuario ( $pkReporte, $pkUsuario ) {
         $return = TblDetalleReporte::where([
                                         ['FkTblReporte', $pkReporte],
                                         ['FkTblUsuarioAtendiendo', '!=', $pkUsuario]
                                      ]);
 
-        return $return->count();
-    }
-
-    public function validarReporteSinComenzar ( $pkReporte ) {
-        $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
-                                   ->where(function ($query) {
-                                       $query->whereNull('FkTblUsuarioAtendiendo')
-                                           ->orWhereNull('FechaAtendiendo');
-                                   });
-    
         return $return->count();
     }
 
@@ -189,7 +189,7 @@ class ReporteRepository
         $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
                                    ->where(function ($query) {
                                        $query->whereNotNull('FkTblUsuarioAtencion')
-                                           ->orWhereNotNull('FechaAtencion');
+                                             ->orWhereNotNull('FechaAtencion');
                                    });
     
         return $return->count();
@@ -214,7 +214,7 @@ class ReporteRepository
         $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
                                    ->where(function ($query) {
                                        $query->whereNull('FkTblUsuarioAtencion')
-                                           ->orWhereNull('FechaAtencion');
+                                             ->orWhereNull('FechaAtencion');
                                    });
     
         return $return->count();
@@ -223,8 +223,8 @@ class ReporteRepository
     public function retomarReporteCliente ( $pkReporte ) {
         TblReportes::where('PkTblReporte', $pkReporte)
                    ->update([
-                      'FkCatStatus' => 1
-                   ]);
+                        'FkCatStatus' => 1
+                     ]);
 
         TblDetalleReporte::where('FkTblReporte', $pkReporte)
                          ->update([

@@ -206,6 +206,18 @@ class ReporteService
             );
         }
 
+        $validaReporte = $this->reporteRepository->validarReporteSinComenzar( $datosDejarReporte['pkReporte'] );
+
+        if ( $validaReporte > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer este reporte no esta siendo atendido por nadie actualmente',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarReporte['token'] );
         $validaReportePorUsuario = $this->reporteRepository->validarReporteStatusPorUsuario( $datosDejarReporte['pkReporte'], $usuario[0]->PkTblUsuario );
 
@@ -213,18 +225,6 @@ class ReporteService
             return response()->json(
                 [
                     'message' => 'Upss! Al parecer este reporte está siendo atendido por alguien más',
-                    'status' => 304
-                ],
-                200
-            );
-        }
-
-        $validaReporte = $this->reporteRepository->validarReporteSinComenzar( $datosDejarReporte['pkReporte'] );
-
-        if ( $validaReporte > 0 ) {
-            return response()->json(
-                [
-                    'message' => 'Al parecer este reporte no esta siendo atendido por nadie actualmente',
                     'status' => 304
                 ],
                 200
@@ -284,7 +284,7 @@ class ReporteService
         if ( $validaReporteAtendido > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer el reporte ya fue atendido',
+                    'message' => 'Upss! Al parecer el reporte ya fue atendido',
                     'status' => 304
                 ],
                 200
@@ -334,7 +334,7 @@ class ReporteService
         if ( $validaReporte > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Al parecer este reporte no ha sido atendido',
+                    'message' => 'Upss! Al parecer este reporte no ha sido atendido',
                     'status' => 304
                 ],
                 200

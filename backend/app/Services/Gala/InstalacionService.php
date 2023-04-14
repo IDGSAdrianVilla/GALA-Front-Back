@@ -192,4 +192,64 @@ class InstalacionService
             200
         );
     }
+
+    public function validarDejarInstalacion ( $datosDejarInstalacion ) {
+        $instalacionExistente = $this->instalacionRepository->validarInstalacionExistente( $datosDejarInstalacion['pkInstalacion'] );
+
+        if ( count($instalacionExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaReporte = $this->instalacionRepository->validarInstalacionSinComenzar( $datosDejarInstalacion['pkInstalacion'] );
+
+        if ( $validaReporte > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación no esta siendo atendida por nadie actualmente',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarInstalacion['token'] );
+        $validaReportePorUsuario = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosDejarInstalacion['pkInstalacion'], $usuario[0]->PkTblUsuario );
+
+        if ( $validaReportePorUsuario > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer esta instalación está siendo atendida por alguien más',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'La instalación se puede dejar de atender con éxito'
+            ],
+            200
+        );
+    }
+
+    public function dejarInstalacion ( $datosDejarInstalacion ) {
+        DB::beginTransaction();
+            $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarInstalacion['token'] );
+            $this->instalacionRepository->dejarInstalacionEnCurso( $datosDejarInstalacion['pkInstalacion'], $usuario[0]->PkTblUsuario );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se dejó de atender la instalación con éxito'
+            ],
+            200
+        );
+    }
 }

@@ -36,4 +36,12 @@ export class InstalacionesService {
   public comenzarInstalacion ( datosComenzarInstalacion : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/instalaciones/comenzarInstalacion', datosComenzarInstalacion);
   }
+
+  public validarDejarInstalacion ( datosDejarInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/validarDejarInstalacion', datosDejarInstalacion);
+  }
+
+  public dejarInstalacion ( datosDejarInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/dejarInstalacion', datosDejarInstalacion);
+  }
 }
