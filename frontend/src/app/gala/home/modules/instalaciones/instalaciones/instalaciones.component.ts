@@ -36,7 +36,8 @@ export class InstalacionesComponent implements OnInit{
     public funcionGenerica : FuncionesGenericasService,
     private catalogosService : CatalogosService,
     private instalacionesService : InstalacionesService,
-    private usuarioService : UsuariosService
+    private usuarioService : UsuariosService,
+    private instalacionService : InstalacionesService
   ) {
 
   }
@@ -289,6 +290,55 @@ export class InstalacionesComponent implements OnInit{
     this.datosInstalaciones = [];
     this.instalacionesFiltras = this.datosInstalaciones;
     
+  }
+
+  funcionalidadComenzarInstalacion ( pkInstalacion : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de comenzar atender la instalación?', 'question', 'Comenzar atender instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+          this.instalacionService.validarComenzarInstalacion( pkInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.comenzarInstalacion( pkInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async comenzarInstalacion( pkInstalacion : number ): Promise<any> {
+    const datosComenzarInstalacion = {
+      'pkInstalacion': pkInstalacion,
+      'token': localStorage.getItem('token')
+    };
+  
+    this.instalacionService.comenzarInstalacion(datosComenzarInstalacion).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+  
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
   }
 
   private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
