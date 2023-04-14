@@ -194,18 +194,13 @@
                         <section class="card">
                             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                                 <img src="assets/img/{{this.prevClienteReporte.Sexo != undefined && this.prevClienteReporte.Sexo != '' ? this.prevClienteReporte.Sexo : 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
-                                <hr>
                                 <h2 *ngIf="this.prevClienteReporte.Nombre != undefined || this.prevClienteReporte.ApellidoPaterno != undefined">
                                   {{ this.prevClienteReporte.Nombre+ ' ' +this.prevClienteReporte.ApellidoPaterno }}
                                 </h2>
                                 <h3 *ngIf="this.prevClienteReporte.NombrePoblacion != ''">{{this.prevClienteReporte.NombrePoblacion}}</h3>
                                 <h3 *ngIf="this.prevClienteReporte.Telefono != ''">{{this.prevClienteReporte.Telefono}}</h3>
-                                <hr>
-                                <div class="social-links mt-2">
-                                    <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                                    <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                                    <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                                    <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                                <div class="social-links mt-2" *ngIf="this.prevClienteReporte.Coordenadas != null && this.prevClienteReporte.Coordenadas != '' && this.prevClienteReporte.Coordenadas != undefined">
+                                    <a href="https://www.google.com/maps/place/{{this.prevClienteReporte.Coordenadas}}" target="_blank" class="twitter"><i class="ri-user-location-line"></i></a>
                                 </div>
                             </div>
                         </section>

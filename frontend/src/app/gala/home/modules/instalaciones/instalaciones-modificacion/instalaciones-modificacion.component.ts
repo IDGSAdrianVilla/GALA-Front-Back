@@ -233,6 +233,7 @@ export class InstalacionesModificacionComponent implements OnInit{
     this.prevModificacionReporte.ApellidoMaterno = this.formInformacionCliente.get('apellidoMaternoCliente')?.value;
     this.prevModificacionReporte.Sexo            = this.formInformacionCliente.get('sexoCliente')?.value;
     this.prevModificacionReporte.Telefono        = this.formInformacionCliente.get('telefonoCliente')?.value;
+    this.prevModificacionReporte.Coordenadas     = this.formDireccionRegistro.get('coordenadasCliente')?.value;
     const poblacionSelect                        = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
     this.prevModificacionReporte.NombrePoblacion = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
