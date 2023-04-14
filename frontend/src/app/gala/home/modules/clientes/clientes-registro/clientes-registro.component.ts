@@ -65,7 +65,8 @@ export class ClientesRegistroComponent implements OnInit {
     this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionCliente.get('apellidoMaternoCliente')?.value;
     this.prevClienteNuevo.sexoCliente            = this.formInformacionCliente.get('sexoCliente')?.value;
     this.prevClienteNuevo.telefonoCliente        = this.formInformacionCliente.get('telefonoCliente')?.value;
-    const poblacionSelect                         = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
+    this.prevClienteNuevo.Coordenadas            = this.formDireccionRegistro.get('coordenadasCliente')?.value;
+    const poblacionSelect                        = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
     this.prevClienteNuevo.poblacionCliente       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
 

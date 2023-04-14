@@ -150,6 +150,7 @@ export class UsuariosPerfilComponent implements OnInit{
     this.prevUsuarioNuevo.apellidoMaternoPerfil = this.formInformacionRegistro.get('apellidoMaternoPerfil')?.value;
     this.prevUsuarioNuevo.sexoPerfil            = this.formInformacionRegistro.get('sexoPerfil')?.value;
     this.prevUsuarioNuevo.telefonoPerfil        = this.formInformacionRegistro.get('telefonoPerfil')?.value;
+    this.prevUsuarioNuevo.Coordenadas           = this.formDireccionRegistro.get('coordenadasPerfil')?.value;
     const poblacionSelect                       = (document.getElementById('poblacionPerfil') as HTMLSelectElement).selectedOptions[0].text;
     this.prevUsuarioNuevo.poblacionPerfil       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
