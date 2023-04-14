@@ -86,4 +86,21 @@ export class MensajesService {
       allowEscapeKey: false
     });
   }
+
+  mensajeV2() : void {
+    Swal.fire({
+      title: 'Próximamente',
+      text: 'Funcionalidad no disponible para la versión 1.0',
+      width: 600,
+      padding: '3em',
+      color: '#716add',
+      background: '#fff url(assets/img/trees.png)',
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url("assets/img/nyan-cat.gif")
+        left top
+        no-repeat
+      `
+    })
+  }
 }

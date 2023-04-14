@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FuncionesGenericasService } from 'src/app/services/utileria/funciones-genericas.service';
+import { MensajesService } from '../../../services/mensajes/mensajes.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +12,8 @@ export class SidebarComponent implements OnInit {
   public permisosObjeto : any;
 
   constructor (
-    private funcionGenerica : FuncionesGenericasService
+    private funcionGenerica : FuncionesGenericasService,
+    private mensajes : MensajesService
   ) {
 
   }
@@ -35,4 +37,7 @@ export class SidebarComponent implements OnInit {
     return false;
   }
 
+  mandarMensajeProximamente () : void {
+    this.mensajes.mensajeV2();
+  }
 }

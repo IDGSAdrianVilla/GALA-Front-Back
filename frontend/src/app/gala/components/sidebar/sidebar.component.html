@@ -97,13 +97,13 @@
     >Bitacoras</li>
 
     <li class="nav-item" *ngIf="obtenerPermisoPorModulo('sesiones')">
-      <a class="nav-link collapsed">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
         <i class="bi bi-file-earmark-ruled"></i><span>Sesiones</span>
       </a>
     </li>
 
     <li class="nav-item" *ngIf="obtenerPermisoPorModulo('acciones')">
-      <a class="nav-link collapsed">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
         <i class="bi bi-list-ol"></i><span>Acciones</span>
       </a>
     </li>
@@ -114,7 +114,7 @@
     >Reportes del sistema</li>
 
     <li class="nav-item" *ngIf="obtenerPermisoPorModulo('reportesSistema')">
-      <a class="nav-link collapsed">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
         <i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span>
       </a>
     </li>
