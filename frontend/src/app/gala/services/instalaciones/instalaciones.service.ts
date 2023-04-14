@@ -68,4 +68,12 @@ export class InstalacionesService {
   public instalacionNoExitosa ( datosInstalacionNoExitosa : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/instalaciones/instalacionNoExitosa', datosInstalacionNoExitosa);
   }
+
+  public validarEliminarInstalacion ( datosEliminarInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/validarEliminarInstalacion', datosEliminarInstalacion);
+  }
+
+  public eliminarInstalacion ( datosEliminarInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/eliminarInstalacion', datosEliminarInstalacion);
+  }
 }

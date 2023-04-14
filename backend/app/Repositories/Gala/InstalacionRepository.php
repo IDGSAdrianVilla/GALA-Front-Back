@@ -6,6 +6,7 @@ use App\Models\TblClientes;
 use App\Models\TblDetalleInstalacion;
 use App\Models\TblInstalaciones;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class InstalacionRepository
 {
@@ -243,6 +244,32 @@ class InstalacionRepository
                    ->update([
                         'Validado' => null
                      ]);
+    }
+
+    public function eliminarInstalacion ( $pkInstalacion ) {
+        TblInstalaciones::where('PkTblInstalacion', $pkInstalacion)
+                        ->delete();
+    }
+
+    public function eliminarDetalleInstalacion ( $pkInstalacion ) {
+        TblDetalleInstalacion::where('FkTblInstalacion', $pkInstalacion)
+                             ->delete();
+    }
+
+    public function eliminarClienteNoValidado ( $pkInstalacion ) {
+        $cliente = TblInstalaciones::select('tblclientes.PkTblCliente')
+                                  ->join('tblclientes', 'tblclientes.PkTblCliente', 'tblinstalaciones.FkTblCliente')
+                                  ->where('tblinstalaciones.PkTblInstalacion', $pkInstalacion)
+                                  ->whereNull('tblclientes.Validado');
+
+        if ( $cliente->count() > 0 ) {
+            $this->eliminarCliente($cliente->get()[0]->PkTblCliente);
+        }
+    }
+
+    public function eliminarCliente ($pkCliente) {
+        TblClientes::where('PkTblCliente', $pkCliente)
+                   ->delete();
     }
 
     public function trimValidator ( $value ) {

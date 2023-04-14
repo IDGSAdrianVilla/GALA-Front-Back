@@ -226,4 +226,34 @@ class InstalacionController extends Controller
             );
         }
     }
+
+    public function validarEliminarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->validarEliminarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
+
+    public function eliminarInstalacion( Request $request ){
+        try{
+            return $this->instalacionService->eliminarInstalacion( $request->all() );
+        } catch( \Exception $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error al consultar'
+                ],
+                500
+            );
+        }
+    }
 }

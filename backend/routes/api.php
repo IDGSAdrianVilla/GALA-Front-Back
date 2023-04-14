@@ -85,3 +85,5 @@ Route::post('/instalaciones/validarRetomarInstalacion', 'App\Http\Controllers\Ga
 Route::post('/instalaciones/retomarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@retomarInstalacion');
 Route::post('/instalaciones/validarInstalacionNoExitosa', 'App\Http\Controllers\Gala\InstalacionController@validarInstalacionNoExitosa');
 Route::post('/instalaciones/instalacionNoExitosa', 'App\Http\Controllers\Gala\InstalacionController@instalacionNoExitosa');
+Route::post('/instalaciones/validarEliminarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@validarEliminarInstalacion');
+Route::post('/instalaciones/eliminarInstalacion', 'App\Http\Controllers\Gala\InstalacionController@eliminarInstalacion');

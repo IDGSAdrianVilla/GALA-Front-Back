@@ -114,7 +114,7 @@
                                                 </li>
                                             </section>
                                             <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                <button class="dropdown-item" type="button" ngClass="funcionalidadEliminarReporte(instalacion.PkTblInstalacion)">Eliminar</button>
+                                                <button class="dropdown-item" type="button" (click)="funcionalidadEliminarInstalacion(instalacion.PkTblInstalacion)">Eliminar</button>
                                             </li>
                                         </ul>
                                     </div>

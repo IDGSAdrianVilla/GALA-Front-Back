@@ -520,4 +520,53 @@ class InstalacionService
             200
         );
     }
+
+    public function validarEliminarInstalacion ( $datosEliminarInstalacion ) {
+        $instalacionExistente = $this->instalacionRepository->validarInstalacionExistente($datosEliminarInstalacion['pkInstalacion']);
+
+        if ( count($instalacionExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosEliminarInstalacion['token'] );
+        $validaInstalacionAtendiendo = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosEliminarInstalacion['pkInstalacion'], $usuario[0]->PkTblUsuario );
+
+        if ( $validaInstalacionAtendiendo > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación está siendo atendida por alguien más',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'El reporte se eliminar con éxito'
+            ],
+            200
+        );
+    }
+
+    public function eliminarInstalacion ( $datosEliminarInstalacion ) {
+        DB::beginTransaction();
+            $this->instalacionRepository->eliminarClienteNoValidado( $datosEliminarInstalacion['pkInstalacion'] );
+            $this->instalacionRepository->eliminarInstalacion( $datosEliminarInstalacion['pkInstalacion'] );
+            $this->instalacionRepository->eliminarDetalleInstalacion( $datosEliminarInstalacion['pkInstalacion'] );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se eliminó la instalación con éxito'
+            ],
+            200
+        );
+    }
 }

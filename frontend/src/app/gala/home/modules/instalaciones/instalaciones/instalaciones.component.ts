@@ -580,6 +580,56 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
+  funcionalidadEliminarInstalacion ( pkInstalacion : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de eliminar la instalación?, toma en cuenta que no hay como revertir esta acción', 'question', 'Eliminar Instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosEliminarInstalacion = {
+            'pkInstalacion' : pkInstalacion,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarEliminarInstalacion( datosEliminarInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.eliminarInstalacion( datosEliminarInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async eliminarInstalacion ( datosEliminarInstalacion : any ) : Promise<any> {
+    this.instalacionService.eliminarInstalacion( datosEliminarInstalacion ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
     const statusConsulta = (typeof this.formConsultaInstalaciones.get('statusInstalaciones')?.value !== 'undefined' && isNaN(Number(this.formConsultaInstalaciones.get('statusInstalaciones')?.value))) ? defaultStatus : this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
 

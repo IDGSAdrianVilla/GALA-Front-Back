@@ -468,7 +468,7 @@ export class ReportesComponent implements OnInit{
   }
 
   funcionalidadEliminarReporte ( pkReporte : number ) : void {
-    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de eliminar el reporte?, toma en cuenta que no hay como revertir esta acción', 'question', 'Eliminar reporte').then(
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de eliminar el reporte?, toma en cuenta que no hay como revertir esta acción', 'question', 'Eliminar Reporte').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
