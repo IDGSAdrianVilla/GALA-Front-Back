@@ -206,9 +206,9 @@ class InstalacionService
             );
         }
 
-        $validaReporte = $this->instalacionRepository->validarInstalacionSinComenzar( $datosDejarInstalacion['pkInstalacion'] );
+        $validaInstalacionSinComenzar = $this->instalacionRepository->validarInstalacionSinComenzar( $datosDejarInstalacion['pkInstalacion'] );
 
-        if ( $validaReporte > 0 ) {
+        if ( $validaInstalacionSinComenzar > 0 ) {
             return response()->json(
                 [
                     'message' => 'Upss! Al parecer la instalación no esta siendo atendida por nadie actualmente',
@@ -219,9 +219,9 @@ class InstalacionService
         }
 
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosDejarInstalacion['token'] );
-        $validaReportePorUsuario = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosDejarInstalacion['pkInstalacion'], $usuario[0]->PkTblUsuario );
+        $validaInstalacionAtendiendo = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosDejarInstalacion['pkInstalacion'], $usuario[0]->PkTblUsuario );
 
-        if ( $validaReportePorUsuario > 0 ) {
+        if ( $validaInstalacionAtendiendo > 0 ) {
             return response()->json(
                 [
                     'message' => 'Upss! Al parecer esta instalación está siendo atendida por alguien más',
@@ -267,21 +267,21 @@ class InstalacionService
         }
 
         $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosInstalacionModificada['token'] );
-        $validaReportePorUsuario = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $usuario[0]->PkTblUsuario );
+        $validaInstalacionAtendiendo = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $usuario[0]->PkTblUsuario );
 
-        if ( $validaReportePorUsuario > 0 ) {
+        if ( $validaInstalacionAtendiendo > 0 ) {
             return response()->json(
                 [
-                    'message' => 'Upss! Al parecer la instalación está siendo atendido por alguien más',
+                    'message' => 'Upss! Al parecer la instalación está siendo atendida por alguien más',
                     'status' => 304
                 ],
                 200
             );
         }
 
-        $validaReporteAtendido = $this->instalacionRepository->validarInstalacionAtendidoPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
+        $validaInstalacionAtendida = $this->instalacionRepository->validarInstalacionAtendidoPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
 
-        if ( $validaReporteAtendido > 0 ) {
+        if ( $validaInstalacionAtendida > 0 ) {
             return response()->json(
                 [
                     'message' => 'Upss! Al parecer la instalación ya fue concluida',
@@ -414,6 +414,108 @@ class InstalacionService
         return response()->json(
             [
                 'message' => 'Se retomó la instalación con éxito'
+            ],
+            200
+        );
+    }
+
+    public function validarInstalacionNoExitosa ( $datosInstalacionModificada ) {
+        $instalacionExistente = $this->instalacionRepository->validarInstalacionExistente($datosInstalacionModificada['datosInstalacion']['pkInstalacion']);
+
+        if ( count($instalacionExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosInstalacionModificada['token'] );
+        $validaInstalacionAtendiendo = $this->instalacionRepository->validarInstalacionStatusPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $usuario[0]->PkTblUsuario );
+
+        if ( $validaInstalacionAtendiendo > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación está siendo atendida por alguien más',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaInstalacionAtendida = $this->instalacionRepository->validarInstalacionAtendidoPorUsuario( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
+
+        if ( $validaInstalacionAtendida > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya fue concluida',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validaInstalacionNoExitosa = $this->instalacionRepository->validarInstalacionNoExitosa( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'] );
+
+        if ( $validaInstalacionNoExitosa > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya fue concluida como no exitosa',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validarCliente = $this->clienteRepository->validarClienteExistentePorNombre('instalacion', $datosInstalacionModificada['direccionPersonal']['poblacionCliente'], $datosInstalacionModificada['informacionPersonal'], $datosInstalacionModificada['informacionPersonal']['pkCliente'] );
+
+        if( $validarCliente > 0 ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Cliente con el mismo nombre y población. No es posible concluir la instalación. Por favor valida la información',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validarTelefono = $this->clienteRepository->validarClienteExistentePorTelefono('instalacion', $datosInstalacionModificada['informacionPersonal']['telefonoCliente'], $datosInstalacionModificada['informacionPersonal']['pkCliente']);
+
+        if( $validarTelefono > 0 ){
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer ya existe un Cliente con el mismo número de teléfono. No es posible concluir la instalación. Por favor valida la información',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'La instalación se puede concluir como no exitosa'
+            ],
+            200
+        );
+    }
+
+    public function instalacionNoExitosa ( $datosInstalacionModificada ) {
+        DB::beginTransaction();
+            $pkCliente = $datosInstalacionModificada['informacionPersonal']['pkCliente'];
+            $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosInstalacionModificada['token'] );
+            if ( !isset($datosInstalacionModificada['grid']) ) {
+                $this->clienteRepository->modificarDatosCliente( $pkCliente, $datosInstalacionModificada['informacionPersonal'], 1 );
+                $this->clienteRepository->modificarDatosDireccion( $pkCliente, $datosInstalacionModificada['direccionPersonal'] );
+                $this->instalacionRepository->modificacionDetalleInstalacion( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $datosInstalacionModificada['datosInstalacion'] );
+            }
+            $this->instalacionRepository->instalacionNoExitosa( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $usuario[0]->PkTblUsuario, $pkCliente );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se concluyó la instalación como no exitosa'
             ],
             200
         );

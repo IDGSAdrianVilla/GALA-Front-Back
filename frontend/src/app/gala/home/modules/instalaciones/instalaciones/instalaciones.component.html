@@ -102,7 +102,7 @@
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadConcluirInstalacion(instalacion)">Concluir</button>
                                                 </li>
                                                 <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadAtenderReporte(reporte)">No Exitosa</button>
+                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadInstalacionNoExitosa(instalacion)">No Exitosa</button>
                                                 </li>
                                             </section>
                                             <section *ngIf="instalacion.FkTblUsuarioAtencion !== null">

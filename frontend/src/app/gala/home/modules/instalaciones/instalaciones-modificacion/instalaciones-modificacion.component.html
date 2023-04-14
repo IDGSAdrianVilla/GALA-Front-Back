@@ -11,9 +11,9 @@
 <section class="section profile">
     <section class="row cards">
         <div class="col-xl-12" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion != null">
-            <div class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">
-                <i class="bi bi-check-circle me-1"></i>
-                Concluida <b>{{this.dataInstalacion.datosInstalacion[0].FechaAtencion}}</b> por <b>{{this.dataInstalacion.datosUsuarioAtencion[0].Nombre+' '+this.dataInstalacion.datosUsuarioAtencion[0].ApellidoPaterno}}</b>
+            <div class="alert {{this.dataInstalacion.datosInstalacion[0].FkCatStatus == 4 ? 'alert-danger' : 'alert-success'}} alert-dismissible fade show" role="alert" style="text-align: center;">
+                <i class="bi {{this.dataInstalacion.datosInstalacion[0].FkCatStatus == 4 ? 'bi-exclamation-octagon' : 'bi-check-circle'}} me-1"></i>
+                {{this.dataInstalacion.datosInstalacion[0].FkCatStatus == 4 ? 'No Exitosa' : 'Concluida'}} <b>{{this.dataInstalacion.datosInstalacion[0].FechaAtencion}}</b> por <b>{{this.dataInstalacion.datosUsuarioAtencion[0].Nombre+' '+this.dataInstalacion.datosUsuarioAtencion[0].ApellidoPaterno}}</b>
             </div>
         </div>
 
@@ -162,7 +162,7 @@
                             <button type="button" class="btn btn-success" (click)="funcionalidadComenzarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null"><b>Comenzar</b></button>
                             <button type="button" class="btn btn-danger" (click)="funcionalidadDejarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Dejar</b></button>
                             <button type="button" class="btn btn-info" (click)="funcionalidadConcluirInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null || this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Concluir</b></button>
-                            <button type="button" class="btn btn-warning" ngClass="funcionalidadAtenderReporte(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null || this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>No exitosa</b></button>
+                            <button type="button" class="btn btn-warning" (click)="funcionalidadInstalacionNoExitosa(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null || this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>No exitosa</b></button>
                         </section>
                         <section *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion !== null">
                             <button type="button" class="btn btn-warning" (click)="funcionalidadRetomarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)"><b>Retomar</b></button>

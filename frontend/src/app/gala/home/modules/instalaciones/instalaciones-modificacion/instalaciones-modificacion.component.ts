@@ -153,6 +153,7 @@ export class InstalacionesModificacionComponent implements OnInit{
         }
 
         this.dataInstalacion = respuesta.data;
+        console.log(this.dataInstalacion);
         this.cargarFormularios();
         this.cargaTarjetaPresentacionCliente();
         return;
@@ -514,6 +515,76 @@ export class InstalacionesModificacionComponent implements OnInit{
 
   private async retomarInstalacion ( datosRetomarInstalacion : any ) : Promise<any> {
     this.instalacionService.retomarInstalacion( datosRetomarInstalacion ).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
+  funcionalidadInstalacionNoExitosa ( pkInstalacion : number ) : void {
+    if(this.formInformacionCliente.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Información Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formDireccionRegistro.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Dirección Personal.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    if(this.formInstalacion.invalid){
+      this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la Instalación.', 'info', 'Los campos requeridos están marcados con un *');
+      return;
+    }
+
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de concluir la instalación como no exitosa?', 'question', 'Instalación no exitosa').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          this.formInformacionCliente.value.pkCliente = this.dataInstalacion.datosCliente[0].PkTblCliente;
+          this.formInstalacion.value.pkInstalacion = pkInstalacion;
+          
+          let datosInstalacionNoExitosa = {
+            'informacionPersonal' : this.formInformacionCliente.value,
+            'direccionPersonal'   : this.formDireccionRegistro.value,
+            'datosInstalacion'    : this.formInstalacion.value,
+            'token'               : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarInstalacionNoExitosa( datosInstalacionNoExitosa ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.instalacionNoExitosa( datosInstalacionNoExitosa );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async instalacionNoExitosa ( datosInstalacionNoExitosa : any ) : Promise<any> {
+    this.instalacionService.instalacionNoExitosa( datosInstalacionNoExitosa ).subscribe(
       respuesta => {
         this.inicilizarComponente().then(() => {
           this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
