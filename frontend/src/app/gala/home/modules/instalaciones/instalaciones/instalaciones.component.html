@@ -92,7 +92,7 @@
                                         <ul class="dropdown-menu">
                                             <section *ngIf="instalacion.FkTblUsuarioAtencion === null">
                                                 <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                    <button class="dropdown-item" type="button" ngClass="this.funcionalidadDejarReporteCliente(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
+                                                    <button class="dropdown-item" type="button" (click)="this.funcionalidadDejarInstalacion(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
                                                     <button class="dropdown-item" type="button" (click)="this.funcionalidadComenzarInstalacion(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
                                                 </li>
                                                 <li>

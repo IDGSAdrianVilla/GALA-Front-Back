@@ -341,6 +341,56 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
+  funcionalidadDejarInstalacion ( pkInstalacion : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro dejar de atender la instalación?', 'question', 'Dejar de atender instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+
+          const datosDejarInstalacion = {
+            'pkInstalacion' : pkInstalacion,
+            'token'     : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarDejarInstalacion( datosDejarInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.dejarReporteCliente( datosDejarInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private dejarReporteCliente ( datosDejarInstalacion : any ) : void {
+    this.instalacionService.dejarInstalacion( datosDejarInstalacion ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
     const statusConsulta = (typeof this.formConsultaInstalaciones.get('statusInstalaciones')?.value !== 'undefined' && isNaN(Number(this.formConsultaInstalaciones.get('statusInstalaciones')?.value))) ? defaultStatus : this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
 
