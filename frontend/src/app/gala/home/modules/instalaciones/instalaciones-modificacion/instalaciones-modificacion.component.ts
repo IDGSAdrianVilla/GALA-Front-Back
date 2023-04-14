@@ -49,15 +49,19 @@ export class InstalacionesModificacionComponent implements OnInit{
     this.crearFormDireccionRegistro();
     this.crearFormInstalacion();
     
-    await Promise.all([
+    await this.inicilizarComponente();
+
+    this.mensajes.mensajeGenericoToast('Se consultarón los datos con éxito', 'success');
+  }
+
+  private async inicilizarComponente(): Promise<any> {
+    return await Promise.all([
       this.obtenerDatosUsuario(),
       this.obtenerPoblaciones(),
       this.obtenerClasificacionesInstalaciones(),
       this.obtenerPaquetes(),
       this.cargaComponenteModificacionInstalacion()
     ]);
-
-    this.mensajes.mensajeGenericoToast('Se consultarón los datos con éxito', 'success');
   }
 
   private crearFormInformacionCliente() : void {
@@ -280,6 +284,55 @@ export class InstalacionesModificacionComponent implements OnInit{
             }
           );
         }
+      }
+    );
+  }
+
+  funcionalidadComenzarInstalacion ( pkInstalacion : number ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de comenzar atender la instalación?', 'question', 'Comenzar atender instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+          this.instalacionService.validarComenzarInstalacion( pkInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.inicilizarComponente().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.comenzarInstalacion( pkInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async comenzarInstalacion( pkInstalacion : number ): Promise<any> {
+    const datosComenzarInstalacion = {
+      'pkInstalacion': pkInstalacion,
+      'token': localStorage.getItem('token')
+    };
+  
+    this.instalacionService.comenzarInstalacion(datosComenzarInstalacion).subscribe(
+      respuesta => {
+        this.inicilizarComponente().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+  
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
       }
     );
   }

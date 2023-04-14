@@ -145,4 +145,51 @@ class InstalacionService
             200
         );
     }
+
+    public function validarComenzarInstalacion ( $pkInstalacion ) {
+        $instalacionExistente = $this->instalacionRepository->validarInstalacionExistente( $pkInstalacion );
+
+        if ( count($instalacionExistente) == 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer la instalación ya no existe',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        $validarInstalacion = $this->instalacionRepository->validarInstalacionComenzada( $pkInstalacion );
+
+        if ( $validarInstalacion > 0 ) {
+            return response()->json(
+                [
+                    'message' => 'Upss! Al parecer esta instalación está siendo atendida por alguien más',
+                    'status' => 304
+                ],
+                200
+            );
+        }
+
+        return response()->json(
+            [
+                'message' => 'La instalación se puede atender con éxito'
+            ],
+            200
+        );
+    }
+
+    public function comenzarInstalacion ( $datosComenzarInstalacion ) {
+        DB::beginTransaction();
+            $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosComenzarInstalacion['token'] );
+            $this->instalacionRepository->comenzarInstalacion( $datosComenzarInstalacion['pkInstalacion'], $usuario[0]->PkTblUsuario );
+        DB::commit();
+
+        return response()->json(
+            [
+                'message' => 'Se comenzó atender la instalación con éxito'
+            ],
+            200
+        );
+    }
 }

@@ -28,4 +28,12 @@ export class InstalacionesService {
   public validarInstalacionExistente ( datosInstalacionModificada : any ) : Observable<any>{
     return this.http.post<any>(this.urlHost+'/instalaciones/validarInstalacionExistente', datosInstalacionModificada);
   }
+
+  public validarComenzarInstalacion ( pkInstalacion : number ) : Observable<any>{
+    return this.http.get<any>(this.urlHost+`/instalaciones/validarComenzarInstalacion/${pkInstalacion}`);
+  }
+
+  public comenzarInstalacion ( datosComenzarInstalacion : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/instalaciones/comenzarInstalacion', datosComenzarInstalacion);
+  }
 }

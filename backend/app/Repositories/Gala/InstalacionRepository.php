@@ -99,6 +99,30 @@ class InstalacionRepository
                              ]);
     }
 
+    public function validarInstalacionExistente ( $pkInstalacion ) {
+        $return = TblInstalaciones::where('PkTblInstalacion', $pkInstalacion);
+
+        return $return->get();
+    }
+
+    public function validarInstalacionComenzada ( $pkInstalacion ) {
+        $return = TblDetalleInstalacion::where('FkTblInstalacion', $pkInstalacion)
+                                       ->where(function ($query) {
+                                           $query->whereNotNull('FkTblUsuarioAtendiendo')
+                                                 ->orWhereNotNull('FechaAtendiendo');
+                                       });
+    
+        return $return->count();
+    }
+
+    public function comenzarInstalacion ( $pkInstalacion, $pkUsuario ) {
+        TblDetalleInstalacion::where('FkTblInstalacion', $pkInstalacion)
+                             ->update([
+                                'FkTblUsuarioAtendiendo' => $pkUsuario,
+                                'FechaAtendiendo'        => Carbon::now()
+                             ]);
+    }
+
     public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;
 	}

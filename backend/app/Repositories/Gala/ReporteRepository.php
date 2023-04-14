@@ -141,7 +141,7 @@ class ReporteRepository
         $return = TblDetalleReporte::where('FkTblReporte', $pkReporte)
                                    ->where(function ($query) {
                                        $query->whereNotNull('FkTblUsuarioAtendiendo')
-                                           ->orWhereNotNull('FechaAtendiendo');
+                                             ->orWhereNotNull('FechaAtendiendo');
                                    });
     
         return $return->count();

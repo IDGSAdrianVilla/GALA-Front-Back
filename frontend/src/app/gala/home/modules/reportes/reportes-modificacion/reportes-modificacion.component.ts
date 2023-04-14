@@ -187,7 +187,7 @@ export class ReportesModificacionComponent implements OnInit {
   }
 
   funcionalidadComenzarReporteCliente ( pkReporte : number ) : void {
-    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de comenzar atender el reporte?', 'question', 'Comenzar atender reporte').then(
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de comenzar atender el reporte?', 'question', 'Comenzar atender reporte').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
@@ -236,7 +236,7 @@ export class ReportesModificacionComponent implements OnInit {
   }
 
   funcionalidadDejarReporteCliente ( pkReporte : number ) : void {
-    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro dejar de atender el reporte?', 'question', 'Dejar de atender reporte').then(
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro dejar de atender el reporte?', 'question', 'Dejar de atender reporte').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
@@ -299,7 +299,7 @@ export class ReportesModificacionComponent implements OnInit {
       return;
     }
 
-    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de atender el reporte?', 'question', 'Atender Reporte').then(
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de atender el reporte?', 'question', 'Atender Reporte').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
@@ -353,7 +353,7 @@ export class ReportesModificacionComponent implements OnInit {
   }
 
   funcionalidadRetomarReporte ( pkReporte : number ) : void {
-    this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de retomar el reporte?', 'question', 'Retomar reporte').then(
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de retomar el reporte?', 'question', 'Retomar reporte').then(
       respuestaMensaje => {
         if ( respuestaMensaje.isConfirmed ) {
           this.mensajes.mensajeEsperar();
