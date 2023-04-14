@@ -327,12 +327,12 @@ class InstalacionService
         DB::beginTransaction();
             $pkCliente = $datosInstalacionModificada['informacionPersonal']['pkCliente'];
             $usuario = $this->usuarioRepository->obtenerInformacionPorToken( $datosInstalacionModificada['token'] );
-            if ( isset($datosInstalacionModificada['informacionPersonal']) ) {
+            if ( !isset($datosInstalacionModificada['grid']) ) {
                 $this->clienteRepository->modificarDatosCliente( $pkCliente, $datosInstalacionModificada['informacionPersonal'], 1 );
                 $this->clienteRepository->modificarDatosDireccion( $pkCliente, $datosInstalacionModificada['direccionPersonal'] );
                 $this->instalacionRepository->modificacionDetalleInstalacion( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $datosInstalacionModificada['datosInstalacion'] );
             }
-            $this->instalacionRepository->concluirInstalacion( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $usuario[0]->PkTblUsuario );
+            $this->instalacionRepository->concluirInstalacion( $datosInstalacionModificada['datosInstalacion']['pkInstalacion'], $usuario[0]->PkTblUsuario, $pkCliente );
         DB::commit();
 
         return response()->json(

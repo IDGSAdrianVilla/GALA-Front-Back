@@ -391,6 +391,69 @@ export class InstalacionesComponent implements OnInit{
     );
   }
 
+  funcionalidadConcluirInstalacion ( datosInstalacion : any ) : void {
+    this.mensajes.mensajeConfirmacionCustom('¿Está seguro de concluir la instalación?', 'question', 'Concluir Instalación').then(
+      respuestaMensaje => {
+        if ( respuestaMensaje.isConfirmed ) {
+          this.mensajes.mensajeEsperar();
+          
+          let datosConcluirInstalacion = {
+            'informacionPersonal' : {
+              telefonoCliente : datosInstalacion.Telefono,
+              pkCliente : datosInstalacion.PkTblCliente,
+              nombreCliente : datosInstalacion.Nombre,
+              apellidoPaternoCliente : datosInstalacion.ApellidoPaterno,
+              apellidoMaternoCliente : datosInstalacion.ApellidoMaterno
+            },
+            'direccionPersonal'   : {
+              poblacionCliente : datosInstalacion.PkCatPoblacion
+            },
+            'datosInstalacion'    : {
+              pkInstalacion : datosInstalacion.PkTblInstalacion
+            },
+            'grid'                : true,
+            'token'               : localStorage.getItem('token')
+          };
+      
+          this.instalacionService.validarConcluirInstalacion( datosConcluirInstalacion ).subscribe(
+            respuesta => {
+              if ( respuesta.status == 304 ) {
+                this.actualizarGridDespuesAccion().then(() => {
+                  this.mensajes.mensajeGenerico(respuesta.message, 'warning');
+                  return;
+                });
+                return;
+              }
+
+              this.concluirInstalacion( datosConcluirInstalacion );
+            },
+
+            error => {
+              this.mensajes.mensajeGenerico('error', 'error');
+            }
+          );
+          return;
+        }
+        return;
+      }
+    );
+  }
+
+  private async concluirInstalacion ( datosConcluirInstalacion : any ) : Promise<any> {
+    this.instalacionService.concluirInstalacion( datosConcluirInstalacion ).subscribe(
+      respuesta => {
+        this.actualizarGridDespuesAccion().then(() => {
+          this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+          return;
+        });
+      },
+
+      error => {
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
+  }
+
   private async actualizarGridDespuesAccion ( defaultStatus : number = 1 ) : Promise<void> {
     const statusConsulta = (typeof this.formConsultaInstalaciones.get('statusInstalaciones')?.value !== 'undefined' && isNaN(Number(this.formConsultaInstalaciones.get('statusInstalaciones')?.value))) ? defaultStatus : this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
 

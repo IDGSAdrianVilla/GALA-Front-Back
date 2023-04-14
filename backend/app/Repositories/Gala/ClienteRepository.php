@@ -78,7 +78,7 @@ class ClienteRepository
 		return $clienteModificacion->get();								 
 	}
 
-	public function modificarDatosCliente( $pkClienteModificacion, $datosModificacion, $validado = null ){
+	public function modificarDatosCliente( $pkClienteModificacion, $datosModificacion ){
 		TblClientes::where('PkTblCliente','=', $pkClienteModificacion)
 				   ->update([
 						'Nombre' 		   => $datosModificacion['nombreCliente'],
@@ -86,8 +86,7 @@ class ClienteRepository
 						'ApellidoMaterno'  => $datosModificacion['apellidoMaternoCliente'],
 						'Sexo' 			   => $datosModificacion['sexoCliente'],
 						'Telefono' 		   => $datosModificacion['telefonoCliente'],
-						'TelefonoOpcional' => $datosModificacion['telefonoOpcionalCliente'],
-						'Validado' 		   => $validado
+						'TelefonoOpcional' => $datosModificacion['telefonoOpcionalCliente']
 				   ]);
 	}
 

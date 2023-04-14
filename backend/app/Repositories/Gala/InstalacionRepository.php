@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Gala;
 
+use App\Models\TblClientes;
 use App\Models\TblDetalleInstalacion;
 use App\Models\TblInstalaciones;
 use Carbon\Carbon;
@@ -32,8 +33,12 @@ class InstalacionRepository
     public function consultarInstalacionesPorStatus ( $status ) {
         $instalaciones = TblInstalaciones::select(
                                             'tblinstalaciones.PkTblInstalacion',
+                                            'tblclientes.PkTblCliente',
                                             'tblclientes.Nombre',
                                             'tblclientes.ApellidoPaterno',
+                                            'tblclientes.ApellidoMaterno',
+                                            'tblclientes.Telefono',
+                                            'catpoblaciones.PkCatPoblacion',
                                             'catpoblaciones.NombrePoblacion',
                                             'catclasificacioninstalaciones.NombreClasificacion',
                                             'tbldetalleinstalacion.FkTblUsuarioAtendiendo',
@@ -153,7 +158,7 @@ class InstalacionRepository
                                ]);
     }
 
-    public function concluirInstalacion ( $pkInstalacion, $pkUsuario ) {
+    public function concluirInstalacion ( $pkInstalacion, $pkUsuario, $pkCliente ) {
         TblInstalaciones::where('PkTblInstalacion', $pkInstalacion)
                         ->update([
                            'FkCatStatus' => 3
@@ -166,6 +171,11 @@ class InstalacionRepository
                                 'FkTblUsuarioAtencion'   => $pkUsuario,
                                 'FechaAtencion'          => Carbon::now()
                              ]);
+
+        TblClientes::where('PkTblCliente', $pkCliente)
+                   ->update([
+                        'Validado' => 1
+                   ]);
     }
 
     public function validarInstalacionAtendidoPorUsuario ( $pkInstalacion ) {

@@ -99,7 +99,7 @@
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', instalacion.PkTblInstalacion]">Módificar</button>
                                                 </li>
                                                 <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
-                                                    <button class="dropdown-item" type="button" ngClass="funcionalidadAtenderReporte(reporte)">Atender</button>
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadConcluirInstalacion(instalacion)">Concluir</button>
                                                 </li>
                                                 <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
                                                     <button class="dropdown-item" type="button" ngClass="funcionalidadAtenderReporte(reporte)">No Exitosa</button>
