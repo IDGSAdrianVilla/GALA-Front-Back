@@ -99,6 +99,12 @@ export class RolesComponent implements OnInit {
         case 'catalogos':
           this.objetoPermisos[0].permisosRol.push(this.dataService.objComplementarioCatalogos);
         break;
+        case 'asignacionTareas':
+          this.objetoPermisos[0].permisosRol.push(this.dataService.objComplementarioAsignacionTareas);
+        break;
+        case 'acciones':
+          this.objetoPermisos[0].permisosRol.push(this.dataService.objComplementarioAcciones);
+        break;
         case 'sesiones':
           this.objetoPermisos[0].permisosRol.push(this.dataService.objComplementarioSesiones);
         break;
