@@ -33,6 +33,16 @@ export class DataService {
       etiquetaModulo : 'catalogos',
       status : false
     },{
+      nombreModulo : 'Asignación Tareas',
+      nombreFormulario : 'moduloAsignacionTareas',
+      etiquetaModulo : 'asignacionTareas',
+      status : false
+    },{
+      nombreModulo : 'Acciones',
+      nombreFormulario : 'moduloAcciones',
+      etiquetaModulo : 'acciones',
+      status : false
+    },{
       nombreModulo : 'Sesiones',
       nombreFormulario : 'moduloSesiones',
       etiquetaModulo : 'sesiones',
@@ -171,6 +181,44 @@ export class DataService {
         'permiso':'suspencion',
         'status':false,
         'disabled':false
+      }
+    ]
+  };
+
+  public objComplementarioAsignacionTareas = {
+    'nombreModulo':'Asignación Tareas',
+    'modulo':'asignacionTareas',
+    'status':false,
+    'permisosModulo':[
+      {
+        'nombre':'Lectura',
+        'permiso':'lectura',
+        'status':false,
+        'disabled':true
+      },{
+        'nombre':'Escritura',
+        'permiso':'escritura',
+        'status':false,
+        'disabled':false
+      },{
+        'nombre':'Modificación',
+        'permiso':'modificacion',
+        'status':false,
+        'disabled':false
+      }
+    ]
+  };
+
+  public objComplementarioAcciones = {
+    'nombreModulo':'Acciones',
+    'modulo':'acciones',
+    'status':false,
+    'permisosModulo':[
+      {
+        'nombre':'Lectura',
+        'permiso':'lectura',
+        'status':false,
+        'disabled':true
       }
     ]
   };
