@@ -4,6 +4,7 @@ namespace App\Repositories\Gala;
 
 use App\Models\TblClientes;
 use App\Models\TblDetalleInstalacion;
+use App\Models\TblDirecciones;
 use App\Models\TblInstalaciones;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -263,13 +264,20 @@ class InstalacionRepository
                                   ->whereNull('tblclientes.Validado');
 
         if ( $cliente->count() > 0 ) {
-            $this->eliminarCliente($cliente->get()[0]->PkTblCliente);
+            $pkCliente = $cliente->get()[0]->PkTblCliente;
+            $this->eliminarCliente($pkCliente);
+            $this->eliminarDireccionCliente($pkCliente);
         }
     }
 
     public function eliminarCliente ($pkCliente) {
         TblClientes::where('PkTblCliente', $pkCliente)
                    ->delete();
+    }
+
+    public function eliminarDireccionCliente ($pkCliente) {
+        TblDirecciones::where('FkTblCliente', $pkCliente)
+                      ->delete();
     }
 
     public function trimValidator ( $value ) {
