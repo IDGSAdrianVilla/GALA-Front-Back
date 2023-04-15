@@ -76,8 +76,8 @@ export class UsuariosRegistroComponent implements OnInit {
   crearFormCredencialesRegistro() : void {
     this.formCredencialesRegistro = this.fb.group({
       correoEmpleado     : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*'), Validators.email]],
-      passwordEmpleado   : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-      valPassword        : ['emenetSistemas2021', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+      passwordEmpleado   : ['emenetSistemas2023', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+      valPassword        : ['emenetSistemas2023', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
   }
   
@@ -210,6 +210,7 @@ export class UsuariosRegistroComponent implements OnInit {
     this.formDireccionRegistro.get('poblacionEmpleado')?.setValue('');
     this.formPermisosRegistro.get('rolEmpleado')?.setValue('');
     this.prevUsuarioNuevo = {};
+    this.objetoPermisos = [];
   }
 
   validarPermisosEspeciales () : any {
