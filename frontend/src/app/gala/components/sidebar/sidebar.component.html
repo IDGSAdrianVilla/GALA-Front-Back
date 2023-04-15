@@ -1,0 +1,130 @@
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['inicio']">
+        <i class="bi bi-grid"></i>
+        <span>Inicio</span>
+      </a>
+    </li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('reportes')">
+      <a class="nav-link collapsed" [routerLink]="['reportes']">
+        <i class="bi bi-calendar-x"></i><span>Reportes</span>
+      </a>
+    </li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('instalaciones')">
+      <a class="nav-link collapsed" [routerLink]="['instalaciones']">
+        <i class="bi bi-tools"></i><span>Instalaciones</span>
+      </a>
+    </li>
+
+    <section *ngIf="obtenerPermisoPorModulo('catalogos')">
+      <li class="nav-heading">Insumos</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" [routerLink]="['catalogos/poblaciones']">
+          <i class="bi bi-compass"></i><span>Poblaciones</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" [routerLink]="['catalogos/problemas']">
+          <i class="bi bi-folder-x"></i><span>Problemas</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed"  [routerLink]="['catalogos/clasificacionInstalaciones']">
+          <i class="bi bi-folder-check"></i><span>Clasificación Instalaciones</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" [routerLink]="['catalogos/roles']">
+          <i class="bi bi-gear-wide-connected"></i><span>Roles</span>
+        </a>
+      </li>
+
+    </section>
+
+    <li
+      class="nav-heading"
+      *ngIf="obtenerPermisoPorModulo('clientes') || obtenerPermisoPorModulo('usuarios')"
+    >Administración</li>
+    
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('clientes')">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-clientes" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-people"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-clientes" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a [routerLink]="['clientes/registro']">
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['clientes']">
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('usuarios')">
+      <a class="nav-link collapsed" data-bs-target="#components-nav-usuarios" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-file-person"></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav-usuarios" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a [routerLink]="['usuarios/registro']">
+            <i class="bi bi-circle"></i><span>Registro</span>
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['usuarios']">
+            <i class="bi bi-circle"></i><span>Consulta</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('asignacionTareas')">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
+        <i class="bi bi-check2-circle"></i><span>Asignación Tareas</span>
+      </a>
+    </li>
+
+    <li
+      class="nav-heading"
+      *ngIf="obtenerPermisoPorModulo('sesiones') || obtenerPermisoPorModulo('acciones')"
+    >Bitacoras</li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('sesiones')">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
+        <i class="bi bi-file-earmark-ruled"></i><span>Sesiones</span>
+      </a>
+    </li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('acciones')">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
+        <i class="bi bi-list-ol"></i><span>Acciones</span>
+      </a>
+    </li>
+
+    <li
+      class="nav-heading"
+      *ngIf="obtenerPermisoPorModulo('reportesSistema')"
+    >Reportes del sistema</li>
+
+    <li class="nav-item" *ngIf="obtenerPermisoPorModulo('reportesSistema')">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
+        <i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span>
+      </a>
+    </li>
+    
+  </ul>
+
+</aside>

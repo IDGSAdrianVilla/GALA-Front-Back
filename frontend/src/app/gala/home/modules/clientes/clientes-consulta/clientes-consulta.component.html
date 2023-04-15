@@ -1,0 +1,87 @@
+<div class="pagetitle">
+    <h1>Consulta de clientes</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Consulta de clientes</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <form autocomplete="off" class="col-12">
+                            <div class="botonera">
+                                <button class="btn btn-primary" (click)="consultaClientes()">Consultar</button>
+                                <button class="btn btn-primary" disabled="true">Excel</button>
+                                <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card recent-sales overflow-auto" style="max-height: 570px;">
+                <div class="card-body">
+                    
+                    <h5 class="card-title">Clientes</h5>
+                    
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="floatingName"
+                                placeholder="Buscar Cliente"
+                                [(ngModel)]="busqueda"
+                                (input)="filtrarClientes()"
+                                [disabled]="activarFiltroBusqueda()"
+                                autocomplete="off"
+                            >
+                            <label for="floatingName">Buscar Cliente</label>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Sexo</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Población</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cliente of this.datosClientes">
+                                <th scope="row"><a>#{{cliente.PkTblCliente}}</a></th>
+                                <td>{{cliente.Nombre+' '+cliente.ApellidoPaterno}}</td>
+                                <td>{{cliente.Sexo}}</td>
+                                <td>{{cliente.Telefono}}</td>
+                                <td>{{cliente.NombrePoblacion}}</td>
+                                <td><span class="badge bg-{{cliente.Activo == 1 ? 'success' : 'danger'}}">{{cliente.Activo == 1 ? 'Activo' : 'Incativo'}}</span></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                          Opciones
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li><button  class="dropdown-item" [routerLink]="['modificacion',cliente.PkTblCliente]"  type="button">Módificar</button></li>
+                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

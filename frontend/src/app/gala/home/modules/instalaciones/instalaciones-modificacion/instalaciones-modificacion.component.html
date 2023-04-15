@@ -1,0 +1,202 @@
+<div class="pagetitle">
+    <h1>Modificación de Instalación</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" (click)="this.funcionGenerica.redireccionPorRuta('instalaciones')">Instalaciones</li>
+            <li class="breadcrumb-item active">Modificación de Instalación</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section profile">
+    <section class="row cards">
+        <div class="col-xl-12" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion != null">
+            <div class="alert {{this.dataInstalacion.datosInstalacion[0].FkCatStatus == 4 ? 'alert-danger' : 'alert-success'}} alert-dismissible fade show" role="alert" style="text-align: center;">
+                <i class="bi {{this.dataInstalacion.datosInstalacion[0].FkCatStatus == 4 ? 'bi-exclamation-octagon' : 'bi-check-circle'}} me-1"></i>
+                {{this.dataInstalacion.datosInstalacion[0].FkCatStatus == 4 ? 'No Exitosa' : 'Concluida'}} <b>{{this.dataInstalacion.datosInstalacion[0].FechaAtencion}}</b> por <b>{{this.dataInstalacion.datosUsuarioAtencion[0].Nombre+' '+this.dataInstalacion.datosUsuarioAtencion[0].ApellidoPaterno}}</b>
+            </div>
+        </div>
+
+        <div class="col-xl-12" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo != null">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align: center;">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                Atendiendo <b>{{this.dataInstalacion.datosInstalacion[0].FechaAtendiendo}}</b> por <b>{{this.dataInstalacion.datosUsuarioAtendiendo[0].Nombre+' '+this.dataInstalacion.datosUsuarioAtendiendo[0].ApellidoPaterno}}</b>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <section class="card">
+                <div class="card-body">
+                    <br>
+                    <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                        <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#informacion-personal" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                Información Personal
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#direccion-personal" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">
+                                Dirección Personal
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill" role="presentation">
+                            <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#instalacion-datos" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">
+                                Instalación
+                            </button>
+                        </li>
+                    </ul>
+        
+                    <div class="tab-content pt-2">
+                        <div class="tab-pane fade show active profile-edit" id="informacion-personal">
+                            <h5 class="card-title" align="center" style="margin-top: 15px;">Información personal</h5>
+            
+                            <form class="row g-3" autocomplete="off" [formGroup]="formInformacionCliente" (input)="prevNuevoCliente()" (change)="prevNuevoCliente()">
+                                <div class="col-md-6">
+                                    <label for="nombreCliente" class="form-label">Nombre(s) <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="nombreCliente" type="text" class="form-control" id="nombreCliente" placeholder="Nombre(s)" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="apellidoPaternoCliente" class="form-label">Apellido Paterno <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="apellidoPaternoCliente" type="text" class="form-control" id="apellidoPaternoCliente" placeholder="Apellido Paterno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="apellidoMaternoCliente" class="form-label">Apellido Materno:</label>
+                                    <input formControlName="apellidoMaternoCliente" type="text" class="form-control" id="apellidoMaternoCliente" placeholder="Apellido Materno" (keypress)="this.funcionGenerica.soloLetras($event)" maxlength="255">
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="sexoCliente" class="form-label">Sexo <b style="color: brown;">*</b>:</label>
+                                    <section style="text-align: center;">
+                                    <input class="form-check-input" type="radio" formControlName="sexoCliente" id="sexoClienteM" value="M">
+                                    <label class="form-check-label" for="sexoClienteM">&nbsp;Masculino</label>
+                                    &nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" formControlName="sexoCliente" id="sexoClienteF" value="F">
+                                    <label class="form-check-label" for="sexoClienteF">&nbsp;Femenino</label>
+                                    </section>
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="telefonoCliente" class="form-label">Teléfono <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="telefonoCliente" type="text" class="form-control" id="telefonoCliente" placeholder="Teléfono" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="telefonoOpcionalCliente" class="form-label">Teléfono Secundario:</label>
+                                    <input formControlName="telefonoOpcionalCliente" type="text" class="form-control" id="telefonoOpcionalCliente" placeholder="Teléfono Secundario" (keypress)="this.funcionGenerica.soloNumeros($event)" maxlength="10">
+                                </div>
+                            </form>
+            
+                        </div>
+        
+                        <div class="tab-pane fade pt-3 profile-edit" id="direccion-personal">
+                            <h5 class="card-title" align="center">Dirección personal</h5>
+            
+                            <form class="row g-3" autocomplete="off" [formGroup]="formDireccionRegistro" (input)="prevNuevoCliente()" (change)="prevNuevoCliente()">
+                                <div class="col-md-6">
+                                    <label for="poblacionCliente" class="form-label">Población <b style="color: brown;">*</b>:</label>
+                                    <select formControlName="poblacionCliente" id="poblacionCliente" class="form-control">
+                                        <option value="" style="display: none; visibility: hidden;">Seleccione una Población</option>
+                                        <option *ngFor="let opcionPoblacion of this.poblaciones" value="{{opcionPoblacion.PkCatPoblacion}}">{{opcionPoblacion.NombrePoblacion}}</option>
+                                    </select>
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="coordenadasCliente" class="form-label">Coordenadas:</label>
+                                    <input formControlName="coordenadasCliente" type="text" class="form-control" id="coordenadasCliente" placeholder="Coordenadas" (keypress)="this.funcionGenerica.soloTexto($event)">
+                                </div>
+                
+                                <div class="col-md-12">
+                                    <label for="calleCliente" class="form-label">Calle <b style="color: brown;">*</b>:</label>
+                                    <input formControlName="calleCliente" type="text" class="form-control" id="calleCliente" placeholder="Calle" (keypress)="this.funcionGenerica.soloTexto($event)">
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="referenciasDomicilioCliente" class="form-label">Referencias <b style="color: brown;">*</b>:</label>
+                                    <textarea formControlName="referenciasDomicilioCliente" class="form-control" id="referenciasDomicilioCliente" style="height: 65px" placeholder="Referencias del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="caracteristicasDomicilioCliente" class="form-label">Características:</label>
+                                    <textarea formControlName="caracteristicasDomicilioCliente" class="form-control" id="caracteristicasDomicilioCliente" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="tab-pane fade pt-3 profile-edit" id="instalacion-datos">
+                            <h5 class="card-title" align="center">Instalación</h5>
+
+                            <form class="row g-3" autocomplete="off" [formGroup]="formInstalacion">
+                                <div class="col-md-6">
+                                    <label for="clasificacionInstalacion" class="form-label">Clasificación Instalación <b style="color: brown;">*</b>:</label>
+                                    <select formControlName="clasificacionInstalacion" id="clasificacionInstalacion" class="form-control" (change)="obtenerPlanes()">
+                                        <option value="" style="display: none; visibility: hidden;">Seleccione una Clasificación</option>
+                                        <option *ngFor="let clasificacion of this.clasificacionesInstalaciones" value="{{clasificacion.PkCatClasificacionInstalacion}}">{{clasificacion.NombreClasificacion}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6" *ngIf="this.paquetesInstalacionSelect.length > 0">
+                                    <label for="paqueteInstalacion" class="form-label">Paquete Instalación <b style="color: brown;">*</b>:</label>
+                                    <select formControlName="paqueteInstalacion" id="paqueteInstalacion" class="form-control" (change)="obtenerDetallePlan()">
+                                        <option value="" style="display: none; visibility: hidden;">Seleccione un Paquete</option>
+                                        <option *ngFor="let plan of this.paquetesInstalacionSelect" value="{{plan.PkCatPaquete}}">{{plan.Cantidad+' '+plan.UnidadMedida}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="disponibilidadInstalacion" class="form-label">Disponibilidad <b style="color: brown;">*</b>:</label>
+                                    <textarea formControlName="disponibilidadInstalacion" class="form-control" id="disponibilidadInstalacion" style="height: 65px" placeholder="Disponibilidad del Cliente" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+                
+                                <div class="col-md-6">
+                                    <label for="observacionesInstalacion" class="form-label">Observaciones:</label>
+                                    <textarea formControlName="observacionesInstalacion" class="form-control" id="observacionesInstalacion" style="height: 65px" placeholder="Observaciones" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-12 botonera d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" (click)="validarModificarInstalacion()"><b>Modificar</b></button>
+                        <section *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion === null">
+                            <button type="button" class="btn btn-success" (click)="funcionalidadComenzarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null"><b>Comenzar</b></button>
+                            <button type="button" class="btn btn-danger" (click)="funcionalidadDejarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Dejar</b></button>
+                            <button type="button" class="btn btn-info" (click)="funcionalidadConcluirInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null || this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>Concluir</b></button>
+                            <button type="button" class="btn btn-warning" (click)="funcionalidadInstalacionNoExitosa(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null || this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario"><b>No exitosa</b></button>
+                        </section>
+                        <section *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion !== null">
+                            <button type="button" class="btn btn-warning" (click)="funcionalidadRetomarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)"><b>Retomar</b></button>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="col-xl-12" *ngIf="this.detallePlan.length > 0">
+                <div class="alert alert-info alert-dismissible fade show" role="alert" style="text-align: center;">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Paquete <b>{{this.detallePlan[0].Cantidad}} {{this.detallePlan[0].UnidadMedida}} - $ {{this.detallePlan[0].CostoPaquete}}</b>
+                </div>
+            </div>
+            <section class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="assets/img/{{this.prevModificacionReporte.Sexo ?? 'nuevoUsuario'}}.jpg" alt="Profile" class="rounded-circle">
+                    <h2>{{ (this.prevModificacionReporte.Nombre ?? '') + ' ' + (this.prevModificacionReporte.ApellidoPaterno ?? '') }}</h2>
+                    <h3>{{ (this.prevModificacionReporte.NombrePoblacion ?? '') }} <b>-</b> {{ (this.prevModificacionReporte.CodigoPostal ?? '') }}</h3>
+                    <h3>{{this.prevModificacionReporte.Telefono ?? ''}}</h3>
+                    <h3>{{this.prevModificacionReporte.Calle ?? ''}}</h3>
+                    <div class="social-links mt-2" *ngIf="this.prevModificacionReporte.Coordenadas != null && this.prevModificacionReporte.Coordenadas != '' && this.prevModificacionReporte.Coordenadas != undefined">
+                        <a href="https://www.google.com/maps/place/{{this.prevModificacionReporte.Coordenadas}}" target="_blank" class="twitter"><i class="ri-user-location-line"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
