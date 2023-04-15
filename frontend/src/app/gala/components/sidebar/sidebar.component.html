@@ -92,7 +92,7 @@
     </li>
 
     <li class="nav-item" *ngIf="obtenerPermisoPorModulo('asignacionTareas')">
-      <a class="nav-link collapsed">
+      <a class="nav-link collapsed" (click)="mandarMensajeProximamente()">
         <i class="bi bi-check2-circle"></i><span>Asignación Tareas</span>
       </a>
     </li>
