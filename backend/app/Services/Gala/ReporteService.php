@@ -2,7 +2,7 @@
 
 namespace App\Services\Gala;
 
-use App\Repositories\gala\ClienteRepository;
+use App\Repositories\Gala\ClienteRepository;
 use App\Repositories\Gala\ReporteRepository;
 use App\Repositories\Gala\UsuarioRepository;
 use Illuminate\Support\Facades\DB;
