@@ -28,11 +28,8 @@ export class SidebarComponent implements OnInit {
   }
 
   obtenerPermisoPorModulo ( nombreModulo : string ) : boolean {
-    console.log(nombreModulo);
-    console.log(this.permisosObjeto);
     const objetoModulo = this.permisosObjeto[0].permisosRol.filter((item : any) => item.modulo == nombreModulo );
 
-    console.log(objetoModulo);
     if ( objetoModulo.length > 0 ) {
       return objetoModulo[0].status;
     }
