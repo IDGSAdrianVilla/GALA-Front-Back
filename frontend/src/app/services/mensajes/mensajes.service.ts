@@ -97,7 +97,6 @@ export class MensajesService {
       background: '#fff url(assets/img/trees.png)',
       backdrop: `
         rgba(0,0,123,0.4)
-        url("assets/img/nyan-cat.gif")
         left top
         no-repeat
       `
