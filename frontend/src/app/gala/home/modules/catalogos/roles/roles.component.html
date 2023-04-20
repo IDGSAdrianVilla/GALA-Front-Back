@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form autocomplete="off" class="col-12">
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop" *ngIf="this.permisos.escritura.status">Nuevo</button>
                             <button class="btn btn-primary" (click)="consultaRoles()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -75,7 +75,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosRolModificacion(rol.PkCatRol)">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                          <li><button class="dropdown-item" type="button" *ngIf="this.permisos.modificacion.status">Inactivar</button></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -170,8 +170,8 @@
             </div>
 
             <div class="modal-footer">
-                <button *ngIf="!modificacionRol" type="button" class="btn btn-primary" (click)="validarRegistroRol()"><b>Crear nuevo rol</b></button>
-                <button *ngIf="modificacionRol" type="button" class="btn btn-primary" (click)="validarModificarRol()"><b>Modificar rol</b></button>
+                <button *ngIf="this.permisos.escritura.status && !modificacionRol" type="button" class="btn btn-primary" (click)="validarRegistroRol()"><b>Crear nuevo rol</b></button>
+                <button *ngIf="this.permisos.modificacion.status && modificacionRol" type="button" class="btn btn-primary" (click)="validarModificarRol()"><b>Modificar rol</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>

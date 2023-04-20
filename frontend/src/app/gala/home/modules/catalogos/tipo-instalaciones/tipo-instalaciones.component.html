@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form autocomplete="off" class="col-12">
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop" *ngIf="this.permisos.escritura.status">Nueva</button>
                             <button class="btn btn-primary" (click)="consultaTiposDeInstalacion()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -76,7 +76,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                   <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosTipoInstalacionModificacion(tipoInstalacion.PkCatClasificacionInstalacion)">Módificar</button></li>
-                                  <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                  <li><button class="dropdown-item" type="button" *ngIf="this.permisos.modificacion.status">Inactivar</button></li>
                                 </ul>
                             </div>
                         </td>
@@ -123,8 +123,8 @@
             </div>
 
             <div class="modal-footer">
-                <button *ngIf="!modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="crearRegistroTipoInstalacion()"><b>Crear nueva clasificación</b></button>
-                <button *ngIf="modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="modificarTipoInstalacion()"><b>Modificar clasisficación</b></button>
+                <button *ngIf="this.permisos.escritura.status && !modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="crearRegistroTipoInstalacion()"><b>Crear nueva clasificación</b></button>
+                <button *ngIf="this.permisos.modificacion.status && modificacionTipoInstalacion" type="button" class="btn btn-primary" (click)="modificarTipoInstalacion()"><b>Modificar clasisficación</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>

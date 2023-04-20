@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form autocomplete="off" class="col-12">
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nueva</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop" *ngIf="this.permisos.escritura.status">Nueva</button>
                             <button class="btn btn-primary" (click)="consultaPoblaciones()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -75,7 +75,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosPoblacionModificacion(poblacion.PkCatPoblacion)">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                          <li><button class="dropdown-item" type="button" *ngIf="this.permisos.modificacion.status">Inactivar</button></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -124,8 +124,8 @@
             </div>
 
             <div class="modal-footer">
-                <button *ngIf="!modificacionPoblacion" type="button" class="btn btn-primary" (click)="crearRegistroPoblacion()"><b>Crear nueva población</b></button>
-                <button *ngIf="modificacionPoblacion" type="button" class="btn btn-primary" (click)="modificarPoblacion()"><b>Modificar población</b></button>
+                <button *ngIf="this.permisos.escritura.status && !modificacionPoblacion" type="button" class="btn btn-primary" (click)="crearRegistroPoblacion()"><b>Crear nueva población</b></button>
+                <button *ngIf="this.permisos.modificacion.status && modificacionPoblacion" type="button" class="btn btn-primary" (click)="modificarPoblacion()"><b>Modificar población</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>
