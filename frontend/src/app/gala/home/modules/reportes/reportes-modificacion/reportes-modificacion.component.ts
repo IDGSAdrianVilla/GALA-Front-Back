@@ -21,6 +21,7 @@ export class ReportesModificacionComponent implements OnInit {
   public pkReporte : number = 0;
   protected dataReporte : any;
   protected usuarioCurso : any;
+  protected permisos : any;
 
   constructor (
     private fb : FormBuilder,
@@ -46,6 +47,7 @@ export class ReportesModificacionComponent implements OnInit {
 
   private async inicilizarComponente(): Promise<any> {
     return await Promise.all([
+      this.obtenerPermisosModulo(),
       this.obtenerDatosUsuario(),
       this.obtenerProblemas(),
       this.cargaComponenteModificacionReporte()
@@ -61,6 +63,10 @@ export class ReportesModificacionComponent implements OnInit {
       diagnosticoReporte    : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       solucionReporte       : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('reportes');
   }
 
   obtenerDatosUsuario () : Promise<any> {
