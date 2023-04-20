@@ -119,4 +119,19 @@ export class FuncionesGenericasService {
   redireccionPorRuta ( ruta : string ) : void {
     this.router.navigate(['/gala/'+ruta]);
   }
+
+  obtenerPermisosPorModulo ( nombreModulo : string ) : any {
+    const cadenaPermisos : any = localStorage.getItem('permisos');
+    const objetoPermisos = this.obtenerObjetoPermisosDesdeCadena(cadenaPermisos);
+    const objetoModulo = objetoPermisos[0].permisosRol.filter((item : any) => item.modulo == nombreModulo );
+
+    const objetoPermisosModulo = objetoModulo[0].permisosModulo;
+
+    const permisosmodulo = objetoPermisosModulo.reduce((acc : any, permiso : any) => {
+      acc[permiso.permiso] = permiso;
+      return acc;
+    }, {});
+
+    return permisosmodulo;
+  }
 }
