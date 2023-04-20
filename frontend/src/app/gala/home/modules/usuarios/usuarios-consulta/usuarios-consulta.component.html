@@ -12,32 +12,13 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Filtros de Consulta</h5>
-                    <div class="d-flex align-items-center">
-                        <form autocomplete="off" class="col-12">
-                            <div class="col-xl-4 col-md-12" *ngIf="opcionesMultiselect.length > 0">
-                                <label for="filtroRol" class="form-label">Rol(es):</label>
-                                <div class="selectpicker">
-                                    <div class="selectpicker-header" (click)="activaLista()">
-                                        <div>{{rolesSeleccionados.length > 0 ? tituloSelect : 'Selecciona una opción'}}</div>
-                                        <div class="selectpicker-caret"></div>
-                                    </div>
-                                    <div class="selectpicker-options" [hidden]="!mostrarOpciones">
-                                        <div class="selectpicker-option" *ngFor="let option of opcionesMultiselect" (click)="seleccionarOpcion(option.PkCatRol)">
-                                            <span>{{option.NombreRol}}</span>
-                                            <div class="selectpicker-check" *ngIf="rolesSeleccionados.includes(option.PkCatRol)">&#10003;</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="botonera">
-                                <button class="btn btn-primary" (click)="consultaUsuariosPorRoles()">Consultar</button>
-                                <button class="btn btn-primary" disabled="true">Excel</button>
-                                <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
-                            </div>
-                        </form>
-                    </div>
+                    <form autocomplete="off" class="col-12">
+                        <div class="botonera">
+                            <button class="btn btn-primary" (click)="consultaUsuarios()">Consultar</button>
+                            <button class="btn btn-primary" disabled="true">Excel</button>
+                            <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -92,7 +73,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><button [routerLink]="['modificacion',usuario.PkTblUsuario]" class="dropdown-item" type="button">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                          <li *ngIf="this.permisos.modificacion.status"><button class="dropdown-item" type="button">Inactivar</button></li>
                                         </ul>
                                     </div>
                                 </td>

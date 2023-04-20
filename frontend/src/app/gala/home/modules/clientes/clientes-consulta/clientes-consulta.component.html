@@ -73,7 +73,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><button  class="dropdown-item" [routerLink]="['modificacion',cliente.PkTblCliente]"  type="button">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                          <li *ngIf="this.permisos.modificacion.status"><button class="dropdown-item" type="button">Inactivar</button></li>
                                         </ul>
                                     </div>
                                 </td>
