@@ -9,34 +9,46 @@ import { CatalogosService } from '../../../../services/catalogos/catalogos.servi
   styleUrls: ['./usuarios-consulta.component.css']
 })
 export class UsuariosConsultaComponent implements OnInit{
-  opcionesMultiselect : any = [];
-  usuariosPorRoles : any = [];
-  rolesSeleccionados: string[] = [];
-  tituloSelect = '';
-  mostrarOpciones = false;
+  public datosUsuarios : any = [];
 
-  busqueda: string = '';
-  usuariosFiltrados: any[] = [];
+  public busqueda: string = '';
+  public usuariosFiltrados: any[] = [];
 
   constructor (
     private mensajes : MensajesService,
-    private catalogosService : CatalogosService,
     private usuariosService : UsuariosService
   ) {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit () : Promise<void> {
     this.mensajes.mensajeEsperar();
-    this.obternerRoles();
+    await this.consultaUsuarios();
+  }
+
+  consultaUsuarios() : Promise<any> {
+    this.mensajes.mensajeEsperar();
+    const token = localStorage.getItem('token');
+
+    return this.usuariosService.consultaUsuarios(token).toPromise().then(
+      respuesta =>{
+        this.datosUsuarios = respuesta.data;
+        this.usuariosFiltrados = this.datosUsuarios;
+        this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
+      },
+
+      error =>{
+        this.mensajes.mensajeGenerico('error', 'error');
+      }
+    );
   }
 
   filtrarUsuarios() {
     if (!this.busqueda) {
-      this.usuariosFiltrados = this.usuariosPorRoles;
+      this.usuariosFiltrados = this.datosUsuarios;
     } else {
       const textoBusqueda = this.busqueda.toLowerCase();
-      this.usuariosFiltrados = this.usuariosPorRoles.filter((usuario : any) => {
+      this.usuariosFiltrados = this.datosUsuarios.filter((usuario : any) => {
         return usuario.Nombre?.toLowerCase().includes(textoBusqueda) ||
                usuario.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
                usuario.Telefono?.toLowerCase().includes(textoBusqueda) ||
@@ -46,72 +58,17 @@ export class UsuariosConsultaComponent implements OnInit{
     }
   }
 
-  activaLista() {
-    this.mostrarOpciones = !this.mostrarOpciones;
-  }
-
-  seleccionarOpcion(option: string) {
-    const index = this.rolesSeleccionados.indexOf(option);
-    if (index === -1) {
-      this.rolesSeleccionados.push(option);
-    } else {
-      this.rolesSeleccionados.splice(index, 1);
-    }
-
-    this.tituloSelect = this.opcionesMultiselect.filter((opcion : any) => this.rolesSeleccionados.includes(opcion.PkCatRol)).map((opcion : any) => opcion.NombreRol).join(', ');
-  }
-
-  consultaUsuariosPorRoles() : void {
-    this.mensajes.mensajeEsperar();
-    if(this.rolesSeleccionados.length == 0){
-      this.mensajes.mensajeGenerico('Para consultar antes debes seleccionar algún Rol', 'info');
-      return;
-    }
-
-    const objetoConsulta = {
-      'roles' : this.rolesSeleccionados,
-      'token' : localStorage.getItem('token')
-    };
-    
-    this.usuariosService.consultaUsuariosPorRoles( objetoConsulta ).subscribe(
-      usuariosPorRoles =>{
-        this.usuariosPorRoles = usuariosPorRoles.data;
-        this.usuariosFiltrados = this.usuariosPorRoles;
-        this.mensajes.mensajeGenericoToast(usuariosPorRoles.message, usuariosPorRoles.status == 200 ? 'success' : 'info');
-      },
-
-      error =>{
-        this.mensajes.mensajeGenerico('error', 'error');
-      }
-    );
-  }
-
-  obternerRoles() : void {
-    this.catalogosService.obtenerRoles().subscribe(
-      roles =>{
-        this.opcionesMultiselect = roles.data;
-        this.mensajes.cerrarMensajes();
-      },
-
-      error =>{
-        this.mensajes.mensajeGenerico('error', 'error');
-      }
-    );
-  }
-
   activarBotonLimpiar () : boolean {
-    return this.usuariosPorRoles.length == 0 && this.rolesSeleccionados.length == 0;
+    return this.datosUsuarios.length == 0;
   }
 
   activarFiltroBusqueda () : boolean {
-    return this.usuariosPorRoles.length == 0;
+    return this.datosUsuarios.length == 0;
   }
 
   limpiarTabla() : void {
     this.busqueda = '';
-    this.rolesSeleccionados = [];
-    this.tituloSelect = '';
-    this.usuariosPorRoles = [];
-    this.usuariosFiltrados = this.usuariosPorRoles;
+    this.datosUsuarios = [];
+    this.usuariosFiltrados = this.datosUsuarios;
   }
 }

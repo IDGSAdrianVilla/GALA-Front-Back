@@ -21,8 +21,8 @@ export class UsuariosService {
     return this.http.post<any>(this.urlHost+'/usuarios/crearUsuarioNuevo', datosNuevoUsuario);
   }
 
-  public consultaUsuariosPorRoles( roles : any ) : Observable<any>{
-    return this.http.post<any>(this.urlHost+'/usuarios/consultaUsuariosPorRoles', roles);
+  public consultaUsuarios( token : any ) : Observable<any>{
+    return this.http.post<any>(this.urlHost+'/usuarios/consultaUsuarios', {token});
   }
 
   public consultarDatosUsuarioModificacion( pkusuario : number) : Observable<any>{

@@ -61,16 +61,14 @@ class UsuarioService
         );
     }
 
-    public function consultaUsuariosPorRoles( $data ){
-        $sesion = $this->usuarioRepository->obtenerInformacionPorToken( $data['token'] );
-
-        $usuariosPorRoles = $this->usuarioRepository->consultaUsuariosPorRoles( $data['roles'], $sesion[0]->PkTblUsuario );
+    public function consultaUsuarios( $data ){
+        $sesion   = $this->usuarioRepository->obtenerInformacionPorToken( $data['token'] );
+        $usuarios = $this->usuarioRepository->consultaUsuarios( $sesion[0]->PkTblUsuario );
 
         return response()->json(
             [
-                'message' => count($usuariosPorRoles) > 0 ? 'Se consultaron los usuarios con éxito' : 'No se encontraron Usuarios con los filtros seleccionados',
-                'data' => $usuariosPorRoles,
-                'status' => count($usuariosPorRoles) > 0 ? 200 : 204
+                'message' => 'Se consultaron los usuarios con éxito',
+                'data' => $usuarios
             ], 
             200
         );
