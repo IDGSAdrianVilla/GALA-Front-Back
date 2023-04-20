@@ -156,7 +156,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 botonera d-flex justify-content-center">
+                    <div class="col-12 botonera d-flex justify-content-center" *ngIf="this.permisos.modificacion.status">
                         <button type="button" class="btn btn-primary" (click)="validarModificarInstalacion()"><b>Modificar</b></button>
                         <section *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtencion === null">
                             <button type="button" class="btn btn-success" (click)="funcionalidadComenzarInstalacion(this.dataInstalacion.datosInstalacion[0].PkTblInstalacion)" *ngIf="this.dataInstalacion.datosDetalleInstalacion[0].FkTblUsuarioAtendiendo === null"><b>Comenzar</b></button>

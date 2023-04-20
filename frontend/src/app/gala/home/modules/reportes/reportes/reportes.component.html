@@ -105,8 +105,8 @@
                                                 <li>
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
                                                 </li>
-                                                <li>
-                                                    <button class="dropdown-item" type="button" (click)="funcionalidadRetomarReporte(reporte.PkTblReporte)" *ngIf="this.permisos.modificacion.status">Retomar</button>
+                                                <li *ngIf="this.permisos.modificacion.status">
+                                                    <button class="dropdown-item" type="button" (click)="funcionalidadRetomarReporte(reporte.PkTblReporte)">Retomar</button>
                                                 </li>
                                             </section>
                                             <li *ngIf="this.permisos.eliminacion.status && (reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
@@ -124,7 +124,7 @@
     </div>
 </section>
 
-<div class="modal fade section profile" id="nuevoReporte" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+<div class="modal fade section profile" id="nuevoReporte" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true" *ngIf="this.permisos.escritura.status">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
@@ -209,7 +209,7 @@
             </div>
 
             <div class="modal-footer" style="text-align: center;">
-                <button type="button" class="btn btn-primary" (click)="crearRegistroReporte()"><b>Generar nuevo reporte</b></button>
+                <button type="button" class="btn btn-primary" (click)="crearRegistroReporte()" *ngIf="this.permisos.escritura.status"><b>Generar nuevo reporte</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>
