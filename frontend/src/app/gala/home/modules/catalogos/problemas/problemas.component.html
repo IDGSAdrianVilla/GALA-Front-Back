@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form autocomplete="off" class="col-12">
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop">Nuevo</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#disablebackdrop" *ngIf="this.permisos.escritura.status">Nuevo</button>
                             <button class="btn btn-primary" (click)="consultaProblemas()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -75,7 +75,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosProblemaModificacion(problema.PkCatProblema)">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button">Inactivar</button></li>
+                                          <li *ngIf="this.permisos.modificacion.status"><button class="dropdown-item" type="button">Inactivar</button></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -124,8 +124,8 @@
             </div>
 
             <div class="modal-footer" style="text-align: center;">
-                <button *ngIf="!modificacionProblema" type="button" class="btn btn-primary" (click)="crearRegistroProblema()"><b>Crear nuevo problema</b></button>
-                <button *ngIf="modificacionProblema" type="button" class="btn btn-primary" (click)="modificarProblema()"><b>Modificar población</b></button>
+                <button *ngIf="this.permisos.escritura.status && !modificacionProblema" type="button" class="btn btn-primary" (click)="crearRegistroProblema()"><b>Crear nuevo problema</b></button>
+                <button *ngIf="this.permisos.modificacion.status && modificacionProblema" type="button" class="btn btn-primary" (click)="modificarProblema()"><b>Modificar población</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>

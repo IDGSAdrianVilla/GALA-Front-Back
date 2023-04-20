@@ -29,6 +29,7 @@ export class InstalacionesComponent implements OnInit{
   public paquetesInstalacionSelect : any = [];
   public detallePlan : any = [];
   protected usuarioCurso : any;
+  protected permisos : any;
 
   constructor (
     private fb : FormBuilder,
@@ -51,6 +52,7 @@ export class InstalacionesComponent implements OnInit{
     this.crearFormInstalacion();
     
     await Promise.all([
+      this.obtenerPermisosModulo(),
       this.obtenerPoblaciones(),
       this.obtenerClasificacionesInstalaciones(),
       this.obtenerPaquetes(),
@@ -94,6 +96,10 @@ export class InstalacionesComponent implements OnInit{
       disponibilidadInstalacion : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       observacionesInstalacion  : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+  
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('instalaciones');
   }
 
   private obtenerPoblaciones(): Promise<any> {

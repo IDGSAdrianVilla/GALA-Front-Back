@@ -19,6 +19,7 @@ export class ProblemasComponent implements OnInit {
   public problemasFiltrados: any[] = [];
   public datosProblemaModificacion : any = [];
   public modificacionProblema : boolean = false;
+  protected permisos : any;
 
   constructor (
     private fb : FormBuilder,
@@ -31,6 +32,7 @@ export class ProblemasComponent implements OnInit {
 
   ngOnInit () : void {
     this.crearFormularioProblemas();
+    this.obtenerPermisosModulo();
     this.consultaProblemas();
   }
 
@@ -41,6 +43,10 @@ export class ProblemasComponent implements OnInit {
       descripcionProblema   : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       observacionesProblema : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+  
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('catalogos');
   }
 
   consultaProblemas () : void {

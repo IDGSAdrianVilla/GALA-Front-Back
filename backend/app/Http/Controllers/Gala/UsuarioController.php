@@ -48,9 +48,9 @@ class UsuarioController extends Controller
         }
     }
 
-    public function consultaUsuariosPorRoles( Request $request ){
+    public function consultaUsuarios( Request $request ){
         try{
-            return $this->usuarioService->consultaUsuariosPorRoles($request->all());
+            return $this->usuarioService->consultaUsuarios( $request->all() );
         } catch( \Exception $error) {
             Log::alert($error);
             return response()->json(

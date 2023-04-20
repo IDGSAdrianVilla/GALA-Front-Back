@@ -21,19 +21,20 @@ export class TipoInstalacionesComponent implements OnInit{
   public tipoInstalacionesFiltrados: any[] = [];
   public datosTipoInstalacionModificacion : any = [];
   public modificacionTipoInstalacion : boolean = false;
+  protected permisos : any;
 
-  constructor(
+  constructor (
     private fb : FormBuilder,
     public funcionGenerica : FuncionesGenericasService,
     private mensajes : MensajesService,
     private catalogoService : CatalogosService
-  )
-  {
+  ) {
 
   }
 
   ngOnInit(): void {
     this.crearFormularioTipoInstalaciones();
+    this.obtenerPermisosModulo();
     this.consultaTiposDeInstalacion();
   }
 
@@ -44,6 +45,10 @@ export class TipoInstalacionesComponent implements OnInit{
       descripcionClasificacion      : ['',[Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       observacionesClasificacion    : ['',[Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('catalogos');
   }
 
   consultaTiposDeInstalacion() : void {

@@ -10,6 +10,8 @@ import { MensajesService } from '../../../services/mensajes/mensajes.service';
 export class SidebarComponent implements OnInit {
 
   public permisosObjeto : any;
+  protected permisosClientes : any;
+  protected permisosUsuarios : any;
 
   constructor (
     private funcionGenerica : FuncionesGenericasService,
@@ -19,12 +21,18 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.obtenerPermisosModulos();
     this.inicializarSideBarPorObjeto();
   }
 
   inicializarSideBarPorObjeto () : void {
     const permisosCadena : any = localStorage.getItem('permisos');
     this.permisosObjeto = this.funcionGenerica.obtenerObjetoPermisosDesdeCadena(permisosCadena);
+  }
+
+  private async obtenerPermisosModulos () : Promise<any> {
+    this.permisosClientes = this.funcionGenerica.obtenerPermisosPorModulo('clientes');
+    this.permisosUsuarios = this.funcionGenerica.obtenerPermisosPorModulo('usuarios');
   }
 
   obtenerPermisoPorModulo ( nombreModulo : string ) : boolean {

@@ -4,6 +4,7 @@ import { FuncionesGenericasService } from '../../../../../services/utileria/func
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { ClientesService } from '../../../../services/clientes/clientes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes-registro',
@@ -16,26 +17,36 @@ export class ClientesRegistroComponent implements OnInit {
 
   public prevClienteNuevo : any = {};
   public poblaciones : any = [];
+  protected permisos : any;
 
-  constructor(
+  constructor (
     private fb : FormBuilder,
     public funcionGenerica : FuncionesGenericasService,
     private catalogosService : CatalogosService,
     private clientesService : ClientesService,
-    private mensajes : MensajesService
-  ){}
+    private mensajes : MensajesService,
+    private router : Router
+  ) {
+    
+  }
 
   async ngOnInit(): Promise<void> {
     this.mensajes.mensajeEsperar();
-  
-    this.crearFormInformacionCliente();
-    this.crearFormDireccionRegistro();
 
-    await Promise.all([
-      this.obtenerPoblaciones()
-    ]);
+    this.obtenerPermisosModulo();
+    if (!this.permisos.escritura.status) {
+      this.router.navigate(['/gala/inicio']);
+      this.mensajes.mensajeGenerico('Al parecer no tienes permitida esta acción', 'error');
+    } else {
+      this.crearFormInformacionCliente();
+      this.crearFormDireccionRegistro();
   
-    this.mensajes.cerrarMensajes();
+      await Promise.all([
+        this.obtenerPoblaciones()
+      ]);
+    
+      this.mensajes.cerrarMensajes();
+    }
   }
 
   crearFormInformacionCliente() : void {
@@ -57,6 +68,10 @@ export class ClientesRegistroComponent implements OnInit {
       referenciasDomicilioCliente     : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       caracteristicasDomicilioCliente : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('clientes');
   }
 
   prevNuevoCliente () : void {

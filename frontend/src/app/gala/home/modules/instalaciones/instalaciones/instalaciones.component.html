@@ -24,7 +24,7 @@
                             </select>
                         </div>
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaInstalacion">Nueva</button>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaInstalacion" *ngIf="this.permisos.escritura.status">Nueva</button>
                             <button class="btn btn-primary" (click)="consultarInstalaciones()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -91,17 +91,17 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <section *ngIf="instalacion.FkTblUsuarioAtencion === null">
-                                                <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <li *ngIf="this.permisos.modificacion.status && (instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                     <button class="dropdown-item" type="button" (click)="this.funcionalidadDejarInstalacion(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
                                                     <button class="dropdown-item" type="button" (click)="this.funcionalidadComenzarInstalacion(instalacion.PkTblInstalacion)" *ngIf="instalacion.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
                                                 </li>
                                                 <li>
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', instalacion.PkTblInstalacion]">Módificar</button>
                                                 </li>
-                                                <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <li *ngIf="this.permisos.modificacion.status && (instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadConcluirInstalacion(instalacion)">Concluir</button>
                                                 </li>
-                                                <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <li *ngIf="this.permisos.modificacion.status && (instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadInstalacionNoExitosa(instalacion)">No Exitosa</button>
                                                 </li>
                                             </section>
@@ -109,11 +109,11 @@
                                                 <li>
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', instalacion.PkTblInstalacion]">Módificar</button>
                                                 </li>
-                                                <li>
+                                                <li *ngIf="this.permisos.modificacion.status">
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadRetomarInstalacion(instalacion)">Retomar</button>
                                                 </li>
                                             </section>
-                                            <li *ngIf="instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                            <li *ngIf="this.permisos.eliminacion.status && (instalacion.FkTblUsuarioAtendiendo === null || instalacion.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                 <button class="dropdown-item" type="button" (click)="funcionalidadEliminarInstalacion(instalacion.PkTblInstalacion)">Eliminar</button>
                                             </li>
                                         </ul>
@@ -128,7 +128,7 @@
     </div>
 </section>
 
-<div class="modal fade section profile" id="nuevaInstalacion" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+<div class="modal fade section profile" id="nuevaInstalacion" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true" *ngIf="this.permisos.escritura.status">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
@@ -295,7 +295,7 @@
             </div>
 
             <div class="modal-footer" style="text-align: center;">
-                <button type="button" class="btn btn-primary" (click)="registrarNuevaInstalacion()"><b>Registrar nueva instalación</b></button>
+                <button type="button" class="btn btn-primary" (click)="registrarNuevaInstalacion()" *ngIf="this.permisos.escritura.status"><b>Registrar nueva instalación</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormularios()"><b>Cancelar</b></button>
             </div>
         </div>

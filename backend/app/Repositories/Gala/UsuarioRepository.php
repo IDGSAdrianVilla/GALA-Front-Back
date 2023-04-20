@@ -90,12 +90,11 @@ class UsuarioRepository
 		$registro->save();
 	}
 
-	public function consultaUsuariosPorRoles( $roles, $pk ){
-		$usuariosPorRoles = DB::table('vistageneralusuarios')
-							  ->where('PkTblUsuario', '!=', $pk)
-							  ->whereIn('PkCatRol', $roles);
+	public function consultaUsuarios( $pk ){
+		$usuarios = DB::table('vistageneralusuarios')
+					  ->where('PkTblUsuario', '!=', $pk);
 		
-		return $usuariosPorRoles->get();
+		return $usuarios->get();
 	}
 
 	public function consultarDatosUsuarioModificacion( $pkusuario ){
@@ -126,11 +125,11 @@ class UsuarioRepository
 					->update([
 						'Nombre' 		  => $this->trimValidator($datosEmpleados['nombreEmpleado'] 		 ?? $datosEmpleados['nombrePerfil']),
 						'ApellidoPaterno' => $this->trimValidator($datosEmpleados['apellidoPaternoEmpleado'] ?? $datosEmpleados['apellidoPaternoPerfil']),
-						'ApellidoMaterno' => $this->trimValidator($datosEmpleados['apellidoMaternoEmpleado'] ?? $datosEmpleados['apellidoMaternoPerfil']),
-						'Sexo' 			  => $datosEmpleados['sexoEmpleado'] 				 ?? $datosEmpleados['sexoPerfil'],
+						'ApellidoMaterno' => $this->trimValidator($datosEmpleados['apellidoMaternoEmpleado'] ?? ($datosEmpleados['apellidoMaternoPerfil'] ?? null)),
+						'Sexo' 			  => $datosEmpleados['sexoEmpleado'] 				 				 ?? $datosEmpleados['sexoPerfil'],
 						'Telefono' 		  => $this->trimValidator($datosEmpleados['telefonoEmpleado'] 		 ?? $datosEmpleados['telefonoPerfil']),
-						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'] 	 ?? $datosEmpleados['fechaNacimientoPerfil'],
-						'Observaciones'   => $this->trimValidator($datosEmpleados['observacionesEmpleado'] 	 ?? $datosEmpleados['observacionesPerfil'])
+						'FechaNacimiento' => $datosEmpleados['fechaNacimientoEmpleado'] 	                 ?? $datosEmpleados['fechaNacimientoPerfil'],
+						'Observaciones'   => $this->trimValidator($datosEmpleados['observacionesEmpleado'] 	 ?? ($datosEmpleados['observacionesPerfil'] ?? null))
 					]);
 	} 
 
@@ -159,9 +158,9 @@ class UsuarioRepository
 		TblDirecciones::where('FkTblEmpleado', '=', $pkEmpleado)
 					  ->update([
 						'FkCatPoblacion' 		   => $datosDireccion['poblacionEmpleado'] ?? $datosDireccion['poblacionPerfil'],
-						'Coordenadas' 			   => $this->trimValidator($datosDireccion['coordenadasEmpleado'] ?? $datosDireccion['coordenadasPerfil']),
+						'Coordenadas' 			   => $this->trimValidator($datosDireccion['coordenadasEmpleado'] ?? ($datosDireccion['coordenadasPerfil'] ?? null)),
 						'ReferenciasDomicilio' 	   => $this->trimValidator($datosDireccion['referenciasDomicilioEmpleado'] ?? $datosDireccion['referenciasDomicilioPerfil']),
-						'CaracteristicasDomicilio' => $this->trimValidator($datosDireccion['caracteristicasDomicilioEmpleado'] ?? $datosDireccion['caracteristicasDomicilioPerfil']),
+						'CaracteristicasDomicilio' => $this->trimValidator($datosDireccion['caracteristicasDomicilioEmpleado'] ?? ($datosDireccion['caracteristicasDomicilioPerfil'] ?? null)),
 						'Calle' 				   => $this->trimValidator($datosDireccion['calleEmpleado'] ?? $datosDireccion['callePerfil'])
 					  ]);
 	}
