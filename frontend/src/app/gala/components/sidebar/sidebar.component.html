@@ -61,7 +61,7 @@
       </a>
       <ul id="components-nav-clientes" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a [routerLink]="['clientes/registro']">
+          <a *ngIf="this.permisosClientes.escritura.status" [routerLink]="['clientes/registro']">
             <i class="bi bi-circle"></i><span>Registro</span>
           </a>
         </li>
@@ -79,7 +79,7 @@
       </a>
       <ul id="components-nav-usuarios" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a [routerLink]="['usuarios/registro']">
+          <a *ngIf="this.permisosUsuarios.escritura.status" [routerLink]="['usuarios/registro']">
             <i class="bi bi-circle"></i><span>Registro</span>
           </a>
         </li>
