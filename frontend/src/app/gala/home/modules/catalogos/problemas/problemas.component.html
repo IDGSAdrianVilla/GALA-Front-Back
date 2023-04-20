@@ -75,7 +75,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                           <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#disablebackdrop" (click)="consultaDatosProblemaModificacion(problema.PkCatProblema)">Módificar</button></li>
-                                          <li><button class="dropdown-item" type="button" *ngIf="this.permisos.modificacion.status">Inactivar</button></li>
+                                          <li *ngIf="this.permisos.modificacion.status"><button class="dropdown-item" type="button">Inactivar</button></li>
                                         </ul>
                                     </div>
                                 </td>

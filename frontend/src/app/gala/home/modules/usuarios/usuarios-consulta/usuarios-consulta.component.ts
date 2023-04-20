@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuariosService } from 'src/app/gala/services/usuarios/usuarios.service';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
+import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
 
 @Component({
   selector: 'app-usuarios-consulta',
@@ -13,17 +14,27 @@ export class UsuariosConsultaComponent implements OnInit{
 
   public busqueda: string = '';
   public usuariosFiltrados: any[] = [];
+  protected permisos : any;
 
   constructor (
     private mensajes : MensajesService,
-    private usuariosService : UsuariosService
+    private usuariosService : UsuariosService,
+    public funcionGenerica : FuncionesGenericasService
   ) {
 
   }
 
   async ngOnInit () : Promise<void> {
     this.mensajes.mensajeEsperar();
-    await this.consultaUsuarios();
+    
+    await Promise.all([
+      this.obtenerPermisosModulo(),
+      this.consultaUsuarios()
+    ]);
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('usuarios');
   }
 
   consultaUsuarios() : Promise<any> {

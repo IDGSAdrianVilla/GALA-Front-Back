@@ -208,7 +208,7 @@
                     <input formControlName="valPassword" type="password" class="form-control" id="valPassword" placeholder="Confirmar contraseña" (keypress)="this.funcionGenerica.soloTexto($event)" maxlength="255">
                   </div>
 
-                  <div class="col-md-12 col-lg-12">
+                  <div class="col-md-12 col-lg-12" *ngIf="this.permisos.escritura.status">
                     <button type="button" class="btn btn-primary form-control" (click)="crearNuevoUsuario()"><b>Crear Nuevo Usuario</b></button>
                   </div>
                   
