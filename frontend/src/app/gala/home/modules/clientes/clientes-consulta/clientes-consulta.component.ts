@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { ClientesService } from '../../../../services/clientes/clientes.service';
+import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
 
 @Component({
   selector: 'app-clientes-consulta',
@@ -8,20 +9,26 @@ import { ClientesService } from '../../../../services/clientes/clientes.service'
   styleUrls: ['./clientes-consulta.component.css']
 })
 export class ClientesConsultaComponent implements OnInit{
+  public busqueda : string = '';
+  public clientesFiltrados : any[] = [];
+  public datosClientes : any = [];
+  protected permisos : any;
 
-    public busqueda : string = '';
-    public clientesFiltrados : any[] = [];
-    public datosClientes : any = [];
-
-  constructor(
+  constructor (
     private mensajes : MensajesService,
+    public funcionGenerica : FuncionesGenericasService,
     private clientesService : ClientesService
-  ){
+  ) {
 
   }
 
   ngOnInit(): void {
+    this.obtenerPermisosModulo();
     this.consultaClientes();
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('clientes');
   }
 
   consultaClientes() : void {

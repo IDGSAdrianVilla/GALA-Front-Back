@@ -23,7 +23,7 @@
                             </select>
                         </div>
                         <div class="botonera">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoReporte">Nuevo</button>
+                            <button *ngIf="this.permisos.escritura.status" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoReporte">Nuevo</button>
                             <button class="btn btn-primary" (click)="consultarReportes()">Consultar</button>
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
@@ -90,14 +90,14 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <section *ngIf="reporte.FkTblUsuarioAtencion === null">
-                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <li *ngIf="this.permisos.modificacion.status && (reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                     <button class="dropdown-item" type="button" (click)="this.funcionalidadDejarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">Dejar</button>
                                                     <button class="dropdown-item" type="button" (click)="this.funcionalidadComenzarReporteCliente(reporte.PkTblReporte)" *ngIf="reporte.FkTblUsuarioAtendiendo != this.usuarioCurso.PkTblUsuario">Comenzar</button>
                                                 </li>
                                                 <li>
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
                                                 </li>
-                                                <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                                <li *ngIf="this.permisos.modificacion.status && (reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadAtenderReporte(reporte)">Atender</button>
                                                 </li>
                                             </section>
@@ -105,11 +105,11 @@
                                                 <li>
                                                     <button class="dropdown-item" type="button" [routerLink]="['modificacion', reporte.PkTblReporte]">Módificar</button>
                                                 </li>
-                                                <li>
+                                                <li *ngIf="this.permisos.modificacion.status">
                                                     <button class="dropdown-item" type="button" (click)="funcionalidadRetomarReporte(reporte.PkTblReporte)">Retomar</button>
                                                 </li>
                                             </section>
-                                            <li *ngIf="reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario">
+                                            <li *ngIf="this.permisos.eliminacion.status && (reporte.FkTblUsuarioAtendiendo === null || reporte.FkTblUsuarioAtendiendo == this.usuarioCurso.PkTblUsuario)">
                                                 <button class="dropdown-item" type="button" (click)="funcionalidadEliminarReporte(reporte.PkTblReporte)">Eliminar</button>
                                             </li>
                                         </ul>
@@ -124,7 +124,7 @@
     </div>
 </section>
 
-<div class="modal fade section profile" id="nuevoReporte" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+<div class="modal fade section profile" id="nuevoReporte" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true" *ngIf="this.permisos.escritura.status">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-body">
@@ -209,7 +209,7 @@
             </div>
 
             <div class="modal-footer" style="text-align: center;">
-                <button type="button" class="btn btn-primary" (click)="crearRegistroReporte()"><b>Generar nuevo reporte</b></button>
+                <button type="button" class="btn btn-primary" (click)="crearRegistroReporte()" *ngIf="this.permisos.escritura.status"><b>Generar nuevo reporte</b></button>
                 <button type="button" class="btn btn-danger" #cerrarModal data-bs-dismiss="modal" (click)="limpiarFormulario()"><b>Cancelar</b></button>
             </div>
         </div>

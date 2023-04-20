@@ -29,6 +29,7 @@ export class RolesComponent implements OnInit {
   public rolesFiltrados : any[] = [];
   public modificacionRol : boolean = false;
   public datosRolModificacion : any = [];
+  protected permisos : any;
 
   constructor (
     private fb : FormBuilder,
@@ -42,6 +43,7 @@ export class RolesComponent implements OnInit {
 
   ngOnInit (): void {
     this.crearFormularioRoles();
+    this.obtenerPermisosModulo();
     this.consultaRoles();
   }
 
@@ -52,6 +54,10 @@ export class RolesComponent implements OnInit {
       descripcionRol   : ['', Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')],
       observacionesRol : ['', Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('catalogos');
   }
 
   consultaRoles () : void {

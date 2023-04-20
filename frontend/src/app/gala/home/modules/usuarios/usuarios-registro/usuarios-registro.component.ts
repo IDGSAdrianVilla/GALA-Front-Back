@@ -4,6 +4,7 @@ import { UsuariosService } from 'src/app/gala/services/usuarios/usuarios.service
 import { MensajesService } from '../../../../../services/mensajes/mensajes.service';
 import { CatalogosService } from '../../../../services/catalogos/catalogos.service';
 import { FuncionesGenericasService } from '../../../../../services/utileria/funciones-genericas.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuarios-registro',
@@ -20,28 +21,39 @@ export class UsuariosRegistroComponent implements OnInit {
   public roles : any = [];
   public objetoPermisos : any = [];
   public prevUsuarioNuevo : any = {};
+  protected permisos : any;
 
   constructor(
     private fb : FormBuilder,
     private mensajes : MensajesService,
     private catalogosService : CatalogosService,
     private usuariosService : UsuariosService,
-    public funcionGenerica : FuncionesGenericasService
+    public funcionGenerica : FuncionesGenericasService,
+    private router : Router
   ){
 
   }
 
   async ngOnInit(): Promise<void> {
     this.mensajes.mensajeEsperar();
-  
-    this.crearFormInformacionRegistro();
-    this.crearFormDireccionRegistro();
-    this.crearFormRolesRegistro();
-    this.crearFormCredencialesRegistro();
-  
-    await Promise.all([this.obtenerPoblaciones(), this.obtenerRoles()]);
-  
-    this.mensajes.cerrarMensajes();
+
+    this.obtenerPermisosModulo();
+    if (!this.permisos.escritura.status) {
+      this.router.navigate(['/gala/inicio']);
+      this.mensajes.mensajeGenerico('Al parecer no tienes permitida esta acción', 'error');
+    } else {
+      this.crearFormInformacionRegistro();
+      this.crearFormDireccionRegistro();
+      this.crearFormRolesRegistro();
+      this.crearFormCredencialesRegistro();
+    
+      await Promise.all([
+        this.obtenerPoblaciones(),
+        this.obtenerRoles()]
+      );
+    
+      this.mensajes.cerrarMensajes();
+    }
   }
   
 
@@ -79,6 +91,10 @@ export class UsuariosRegistroComponent implements OnInit {
       passwordEmpleado   : ['emenetSistemas2023', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
       valPassword        : ['emenetSistemas2023', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('usuarios');
   }
   
   obtenerPoblaciones(): Promise<any> {

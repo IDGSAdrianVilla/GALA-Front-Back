@@ -84,6 +84,10 @@ export class AdminGuard implements CanActivate {
   }
 
   validarAccesoRuta ( ruta : string ) : boolean {
+    if ( ruta == '/gala/usuarios/perfil') {
+      return true;
+    }
+
     const nombreModulo = ruta.replace('/gala/', '').split('/')[0];
 
     if ( !this.exepcionesRutas.includes(nombreModulo) ) {

@@ -21,6 +21,7 @@ export class ClientesModificacionComponent implements OnInit, OnDestroy{
   public poblaciones : any = [];
   public pkcliente : number = 0;
   public datosClienteModificacion : any = [];
+  protected permisos : any;
 
   constructor(
     private fb : FormBuilder,
@@ -40,6 +41,7 @@ export class ClientesModificacionComponent implements OnInit, OnDestroy{
     this.crearFormInformacionRegistro();
     this.crearFormDireccionRegistro();
     await Promise.all([
+      this.obtenerPermisosModulo(),
       this.obtenerPoblaciones(),
       this.consultarDatosClienteModificacion()
     ]);
@@ -66,15 +68,8 @@ export class ClientesModificacionComponent implements OnInit, OnDestroy{
     });
   }
 
-  prevNuevoCliente () : void {
-    this.prevClienteNuevo.nombreCliente          = this.formInformacionRegistro.get('nombreCliente')?.value;
-    this.prevClienteNuevo.apellidoPaternoCliente = this.formInformacionRegistro.get('apellidoPaternoCliente')?.value;
-    this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionRegistro.get('apellidoMaternoCliente')?.value;
-    this.prevClienteNuevo.sexoCliente            = this.formInformacionRegistro.get('sexoCliente')?.value;
-    this.prevClienteNuevo.telefonoCliente        = this.formInformacionRegistro.get('telefonoCliente')?.value;
-    this.prevClienteNuevo.Coordenadas            = this.formDireccionRegistro.get('coordenadasCliente')?.value;
-    const poblacionSelect                        = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
-    this.prevClienteNuevo.poblacionCliente       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('clientes');
   }
 
   obtenerPoblaciones(): Promise<any> {
@@ -122,6 +117,17 @@ export class ClientesModificacionComponent implements OnInit, OnDestroy{
     this.formDireccionRegistro.get('calleCliente')?.setValue(this.datosClienteModificacion.Calle);
     this.formDireccionRegistro.get('referenciasDomicilioCliente')?.setValue(this.datosClienteModificacion.ReferenciasDomicilio);
     this.formDireccionRegistro.get('caracteristicasDomicilioCliente')?.setValue(this.datosClienteModificacion.CaracteristicasDomicilio);
+  }
+
+  prevNuevoCliente () : void {
+    this.prevClienteNuevo.nombreCliente          = this.formInformacionRegistro.get('nombreCliente')?.value;
+    this.prevClienteNuevo.apellidoPaternoCliente = this.formInformacionRegistro.get('apellidoPaternoCliente')?.value;
+    this.prevClienteNuevo.apellidoMaternoCliente = this.formInformacionRegistro.get('apellidoMaternoCliente')?.value;
+    this.prevClienteNuevo.sexoCliente            = this.formInformacionRegistro.get('sexoCliente')?.value;
+    this.prevClienteNuevo.telefonoCliente        = this.formInformacionRegistro.get('telefonoCliente')?.value;
+    this.prevClienteNuevo.Coordenadas            = this.formDireccionRegistro.get('coordenadasCliente')?.value;
+    const poblacionSelect                        = (document.getElementById('poblacionCliente') as HTMLSelectElement).selectedOptions[0].text;
+    this.prevClienteNuevo.poblacionCliente       = poblacionSelect != 'Seleccione una Población' ? poblacionSelect : '';
   }
 
   actualizarDatosCliente() : void {

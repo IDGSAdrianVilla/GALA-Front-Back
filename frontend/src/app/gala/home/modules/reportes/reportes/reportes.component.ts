@@ -26,6 +26,7 @@ export class ReportesComponent implements OnInit{
   public prevClienteReporte : any = {};
   public problemas : any = [];
   protected usuarioCurso : any;
+  protected permisos : any;
 
   constructor (
     private mensajes : MensajesService,
@@ -46,6 +47,7 @@ export class ReportesComponent implements OnInit{
     this.crearFormularioReporte();
 
     await Promise.all([
+      this.obtenerPermisosModulo(),
       this.obtenerClientes(),
       this.obtenerProblemas(),
       this.obtenerDatosUsuario()
@@ -71,7 +73,11 @@ export class ReportesComponent implements OnInit{
     });
   }
 
-  obtenerClientes () : Promise<any> {
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('reportes');
+  }
+
+  private obtenerClientes () : Promise<any> {
     return this.clienteService.consultarClientes().toPromise().then(
       respuesta => {
         this.clientes = respuesta.data;
@@ -83,7 +89,7 @@ export class ReportesComponent implements OnInit{
     );
   }
 
-  obtenerProblemas () : Promise<void> {
+  private obtenerProblemas () : Promise<void> {
     return this.catalogoService.obtenerProblemas().toPromise().then(
       respuesta => {
         this.problemas = respuesta.data;
@@ -95,7 +101,7 @@ export class ReportesComponent implements OnInit{
     );
   }
 
-  obtenerDatosUsuario () : Promise<void> {
+  private obtenerDatosUsuario () : Promise<void> {
     const token = localStorage.getItem('token');
     return this.usuarioService.obtenerInformacion(token).toPromise().then(
       respuesta => {

@@ -19,6 +19,7 @@ export class PoblacionesComponent implements OnInit{
   public poblacionesFiltradas: any[] = [];
   public datosPoblacionModificacion : any = [];
   public modificacionPoblacion : boolean = false;
+  protected permisos : any;
 
   constructor (
     private fb : FormBuilder,
@@ -31,6 +32,7 @@ export class PoblacionesComponent implements OnInit{
 
   ngOnInit() : void {
     this.crearFormularioPoblaciones();
+    this.obtenerPermisosModulo();
     this.consultaPoblaciones();
   }
 
@@ -41,6 +43,10 @@ export class PoblacionesComponent implements OnInit{
       cpPoblacion            : ['', [Validators.required, Validators.pattern('[0-9]*')]],
       observacionesPoblacion : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('catalogos');
   }
 
   consultaPoblaciones () : void {

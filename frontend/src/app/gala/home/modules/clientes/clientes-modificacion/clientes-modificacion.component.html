@@ -111,7 +111,7 @@
                   <textarea formControlName="caracteristicasDomicilioCliente" class="form-control" id="caracteristicasDomicilioCliente" style="height: 65px" placeholder="Características del Domicilio" (keypress)="this.funcionGenerica.soloTexto($event)"></textarea>
                 </div>
 
-                <div class="col-md-12 col-lg-12">
+                <div class="col-md-12 col-lg-12" *ngIf="this.permisos.modificacion.status">
                   <button type="button" class="btn btn-primary form-control" (click)="actualizarDatosCliente()"><b>Modificar Cliente</b></button>
                 </div>
               </form>

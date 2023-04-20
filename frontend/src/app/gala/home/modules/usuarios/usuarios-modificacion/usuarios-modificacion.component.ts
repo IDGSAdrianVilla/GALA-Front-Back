@@ -22,6 +22,7 @@ export class UsuariosModificacionComponent implements OnInit{
   public prevUsuarioNuevo : any = {};
   public datosUsuarioModificacion : any = [];
   public pkusuario : number = 0;
+  protected permisos : any;
 
   constructor(
     private fb : FormBuilder,
@@ -43,6 +44,7 @@ export class UsuariosModificacionComponent implements OnInit{
     this.crearFormRolesRegistro();
   
     await Promise.all([
+      this.obtenerPermisosModulo(),
       this.obtenerPoblaciones(),
       this.obtenerRoles(),
       this.consultarDatosUsuarioModificacion()
@@ -75,6 +77,10 @@ export class UsuariosModificacionComponent implements OnInit{
     this.formPermisosRegistro = this.fb.group({
       rolEmpleado : ['', [Validators.required]]
     });
+  }
+
+  private async obtenerPermisosModulo () : Promise<any> {
+    this.permisos = this.funcionGenerica.obtenerPermisosPorModulo('usuarios');
   }
   
   obtenerPoblaciones(): Promise<any> {
