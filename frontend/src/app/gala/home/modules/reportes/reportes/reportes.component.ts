@@ -6,6 +6,7 @@ import { ReportesService } from 'src/app/gala/services/reportes/reportes.service
 import { MensajesService } from 'src/app/services/mensajes/mensajes.service';
 import { FuncionesGenericasService } from 'src/app/services/utileria/funciones-genericas.service';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
+import * as unorm from 'unorm';
 
 @Component({
   selector: 'app-reportes',
@@ -50,7 +51,8 @@ export class ReportesComponent implements OnInit{
       this.obtenerPermisosModulo(),
       this.obtenerClientes(),
       this.obtenerProblemas(),
-      this.obtenerDatosUsuario()
+      this.obtenerDatosUsuario(),
+      this.obtenerReportes()
     ]);
 
     this.mensajes.cerrarMensajes();
@@ -58,7 +60,7 @@ export class ReportesComponent implements OnInit{
 
   private crearFormularioConsultaReportes () : void {
     this.formConsultaReportes = this.fb.group({
-      statusReportes  : ['', [Validators.required]]
+      statusReportes  : ['1', [Validators.required]]
     });
   }
 
@@ -121,13 +123,19 @@ export class ReportesComponent implements OnInit{
     }
 
     this.mensajes.mensajeEsperar();
+    this.obtenerReportes().then(() => {
+      this.mensajes.mensajeGenericoToast('Se consultaron los reportes con éxito', 'success');
+      return;
+    });
+  }
+
+  private async obtenerReportes () : Promise<void> {
     const statusConsulta = this.formConsultaReportes.get('statusReportes')?.value;
 
-    this.reporteService.consultarReportesPorStatus( statusConsulta ).subscribe(
+    return this.reporteService.consultarReportesPorStatus( statusConsulta ).toPromise().then(
       respuesta => {
         this.datosReportes = respuesta.reportes;
         this.reportesFiltrados = this.datosReportes;
-        this.mensajes.mensajeGenericoToast(respuesta.message, 'success');
       },
 
       error => {
@@ -240,14 +248,14 @@ export class ReportesComponent implements OnInit{
     if (!this.busqueda) {
       this.reportesFiltrados = this.datosReportes;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusquedaNormalizado = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.reportesFiltrados = this.datosReportes.filter((reporte : any) => {
-        return reporte.PkTblReporte == textoBusqueda ||
-                reporte.Nombre?.toLowerCase().includes(textoBusqueda) ||
-                reporte.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
-                reporte.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
-                reporte.TituloProblema?.toLowerCase().includes(textoBusqueda) ||
-                reporte.FechaAlta?.toLowerCase().includes(textoBusqueda);
+        return reporte.PkTblReporte == this.busqueda ||
+          this.funcionGenerica.formatearMinusculasSinAcentos(reporte.Nombre).includes(textoBusquedaNormalizado) ||
+          this.funcionGenerica.formatearMinusculasSinAcentos(reporte.ApellidoPaterno).includes(textoBusquedaNormalizado) ||
+          this.funcionGenerica.formatearMinusculasSinAcentos(reporte.NombrePoblacion).includes(textoBusquedaNormalizado) ||
+          this.funcionGenerica.formatearMinusculasSinAcentos(reporte.TituloProblema).includes(textoBusquedaNormalizado) ||
+          this.funcionGenerica.formatearMinusculasSinAcentos(reporte.FechaAlta).includes(textoBusquedaNormalizado);
       });
     }
   }

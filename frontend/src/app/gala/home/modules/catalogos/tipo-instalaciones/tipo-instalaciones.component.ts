@@ -179,10 +179,10 @@ export class TipoInstalacionesComponent implements OnInit{
     if (!this.busqueda) {
       this.tipoInstalacionesFiltrados = this.datosTipoInstalacion;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.tipoInstalacionesFiltrados = this.datosTipoInstalacion.filter((tipoInstalacion : any) => {
-        return tipoInstalacion.NombreClasificacion?.toLowerCase().includes(textoBusqueda) ||
-               tipoInstalacion.Descripcion?.toLowerCase().includes(textoBusqueda);
+        return this.funcionGenerica.formatearMinusculasSinAcentos(tipoInstalacion.NombreClasificacion).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(tipoInstalacion.Descripcion).includes(textoBusqueda);
       });
     }
   }

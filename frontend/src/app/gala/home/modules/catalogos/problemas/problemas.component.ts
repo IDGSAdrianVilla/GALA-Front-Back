@@ -175,10 +175,10 @@ export class ProblemasComponent implements OnInit {
     if (!this.busqueda) {
       this.problemasFiltrados = this.datosProblemas;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
-      this.problemasFiltrados = this.datosProblemas.filter((poblacion : any) => {
-        return poblacion.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
-               poblacion.CodigoPostal?.toLowerCase().includes(textoBusqueda);
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
+      this.problemasFiltrados = this.datosProblemas.filter((problema : any) => {
+        return this.funcionGenerica.formatearMinusculasSinAcentos(problema.TituloProblema).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(problema.DescripcionProblema).includes(textoBusqueda);
       });
     }
   }
