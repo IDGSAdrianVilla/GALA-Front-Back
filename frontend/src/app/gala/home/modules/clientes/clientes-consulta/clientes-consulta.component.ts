@@ -50,13 +50,13 @@ export class ClientesConsultaComponent implements OnInit{
     if (!this.busqueda) {
       this.clientesFiltrados = this.datosClientes;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.clientesFiltrados = this.datosClientes.filter((cliente : any) => {
-        return cliente.Nombre?.toLowerCase().includes(textoBusqueda) ||
-               cliente.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
-               cliente.Telefono?.toLowerCase().includes(textoBusqueda) ||
-               cliente.Calle?.toLowerCase().includes(textoBusqueda) ||
-               cliente.NombrePoblacion?.toLowerCase().includes(textoBusqueda);
+        return this.funcionGenerica.formatearMinusculasSinAcentos(cliente.Nombre).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(cliente.ApellidoPaterno).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(cliente.Telefono).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(cliente.Calle).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(cliente.NombrePoblacion).includes(textoBusqueda);
       });
     }
   }

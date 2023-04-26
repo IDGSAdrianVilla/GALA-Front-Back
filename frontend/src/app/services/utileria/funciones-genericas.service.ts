@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as unorm from 'unorm';
 
 @Injectable({
   providedIn: 'root'
@@ -133,5 +133,9 @@ export class FuncionesGenericasService {
     }, {});
 
     return permisosmodulo;
+  }
+
+  formatearMinusculasSinAcentos ( cadena : any ) : any {
+    return unorm.nfd(cadena ?? '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   }
 }

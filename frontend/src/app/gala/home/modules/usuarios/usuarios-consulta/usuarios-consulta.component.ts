@@ -58,13 +58,13 @@ export class UsuariosConsultaComponent implements OnInit{
     if (!this.busqueda) {
       this.usuariosFiltrados = this.datosUsuarios;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.usuariosFiltrados = this.datosUsuarios.filter((usuario : any) => {
-        return usuario.Nombre?.toLowerCase().includes(textoBusqueda) ||
-               usuario.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
-               usuario.Telefono?.toLowerCase().includes(textoBusqueda) ||
-               usuario.Calle?.toLowerCase().includes(textoBusqueda) ||
-               usuario.NombrePoblacion?.toLowerCase().includes(textoBusqueda);
+        return this.funcionGenerica.formatearMinusculasSinAcentos(usuario.Nombre).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(usuario.ApellidoPaterno).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(usuario.Telefono).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(usuario.Calle).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(usuario.NombrePoblacion).includes(textoBusqueda);
       });
     }
   }
