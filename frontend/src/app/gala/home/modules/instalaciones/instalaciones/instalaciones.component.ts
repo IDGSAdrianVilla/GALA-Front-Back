@@ -64,7 +64,7 @@ export class InstalacionesComponent implements OnInit{
 
   private crearFormConsultaInstalaciones () : void {
     this.formConsultaInstalaciones = this.fb.group({
-      statusInstalaciones  : ['', [Validators.required]]
+      statusInstalaciones  : ['1', [Validators.required]]
     });
   }
 
@@ -160,7 +160,7 @@ export class InstalacionesComponent implements OnInit{
     if ( this.paquetesInstalacionSelect.length > 0 ) {
       this.formInstalacion.get('paqueteInstalacion')?.setValidators(Validators.required);
     } else {
-      this.formInstalacion.get('paqueteInstalacion')?.clearValidators;
+      this.formInstalacion.get('paqueteInstalacion')?.clearValidators();
     }
 
     this.formInstalacion.get('paqueteInstalacion')?.updateValueAndValidity();
@@ -243,9 +243,16 @@ export class InstalacionesComponent implements OnInit{
     }
 
     this.mensajes.mensajeEsperar();
+    this.obtenerInstalaciones().then(() => {
+      this.mensajes.mensajeGenericoToast('Se consultaron las instalaciones con éxito', 'success');
+      return;
+    });
+  }
+
+  private async obtenerInstalaciones () : Promise<void> {
     const statusConsulta = this.formConsultaInstalaciones.get('statusInstalaciones')?.value;
 
-    this.instalacionesService.consultarInstalacionesPorStatus( statusConsulta ).subscribe(
+    return this.instalacionesService.consultarInstalacionesPorStatus( statusConsulta ).toPromise().then(
       respuesta => {
         this.datosInstalaciones = respuesta.instalaciones;
         this.instalacionesFiltras = this.datosInstalaciones;
@@ -273,13 +280,13 @@ export class InstalacionesComponent implements OnInit{
     if (!this.busqueda) {
       this.instalacionesFiltras = this.datosInstalaciones;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.instalacionesFiltras = this.datosInstalaciones.filter((reporte : any) => {
         return reporte.PkTblReporte == textoBusqueda ||
-                reporte.Nombre?.toLowerCase().includes(textoBusqueda) ||
-                reporte.ApellidoPaterno?.toLowerCase().includes(textoBusqueda) ||
-                reporte.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
-                reporte.FechaAlta?.toLowerCase().includes(textoBusqueda);
+               this.funcionGenerica.formatearMinusculasSinAcentos(reporte.Nombre).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(reporte.ApellidoPaterno).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(reporte.NombrePoblacion).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(reporte.FechaAlta).includes(textoBusqueda);
       });
     }
   }

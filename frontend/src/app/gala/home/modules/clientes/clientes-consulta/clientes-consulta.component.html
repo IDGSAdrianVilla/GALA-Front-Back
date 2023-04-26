@@ -59,7 +59,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let cliente of this.datosClientes">
+                            <tr *ngFor="let cliente of this.clientesFiltrados">
                                 <th scope="row"><a>#{{cliente.PkTblCliente}}</a></th>
                                 <td>{{cliente.Nombre+' '+cliente.ApellidoPaterno}}</td>
                                 <td>{{cliente.Sexo}}</td>
