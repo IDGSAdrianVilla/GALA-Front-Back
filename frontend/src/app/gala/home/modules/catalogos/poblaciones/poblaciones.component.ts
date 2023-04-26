@@ -175,10 +175,10 @@ export class PoblacionesComponent implements OnInit{
     if (!this.busqueda) {
       this.poblacionesFiltradas = this.datosPoblaciones;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.poblacionesFiltradas = this.datosPoblaciones.filter((poblacion : any) => {
-        return poblacion.NombrePoblacion?.toLowerCase().includes(textoBusqueda) ||
-               poblacion.CodigoPostal?.toLowerCase().includes(textoBusqueda);
+        return this.funcionGenerica.formatearMinusculasSinAcentos(poblacion.NombrePoblacion).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(poblacion.CodigoPostal).includes(textoBusqueda);
       });
     }
   }

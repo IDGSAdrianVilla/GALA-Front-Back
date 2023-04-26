@@ -366,10 +366,10 @@ export class RolesComponent implements OnInit {
     if (!this.busqueda) {
       this.rolesFiltrados = this.datosRoles;
     } else {
-      const textoBusqueda = this.busqueda.toLowerCase();
+      const textoBusqueda = this.funcionGenerica.formatearMinusculasSinAcentos(this.busqueda);
       this.rolesFiltrados = this.datosRoles.filter((rol : any) => {
-        return rol.NombreRol?.toLowerCase().includes(textoBusqueda) ||
-               rol.DescripcionRol?.toLowerCase().includes(textoBusqueda);
+        return this.funcionGenerica.formatearMinusculasSinAcentos(rol.NombreRol).includes(textoBusqueda) ||
+               this.funcionGenerica.formatearMinusculasSinAcentos(rol.DescripcionRol).includes(textoBusqueda);
       });
     }
   }
