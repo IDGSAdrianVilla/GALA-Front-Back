@@ -15,7 +15,7 @@
                     <form autocomplete="off" class="col-12" [formGroup]="formConsultaInstalaciones">
                         <div class="col-md-3" style="margin-top: 10px;">
                             <label for="statusInstalaciones" class="form-label">Status <b style="color: brown;">*</b>:</label>
-                            <select formControlName="statusInstalaciones" type="text" class="form-control" id="statusInstalaciones">
+                            <select formControlName="statusInstalaciones" type="text" class="form-control" id="statusInstalaciones" (change)="consultarInstalaciones()">
                                 <option value="" style="display: none; visibility: hidden;">Seleccione un Status</option>
                                 <option value="0">Todos</option>
                                 <option value="1">Pendiente</option>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="botonera">
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaInstalacion" *ngIf="this.permisos.escritura.status">Nueva</button>
-                            <button class="btn btn-primary" (click)="consultarInstalaciones()">Consultar</button>
+                            <!--button class="btn btn-primary" (click)="consultarInstalaciones()">Consultar</!--button-->
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
                         </div>
