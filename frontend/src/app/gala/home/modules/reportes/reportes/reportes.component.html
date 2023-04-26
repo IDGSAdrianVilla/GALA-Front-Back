@@ -15,7 +15,7 @@
                     <form autocomplete="off" class="col-12" [formGroup]="formConsultaReportes">
                         <div class="col-md-3" style="margin-top: 10px;">
                             <label for="statusReportes" class="form-label">Status <b style="color: brown;">*</b>:</label>
-                            <select formControlName="statusReportes" type="text" class="form-control" id="statusReportes">
+                            <select formControlName="statusReportes" type="text" class="form-control" id="statusReportes" (change)="consultarReportes()">
                                 <option value="" style="display: none; visibility: hidden;">Seleccione un Status</option>
                                 <option value="0">Todos</option>
                                 <option value="1">Pendiente</option>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="botonera">
                             <button *ngIf="this.permisos.escritura.status" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoReporte">Nuevo</button>
-                            <button class="btn btn-primary" (click)="consultarReportes()">Consultar</button>
+                            <!--button class="btn btn-primary" (click)="consultarReportes()">Consultar</!--button-->
                             <button class="btn btn-primary" disabled="true">Excel</button>
                             <button class="btn btn-danger" [disabled]="activarBotonLimpiar()" (click)="limpiarTabla()">Limpiar</button>
                         </div>
